@@ -39,69 +39,31 @@ public class Vertex<T> extends Point
     }
 
     // === Getters and setters ===
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public Color getOutside()
-    {
-        return outside;
-    }
-
-    public void setOutside(Color outside)
-    {
-        this.outside = outside;
-    }
-
-    public Color getInside()
-    {
-        return inside;
-    }
-
-    public void setInside(Color inside)
-    {
-        this.inside = inside;
-    }
-
-    public int getRadius()
-    {
-        return radius;
-    }
-
-    public void setRadius(int radius)
-    {
-        this.radius = radius;
-    }
-
-    public ArrayList<Edge<T>> getEdges()
-    {
+    
+    public ArrayList<Edge<T>> getEdges() {
         return edges;
-    }
-
-    public void setEdges(ArrayList<Edge<T>> edges)
-    {
-        this.edges = edges;
-    }
-
-    public static int getCpt() {
-        return cpt;
-    }
-
-    public static void setCpt(int cpt) {
-        Vertex.cpt = cpt;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getName() {
+        return name;
     }
+
+    public void addEdge(T weight, Vertex<T> end){
+        edges.add(new Edge<T>(this, end, weight));
+    }
+
+    public void addEdge(Vertex<T> end){
+        edges.add(new Edge<T>(this, end));
+    }
+
+    @Override
+    public String toString() {
+        return "Vertex [name=" + name + ", edges=" + edges + "]";
+    }
+
+    
 }

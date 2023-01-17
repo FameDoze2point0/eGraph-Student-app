@@ -47,7 +47,14 @@ public class Graph<T> implements Serializable
         //Creation of a list of generic type
         ArrayList<Edge<T>> edges = new ArrayList<Edge<T>>();
         vertices.add(new Vertex<T>(name, 0, 0, edges));
-        return 1; //SUCCESS
+        return 0; //SUCCESS
+    }
+
+    public int addVertex(Vertex<T> vertex)
+    {
+        vertices.add(vertex);
+        
+        return 0; //SUCCESS
     }
 
     //Remove vertex from the graph
@@ -63,7 +70,7 @@ public class Graph<T> implements Serializable
         }
 
         //FAILURE
-        return 0;
+        return 1;
     }
 
     //Get a vertex with name
@@ -114,54 +121,28 @@ public class Graph<T> implements Serializable
         return array;
     }
 
-
-
-
-
-
-
-
-
-
-
     // === Getters and setters ===
-    public String getName()
-    {
-        return name;
-    }
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public Boolean getIsOriented()
-    {
-        return isOriented;
-    }
-
-    public void setIsOriented(Boolean isOriented)
-    {
-        this.isOriented = isOriented;
-    }
-
-    public Boolean getIsWeighted()
-    {
-        return isWeighted;
-    }
-
-    public void setIsWeighted(Boolean isWeighted)
-    {
-        this.isWeighted = isWeighted;
-    }
-
-    public LinkedList<Vertex<T>> getVertices()
-    {
+    public LinkedList<Vertex<T>> getVertices() {
         return vertices;
     }
 
-    public void setVertices(LinkedList<Vertex<T>> vertices)
-    {
-        this.vertices = vertices;
-    }    
+    @Override
+    public String toString() {
+        // return "Graph [name=" + name + ", vertices=" + vertices + "]";
+        String rep = "Graph [name=" + name + ", vertices=\n";
+
+        ArrayList<ArrayList<T>> array = toArray();
+
+        for (ArrayList<T> vertex : array) {
+            for (T weight : vertex) {
+                rep = rep + weight + "\t";
+            }
+            rep = rep + "\n";
+        }
+        
+        return rep;
+    }
+    
+    
 }

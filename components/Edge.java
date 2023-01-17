@@ -35,52 +35,31 @@ public class Edge<T> implements Serializable
         radius = 2;
     }
 
-    // === Getters and setters ===
-    public T getWeight()
+    public Edge(Vertex<T> start, Vertex<T> arrival)
     {
-        return weight;
-    }
-
-    public void setWeight(T weight) 
-    {
-        this.weight = weight;
-    }
-
-    public Vertex<T> getArrival() 
-    {
-        return arrival;
-    }
-
-    public void setArrival(Vertex<T> arrival) 
-    {
+        this.start = start;
         this.arrival = arrival;
+
+        //By defaults, the inside color is black and the radius is 2 pixels
+        inside = Color.BLACK;
+        radius = 2;
     }
 
-    public Color getInside() 
-    {
-        return inside;
-    }
+    
 
-    public void setInside(Color inside) 
-    {
-        this.inside = inside;
-    }
+    // === Getters and setters ===
 
-    public int getRadius() 
-    {
-        return radius;
-    }
-
-    public void setRadius(int radius) 
-    {
-        this.radius = radius;
+    public T getWeight() {
+        return weight;
     }
 
     public Vertex<T> getStart() {
         return start;
     }
 
-    public void setStart(Vertex<T> start) {
-        this.start = start;
+    public Vertex<T> getArrival() {
+        return arrival;
     }
+
+    
 }
