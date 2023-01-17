@@ -1,8 +1,8 @@
 /*
  *  Author : Antonin C. & François P.
- *  File : Node.java
+ *  File : Vertex.java
  *
- *  Description : a node is represented by coordinates (x,y), a name and
+ *  Description : a vertex is represented by coordinates (x,y), a name and
  *  a list of edges.
  */
 
@@ -11,25 +11,27 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.awt.Color;
 
-public class Node extends Point
+public class Vertex<T> extends Point
 {
-    //Name of the node
+    //Name of the vertex
+    private static int cpt = 0;
+    private int id;
     private String name;
 
     //List of edges
-    private ArrayList<Edge> edges;
+    private ArrayList<Edge<T>> edges;
 
-    //Graphical aspect of the node
-    private Color outside, inside; //Color of the node
-    private int radius; //Determine the size of the node
+    //Graphical aspect of the vertex
+    private Color outside, inside; //Color of the vertex
+    private int radius; //Determine the size of the vertex
 
     //Constructor
-    public Node(String name, int x, int y)
+    public Vertex(String name, int x, int y, ArrayList<Edge<T>> edges)
     {
         super(x,y); //Setting coordinates
+        this.id = cpt++;
         this.name = name; //Setting name
-        edges = new ArrayList<Edge>(); //Setting the edge list
-
+        this.edges = edges;
         //By defaults, colors are black and radius is 10 pixels
         outside = Color.BLACK;
         inside = Color.BLACK;
@@ -45,16 +47,6 @@ public class Node extends Point
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    public ArrayList<Edge> getEdges()
-    {
-        return edges;
-    }
-
-    public void setEdges(ArrayList<Edge> edges)
-    {
-        this.edges = edges;
     }
 
     public Color getOutside()
@@ -85,5 +77,31 @@ public class Node extends Point
     public void setRadius(int radius)
     {
         this.radius = radius;
+    }
+
+    public ArrayList<Edge<T>> getEdges()
+    {
+        return edges;
+    }
+
+    public void setEdges(ArrayList<Edge<T>> edges)
+    {
+        this.edges = edges;
+    }
+
+    public static int getCpt() {
+        return cpt;
+    }
+
+    public static void setCpt(int cpt) {
+        Vertex.cpt = cpt;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

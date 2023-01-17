@@ -9,20 +9,24 @@ package components;
 import java.io.Serializable;
 import java.awt.Color;
 
-public class Edge implements Serializable
+public class Edge<T> implements Serializable
 {
     //Weight of the edge
-    private int weight;
+    private T weight;
 
-    //The node of arrival
-    private Node arrival;
+    //Starting vertex
+    private Vertex<T> start;
+
+    //The vertex of arrival
+    private Vertex<T> arrival;
 
     //Graphical aspect of the edge
     private Color inside; //Color of the edge
     private int radius; //Determine the size of the edge
 
-    public Edge(Node arrival, int weight)
+    public Edge(Vertex<T> start, Vertex<T> arrival, T weight)
     {
+        this.start = start;
         this.arrival = arrival;
         this.weight = weight;
 
@@ -32,22 +36,22 @@ public class Edge implements Serializable
     }
 
     // === Getters and setters ===
-    public int getWeight()
+    public T getWeight()
     {
         return weight;
     }
 
-    public void setWeight(int weight) 
+    public void setWeight(T weight) 
     {
         this.weight = weight;
     }
 
-    public Node getArrival() 
+    public Vertex<T> getArrival() 
     {
         return arrival;
     }
 
-    public void setArrival(Node arrival) 
+    public void setArrival(Vertex<T> arrival) 
     {
         this.arrival = arrival;
     }
@@ -70,5 +74,13 @@ public class Edge implements Serializable
     public void setRadius(int radius) 
     {
         this.radius = radius;
+    }
+
+    public Vertex<T> getStart() {
+        return start;
+    }
+
+    public void setStart(Vertex<T> start) {
+        this.start = start;
     }
 }

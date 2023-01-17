@@ -9,14 +9,15 @@
 package components;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
-public class Graph implements Serializable
+public class Graph<T> implements Serializable
 {
     //Name of the graph
     private String name;
 
     //List of node
-    private ArrayList<Node> nodes;
+    private LinkedList<Vertex<T>> vertices;
 
     //Flags
     private Boolean isOriented; //if the graph is oriented
@@ -25,36 +26,38 @@ public class Graph implements Serializable
     public Graph(String name, Boolean isOriented, Boolean isWeighted)
     {
         name = this.name; //Name
-        nodes = new ArrayList<Node>(); //List of node
+        vertices = new LinkedList<Vertex<T>>(); //List of node
         this.isOriented = isOriented; //if the graph is oriented
         this.isWeighted = isWeighted; //if the graph is weighted
     }
 
-    //Add a node to the graph
-    public int addNode(String name, int weight)
+    //Add a vertex to the graph
+    public int addVertex(String name)
     {
-        //Search if the node with this name already exist
-        for(Node node : nodes)
+        //Search if the vertex with this name already exist
+        for(Vertex<T> vertex : vertices)
         {
-            if(node.getName() == name)
+            if(vertex.getName().equals(name))
             {
-                System.out.println("A node with this name already exist !");
+                System.out.println("A vertex with this name already exist !");
                 return 0; //FAILURE
             }
         }
-
-        nodes.add(new Node(name, 0, 0));
+        
+        //Creation of a list of generic type
+        ArrayList<Edge<T>> edges = new ArrayList<Edge<T>>();
+        vertices.add(new Vertex<T>(name, 0, 0, edges));
         return 1; //SUCCESS
     }
 
-    //Remove node from the graph
-    public int removeNode(String name)
+    //Remove vertex from the graph
+    public int removeVertex(String name)
     {
-        for(Node node : nodes)
+        for(Vertex<T> vertex : vertices)
         {
-            if(node.getName() == name)
+            if(vertex.getName().equals(name))
             {
-                nodes.remove(node);
+                vertices.remove(vertex);
                 return 1; //SUCCESS
             }
         }
@@ -63,21 +66,61 @@ public class Graph implements Serializable
         return 0;
     }
 
-    //Get a specific node from the name
-    public Node getNode(String name)
+    //Get a vertex with name
+    public Vertex<T> getVertex(String name)
     {
-        for(Node node : nodes)
+        for(Vertex<T> vertex : vertices)
         {
-            if(node.getName() == name)
+            if(vertex.getName().equals(name))
             {
                 //SUCCESS
-                return node;
+                return vertex;
             }
         }
 
         //FAILURE
         return null;
     }
+
+    /*
+     * Conversion list of vertices to 2d array of vertices
+     * Java ArrayList is a 2 dimensionnal array
+     * Java LinkedList is a list which uses less memory
+     * Here, we want to convert our LinkedList to an ArrayList to reduce complexity of some algorithmes
+     */
+    public ArrayList<ArrayList<T>> toArray()
+    {
+        // creation of the 2D arraylist
+        ArrayList<ArrayList<T>> array = new ArrayList<ArrayList<T>>();
+
+        //initialization of cells to null
+        for (int i = 0; i < vertices.size(); i++)
+        {
+            array.add(new ArrayList<T>());
+            for (int j = 0; j < vertices.size(); j++)
+                array.get(i).add(null);
+        }
+
+        //we now replace each value by its weight. If the edge doesn't exist, the weight will remain equal to null.
+        for(Vertex<T> vertex : this.vertices)
+        {
+            for(Edge<T> edge : vertex.getEdges())
+            {
+                int arrival = edge.getArrival().getId();
+                int start = edge.getStart().getId();
+                array.get(start).set(arrival, edge.getWeight());
+            }
+        }
+        return array;
+    }
+
+
+
+
+
+
+
+
 
 
 
@@ -90,11 +133,6 @@ public class Graph implements Serializable
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    public ArrayList<Node> getNodes()
-    {
-        return nodes;
     }
 
     public Boolean getIsOriented()
@@ -116,4 +154,14 @@ public class Graph implements Serializable
     {
         this.isWeighted = isWeighted;
     }
+
+    public LinkedList<Vertex<T>> getVertices()
+    {
+        return vertices;
+    }
+
+    public void setVertices(LinkedList<Vertex<T>> vertices)
+    {
+        this.vertices = vertices;
+    }    
 }

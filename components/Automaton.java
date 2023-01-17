@@ -8,39 +8,39 @@
 package components;
 import java.util.ArrayList;
 
-public class Automaton extends Graph
+public class Automaton extends Graph<String>
 {
     //List of entry nodes
-    private ArrayList<Boolean> entryNodes;
+    private ArrayList<Vertex<String>> entryNodes;
 
     //List of exit nodes
-    private ArrayList<Boolean> exitNodes;
+    private ArrayList<Vertex<String>> exitNodes;
 
     public Automaton(String name)
     {
         //Oriented and weighted
         super(name, true, true);
-        entryNodes = new ArrayList<Boolean>(); //List of entry nodes
-        exitNodes = new ArrayList<Boolean>(); //List of exit nodes
+        entryNodes = new ArrayList<Vertex<String>>(); //List of entry nodes
+        exitNodes = new ArrayList<Vertex<String>>(); //List of exit nodes
     }
 
     // === Getters and setters ===
-    public ArrayList<Boolean> getEntryNodes()
+    public ArrayList<Vertex<String>> getEntryNodes()
     {
         return entryNodes;
     }
 
-    public void setEntryNodes(ArrayList<Boolean> entryNodes)
+    public void setEntryNodes(ArrayList<Vertex<String>> entryNodes)
     {
         this.entryNodes = entryNodes;
     }
 
-    public ArrayList<Boolean> getExitNodes()
+    public ArrayList<Vertex<String>> getExitNodes()
     {
         return exitNodes;
     }
 
-    public void setExitNodes(ArrayList<Boolean> exitNodes)
+    public void setExitNodes(ArrayList<Vertex<String>> exitNodes)
     {
         this.exitNodes = exitNodes;
     }
