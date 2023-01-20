@@ -16,17 +16,10 @@ import java.lang.Integer;
 
 public class Main
 {
-    static LinkedList<Graph> graphs;
+    //Main function
     public static void main(String[] args)
     {
-
-        graphs = new LinkedList<Graph>();
         Gui page = new Gui();
-
-
-            
-       
-
     }
 }
 
