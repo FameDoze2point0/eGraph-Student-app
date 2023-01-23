@@ -1,14 +1,18 @@
 package gui;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
-public class Gui extends JFrame
+import components.Graph;
+
+public class Gui<T> extends JFrame
 {
 
     //Dimensions of the window
-    int height = 720;
-    int width = 1080;
+    int height;
+    int width;
 
     /* Tell what state the program is currently in :
      * 0 = nothing is opened
@@ -55,22 +59,35 @@ public class Gui extends JFrame
         JPanel middleArea; //The middle area
             //We have 2 JPanels in the middle area : left one (informations tab) and right one (tabs + draw area)
             JPanel middleDivison; //Divide the middle area in two
-                JPanel informations; //DrawArea
+                JPanel informations; //informations panel
+
+                //Contain a title and informations associated with selectionned item
+                JPanel informationsTitle; //Title
+                JPanel informationsPanel; //Informations of the selectionned item
+
                 //This area is divided in two : tabs and draw area
                 JPanel tabsAndDraw; //The JPanel that contain drawarea and tabs
                     JPanel drawArea; //Informations tab
-                    JPanel tabs; //Tabs
-
+                    //The tab menu contains a list of button
+                    JPanel tabs;
+                        JButton newGraph;
+                        JButton newAutomaton;
+                        ArrayList<Graph<T>> openedTabs;
+                    
         //Bottom JPanel
         JPanel bottomJPanel;
 
     public Gui()
     {
         super("eGraph Student");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-        this.setSize(960,540);
-        //this.setResizable(false);
-        this.setLocationRelativeTo(null); // we center the JFrame
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //we get the width and height of the user screen
+        Dimension screenDimensions = Toolkit.getDefaultToolkit().getScreenSize(); //We get the screen size
+        height = (int)screenDimensions.getHeight(); //Getting screen height
+        width = (int)screenDimensions.getWidth(); //Getting screen width
+        this.setSize(width,height); //Setting the default size
+        this.setLocationRelativeTo(null); //We center the JFrame
 
         //By default, nothing is opened
         state = 0;
@@ -87,9 +104,9 @@ public class Gui extends JFrame
         createInteractionMenu();
 
         //TEMPORAIRE
-        interactionMenu.setBackground(Color.RED);
         interactionMenu.add(interactionMenu_Graph);
         interactionMenu.add(interactionMenu_Opened);
+        interactionMenu.setBackground(Color.RED);
         mainJPanel.add(interactionMenu);
         //FIN TEMPORAIRE
 
@@ -270,7 +287,7 @@ public class Gui extends JFrame
     {
         //Creation of the menu
         interactionMenu = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        interactionMenu.setPreferredSize(new Dimension(width,(int)(height*0.075))); //7.5% of the height
+        interactionMenu.setMaximumSize(new Dimension(width,(int)(height*0.05))); //5% of the height
 
         // === GRAPH ===
         interactionMenu_Graph = new JPanel();
@@ -319,35 +336,59 @@ public class Gui extends JFrame
         //In the right JPanel, 2 JPanels : tabs and draw area, but in boxlayout
 
         //Initialisation of the area
-        middleArea = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        //middleArea.setPreferredSize(new Dimension(width,(int)(height*0.8))); //80% of the height
+        middleArea = new JPanel();
+        middleArea.setLayout(new BoxLayout(middleArea, BoxLayout.LINE_AXIS));
 
             //Informations tab
             informations = new JPanel();
             informations.setLayout(new BoxLayout(informations, BoxLayout.PAGE_AXIS));
-            informations.setPreferredSize(new Dimension((int)(width*0.1),(int)(height*0.8))); //10% width, 80% height
+            informations.setMaximumSize(new Dimension((int)(width*0.1),(int)(height*0.9))); //10% width, 90% height
+
+                //The informations tab is divided
+                //Title
+                informationsTitle = new JPanel();
+                informationsTitle.add(new JButton("INFORMATIONS"));
+                informationsTitle.setBackground(Color.BLUE);
+                informationsTitle.setMaximumSize(new Dimension((int)(width*0.1),(int)(height*0.1))); //10% width, 10% height
+                informations.add(informationsTitle);
+
+                //Infos
+                informationsPanel = new JPanel();
+                informationsPanel.add(new JLabel("blablabla"));
+                informationsPanel.setBackground(Color.YELLOW);
+                informationsPanel.setPreferredSize(new Dimension((int)(width*0.1),(int)(height*0.8))); //10% width, 80% height
+                informations.add(informationsPanel);
+
+                
 
             //Tabs + drawArea
             tabsAndDraw = new JPanel();
             tabsAndDraw.setLayout(new BoxLayout(tabsAndDraw, BoxLayout.PAGE_AXIS));
-            tabsAndDraw.setPreferredSize(new Dimension((int)(width*0.75),(int)(height*0.8))); //90% width, 80% height
+            tabsAndDraw.setMaximumSize(new Dimension((int)(width*0.9),(int)(height*0.9))); //90% width, 90% height
 
                 //Tabs area
-                tabs = new JPanel();
-                tabs.setPreferredSize(new Dimension((int)(width*0.9),(int)(height*0.1))); //90% width, 10% height
+                tabs = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                tabs.setMaximumSize(new Dimension((int)(width*0.9),(int)(height*0.1))); //90% width, 5% height
+
+                    //We add a few button in the tab area
+                    //Create graph button
+                    newGraph = new JButton("New Graph");
+                    tabs.add(newGraph);
+                    //Create automaton button
+                    newAutomaton = new JButton("New Automaton");
+                    tabs.add(newAutomaton);
+                    //We init the tab arraylist
+                    openedTabs = new ArrayList<Graph<T>>();
 
                 //Draw area
                 drawArea = new JPanel();
-                drawArea.setPreferredSize(new Dimension((int)(width*0.9),(int)(height*0.7))); //90% width, 70% height
+                drawArea.setPreferredSize(new Dimension((int)(width*0.9),(int)(height*0.8))); //90% width, 80% height
 
 
                 //DEBUG
-                tabs.add(new JLabel("ONGLETS"));
-                drawArea.add(new JLabel("ZONE DESSIN"));
-                informations.add(new JLabel("INFORMATIONS"));
-                informations.setBackground(Color.YELLOW);
+                //informations.setBackground(Color.YELLOW);
                 tabs.setBackground(Color.CYAN);
-                tabs.setBackground(Color.GREEN);
+                drawArea.setBackground(Color.RED);
                 //FINDEBUG
 
 
@@ -364,12 +405,12 @@ public class Gui extends JFrame
 
     private void createBottomArea()
     {
-        bottomJPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        bottomJPanel = new JPanel();
+        bottomJPanel.setMaximumSize(new Dimension(width,(int)(height*0.05))); //5% height
 
         //DEBUG
-        bottomJPanel.add(new JLabel("MENU DU BAS"));
         bottomJPanel.setBackground(Color.GREEN);
-        bottomJPanel.setPreferredSize(new Dimension(width,(int)(height*0.1))); //10% height
+        bottomJPanel.add(new JLabel("TEST"));
         //FINDEBUG
 
         mainJPanel.add(bottomJPanel);
