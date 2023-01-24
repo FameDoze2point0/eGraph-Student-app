@@ -106,7 +106,6 @@ public class Gui<T> extends JFrame
         //TEMPORAIRE
         interactionMenu.add(interactionMenu_Graph);
         interactionMenu.add(interactionMenu_Opened);
-        interactionMenu.setBackground(Color.RED);
         mainJPanel.add(interactionMenu);
         //FIN TEMPORAIRE
 
@@ -287,10 +286,13 @@ public class Gui<T> extends JFrame
     {
         //Creation of the menu
         interactionMenu = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        interactionMenu.setBackground(Color.LIGHT_GRAY); //Le menu d'interaction a une couleur de fond grise
+        interactionMenu.setBorder(BorderFactory.createLineBorder(Color.black)); //Border
         interactionMenu.setMaximumSize(new Dimension(width,(int)(height*0.05))); //5% of the height
 
         // === GRAPH ===
         interactionMenu_Graph = new JPanel();
+        interactionMenu_Graph.setBackground(Color.LIGHT_GRAY); //Ce JPanel a une couleur de fond grise
         //Vertex button
         JButton newVertex = new JButton("Vertex +");
         interactionMenu_Graph.add(newVertex);
@@ -300,6 +302,7 @@ public class Gui<T> extends JFrame
 
         // === AUTOMATON ===
         interactionMenu_Automaton = new JPanel();
+        interactionMenu_Automaton.setBackground(Color.LIGHT_GRAY); //Ce JPanel a une couleur de fond grise
         //State button
         JButton newState = new JButton("State +");
         interactionMenu_Automaton.add(newState);
@@ -312,6 +315,7 @@ public class Gui<T> extends JFrame
         
         //WHEN A GRAPH OR AN AUTOMATON IS OPENED
         interactionMenu_Opened = new JPanel();
+        interactionMenu_Opened.setBackground(Color.LIGHT_GRAY); //Ce JPanel a une couleur de fond grise
         //Launch algorithm button
         JButton algorithm = new JButton("Launch algorithm");
         interactionMenu_Opened.add(algorithm);
@@ -321,6 +325,7 @@ public class Gui<T> extends JFrame
 
         //WHEN NOTHING IS OPENED
         interactionMenu_Empty = new JPanel();
+        interactionMenu_Empty.setBackground(Color.LIGHT_GRAY); //Ce JPanel a une couleur de fond grise
         interactionMenu_Empty.add(new JLabel("Nothing is selected."));
         //New button
         JButton openWhenEmpty = new JButton("Open...");
@@ -342,32 +347,35 @@ public class Gui<T> extends JFrame
             //Informations tab
             informations = new JPanel();
             informations.setLayout(new BoxLayout(informations, BoxLayout.PAGE_AXIS));
+            informations.setBorder(BorderFactory.createLineBorder(Color.black)); //Border
             informations.setMaximumSize(new Dimension((int)(width*0.1),(int)(height*0.9))); //10% width, 90% height
 
                 //The informations tab is divided
                 //Title
                 informationsTitle = new JPanel();
                 informationsTitle.add(new JButton("INFORMATIONS"));
-                informationsTitle.setBackground(Color.BLUE);
+                informationsTitle.setBackground(Color.gray);
+                //informationsTitle.setBorder(BorderFactory.createLineBorder(Color.black)); //Border
                 informationsTitle.setMaximumSize(new Dimension((int)(width*0.1),(int)(height*0.1))); //10% width, 10% height
                 informations.add(informationsTitle);
 
                 //Infos
                 informationsPanel = new JPanel();
                 informationsPanel.add(new JLabel("blablabla"));
-                informationsPanel.setBackground(Color.YELLOW);
+                informationsPanel.setBackground(Color.LIGHT_GRAY);
+                informationsPanel.setBorder(BorderFactory.createLineBorder(Color.black)); //Border
                 informationsPanel.setPreferredSize(new Dimension((int)(width*0.1),(int)(height*0.8))); //10% width, 80% height
                 informations.add(informationsPanel);
-
-                
 
             //Tabs + drawArea
             tabsAndDraw = new JPanel();
             tabsAndDraw.setLayout(new BoxLayout(tabsAndDraw, BoxLayout.PAGE_AXIS));
+            tabsAndDraw.setBorder(BorderFactory.createLineBorder(Color.black)); //Border
             tabsAndDraw.setMaximumSize(new Dimension((int)(width*0.9),(int)(height*0.9))); //90% width, 90% height
 
                 //Tabs area
                 tabs = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                tabs.setBackground(Color.LIGHT_GRAY);
                 tabs.setMaximumSize(new Dimension((int)(width*0.9),(int)(height*0.1))); //90% width, 5% height
 
                     //We add a few button in the tab area
@@ -382,17 +390,9 @@ public class Gui<T> extends JFrame
 
                 //Draw area
                 drawArea = new JPanel();
+                drawArea.setBackground(Color.WHITE);
+                drawArea.setBorder(BorderFactory.createLineBorder(Color.black)); //Border
                 drawArea.setPreferredSize(new Dimension((int)(width*0.9),(int)(height*0.8))); //90% width, 80% height
-
-
-                //DEBUG
-                //informations.setBackground(Color.YELLOW);
-                tabs.setBackground(Color.CYAN);
-                drawArea.setBackground(Color.RED);
-                //FINDEBUG
-
-
-
 
             //we add the panels to tabsAndDraw
             tabsAndDraw.add(tabs);
@@ -406,13 +406,9 @@ public class Gui<T> extends JFrame
     private void createBottomArea()
     {
         bottomJPanel = new JPanel();
+        bottomJPanel.setBackground(Color.DARK_GRAY);
+        bottomJPanel.setBorder(BorderFactory.createLineBorder(Color.black)); //Border
         bottomJPanel.setMaximumSize(new Dimension(width,(int)(height*0.05))); //5% height
-
-        //DEBUG
-        bottomJPanel.setBackground(Color.GREEN);
-        bottomJPanel.add(new JLabel("TEST"));
-        //FINDEBUG
-
         mainJPanel.add(bottomJPanel);
     }
 
