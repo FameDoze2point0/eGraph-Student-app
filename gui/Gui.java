@@ -123,27 +123,20 @@ public class Gui<T> extends JFrame
         //The JPanel that contain everything
         mainJPanel = new JPanel();
         mainJPanel.setLayout(new BoxLayout(mainJPanel, BoxLayout.PAGE_AXIS));
+        this.add(mainJPanel); //We add the main JPanel to the JFrame
 
         //The interaction menu
-        createInteractionMenu();
-
-        //TEMPORAIRE
-        interactionMenu.add(interactionMenu_Graph);
-        interactionMenu.add(interactionMenu_Opened);
-        mainJPanel.add(interactionMenu);
-        //FIN TEMPORAIRE
+        reloadInteractionMenu();
+        //By default, the interaction menu is empty
+        interactionMenu.add(interactionMenu_Empty);
 
         //Area to draw, get infos, choose, etc...
-        createDrawArea(); //Will create the tab menu, the informations panel and the draw area
-        mainJPanel.add(middleArea);
+        reloadDrawArea(); //Will create the tab menu, the informations panel and the draw area
 
         //Bottom area to see some infos
-        createBottomArea();
+        reloadBottomArea();
 
-        this.add(mainJPanel); //We add the main JPanel to the JFrame
         this.setVisible(true); //We display the JFrame
-
-        this.createAlgorithmPage();
     }
 
     private void createMenuBar()
@@ -312,10 +305,10 @@ public class Gui<T> extends JFrame
 
     }
 
-    private void createInteractionMenu()
+    private void reloadInteractionMenu()
     {
         //Creation of the menu
-        interactionMenu = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        interactionMenu = new JPanel(new FlowLayout(FlowLayout.LEADING));
         interactionMenu.setBackground(Color.LIGHT_GRAY); //Le menu d'interaction a une couleur de fond grise
         interactionMenu.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.BLACK)); //Border
         interactionMenu.setMaximumSize(new Dimension(width,0));
@@ -360,15 +353,15 @@ public class Gui<T> extends JFrame
         interactionMenu_Empty = new JPanel();
         interactionMenu_Empty.setBackground(Color.LIGHT_GRAY); //Ce JPanel a une couleur de fond grise
         interactionMenu_Empty.add(new JLabel("Nothing is selected."));
-        //New button
+        //Open button
         openWhenEmpty = new JButton("Open...");
         interactionMenu_Empty.add(openWhenEmpty);
-        //Open button
-        newWhenEmpty = new JButton("New +");
-        interactionMenu_Empty.add(newWhenEmpty);
+
+        //Adding the interaction menu to the main JPanel
+        mainJPanel.add(interactionMenu);
     }
 
-    private void createDrawArea()
+    private void reloadDrawArea()
     {
         //Two JPanels : left one (informations tab) and right one (tabs + draw area)
         //In the right JPanel, 2 JPanels : tabs and draw area, but in boxlayout
@@ -386,12 +379,14 @@ public class Gui<T> extends JFrame
                 //The informations tab is divided
                 informationsTitle = new JPanel(); //Title
                 informationsTitle.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.BLACK)); //Border
+
+                //Button
                 infoTitle = new JButton("INFORMATIONS");
-                infoTitle.setBorder(null);
+                infoTitle.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.gray));
+
+                //We add the button
                 informationsTitle.add(infoTitle);
-                //informationsTitle.add(new JLabel("INFORMATIONS"));
                 informationsTitle.setBackground(Color.gray);
-                //informationsTitle.setBorder(BorderFactory.createLineBorder(Color.black)); //Border
                 informationsTitle.setMaximumSize(new Dimension(width,(int)(height*0.1))); //10% width, 10% height
                 informations.add(informationsTitle);
 
@@ -416,16 +411,18 @@ public class Gui<T> extends JFrame
 
                     //We add a few button in the tab area
                     //Create graph button
-                    newGraph = new JButton("New Graph");
+                    newGraph = new JButton("New Graph +");
                     newGraph.setBackground(Color.GREEN);
                     newGraph.setOpaque(true);
-                    newGraph.setBorder(null);
+                    newGraph.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK)); //Border
+
                     tabs.add(newGraph);
                     //Create automaton button
-                    newAutomaton = new JButton("New Automaton");
+                    newAutomaton = new JButton("New Automaton +");
                     newAutomaton.setBorder(null);
                     newAutomaton.setBackground(Color.GREEN);
                     newAutomaton.setOpaque(true);
+                    newAutomaton.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK)); //Border
                     tabs.add(newAutomaton);
                     //We init the tab arraylist
                     openedTabs = new ArrayList<Graph<T>>();
@@ -434,7 +431,7 @@ public class Gui<T> extends JFrame
                 drawArea = new JPanel();
                 drawArea.setBackground(Color.WHITE);
                 drawArea.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.BLACK)); //Border
-                drawArea.setPreferredSize(new Dimension((int)(width*0.9),height)); //90% width
+                drawArea.setPreferredSize(new Dimension(width,height));
 
             //we add the panels to tabsAndDraw
             tabsAndDraw.add(tabs);
@@ -443,9 +440,12 @@ public class Gui<T> extends JFrame
         //We add the JPanels to middleArea
         middleArea.add(informations);
         middleArea.add(tabsAndDraw);
+
+        //We add the middleArea to the main JPanel
+        mainJPanel.add(middleArea);
     }
 
-    private void createBottomArea()
+    private void reloadBottomArea()
     {
         bottomJPanel = new JPanel();
         bottomJPanel.setBackground(Color.DARK_GRAY);
@@ -481,11 +481,5 @@ public class Gui<T> extends JFrame
                 interactionMenu.add(interactionMenu_Opened); //Save and launch algorithm buttons
             }
         }
-    }
-
-    private void createAlgorithmPage(){
-        algorithmPage = new JDialog(this,"Algorithm launcher page");
-        algorithmPage.setLayout(new FlowLayout());
-        algorithmPage.add(new JButton("Coucou"));
     }
 }
