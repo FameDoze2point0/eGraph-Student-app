@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.event.MouseInputListener;
 
 import components.Graph;
 
@@ -50,28 +51,17 @@ public class Gui<T> extends JFrame
         * - When a graph or an automaton is opened, we have the launch algorithm and save option
         * - When nothing is opened, we have the open or new option
         */
-            JPanel interactionMenu_Graph; //Graph
-                //Buttons in this panel
-                JButton newVertex;
-                JButton newEdge;
 
-            JPanel interactionMenu_Automaton; //Automaton
-                //Button in this panel
-                JButton newState;
-                JButton newStartingState;
-                JButton newAcceptingState;
-                JButton newTransition;
-
-            JPanel interactionMenu_Empty; //When nothing is opened
-                //Button in this panel
-                JButton openWhenEmpty;
-                JButton newWhenEmpty;
-
-
-            JPanel interactionMenu_Opened; //When a graph or an automaton is opened
-                //Button in this panel
-                JButton algorithm;
-                JButton save;
+            //Buttons in the interaction menu
+            JButton newVertex;
+            JButton newEdge;
+            JButton newState;
+            JButton newStartingState;
+            JButton newAcceptingState;
+            JButton newTransition;
+            JButton openWhenEmpty;
+            JButton algorithm;
+            JButton save;
 
         //The JPanel that contains informations tab, tabs and drawArea
         JPanel middleArea; //The middle area
@@ -80,10 +70,7 @@ public class Gui<T> extends JFrame
                 JPanel informations; //informations panel
 
                 //Contain a title and informations associated with selectionned item
-                JPanel informationsTitle; //Title
-                    //Button to close and open the panel
-                    JButton infoTitle;
-
+                JPanel informationsTitle; //Panel that contains the title
                 JPanel informationsPanel; //Informations of the selectionned item
 
                 //This area is divided in two : tabs and draw area
@@ -97,6 +84,7 @@ public class Gui<T> extends JFrame
                     
         //Bottom JPanel
         JPanel bottomJPanel;
+            JLabel bottomJPanel_coord; //Coordinates of the mouse on the draw area
 
         //Algorithm launcher page
         JDialog algorithmPage;
@@ -127,8 +115,6 @@ public class Gui<T> extends JFrame
 
         //The interaction menu
         reloadInteractionMenu();
-        //By default, the interaction menu is empty
-        interactionMenu.add(interactionMenu_Empty);
 
         //Area to draw, get infos, choose, etc...
         reloadDrawArea(); //Will create the tab menu, the informations panel and the draw area
@@ -308,54 +294,51 @@ public class Gui<T> extends JFrame
     private void reloadInteractionMenu()
     {
         //Creation of the menu
-        interactionMenu = new JPanel(new FlowLayout(FlowLayout.LEADING));
+        interactionMenu = new JPanel(new GridLayout(1,9));
         interactionMenu.setBackground(Color.LIGHT_GRAY); //Le menu d'interaction a une couleur de fond grise
         interactionMenu.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.BLACK)); //Border
         interactionMenu.setMaximumSize(new Dimension(width,0));
 
         // === GRAPH ===
-        interactionMenu_Graph = new JPanel();
-        interactionMenu_Graph.setBackground(Color.LIGHT_GRAY); //Ce JPanel a une couleur de fond grise
         //Vertex button
         newVertex = new JButton("Vertex +");
-        interactionMenu_Graph.add(newVertex);
         //Edge button
         newEdge = new JButton("Edge +");
-        interactionMenu_Graph.add(newEdge);
 
         // === AUTOMATON ===
-        interactionMenu_Automaton = new JPanel();
-        interactionMenu_Automaton.setBackground(Color.LIGHT_GRAY); //Ce JPanel a une couleur de fond grise
         //State button
         newState = new JButton("State +");
-        interactionMenu_Automaton.add(newState);
         //Starting state button
         newStartingState = new JButton("Starting State +");
-        interactionMenu_Automaton.add(newStartingState);
         //Ending state button
         newAcceptingState = new JButton("Accepting State +");
-        interactionMenu_Automaton.add(newAcceptingState);
         //Transition between 2 states button
         newTransition = new JButton("Transition +");
-        interactionMenu_Automaton.add(newTransition);
         
         //WHEN A GRAPH OR AN AUTOMATON IS OPENED
-        interactionMenu_Opened = new JPanel();
-        interactionMenu_Opened.setBackground(Color.LIGHT_GRAY); //Ce JPanel a une couleur de fond grise
         //Launch algorithm button
         algorithm = new JButton("Launch algorithm");
-        interactionMenu_Opened.add(algorithm);
         //Save button
         save = new JButton("Save");
-        interactionMenu_Opened.add(save);
 
         //WHEN NOTHING IS OPENED
-        interactionMenu_Empty = new JPanel();
-        interactionMenu_Empty.setBackground(Color.LIGHT_GRAY); //Ce JPanel a une couleur de fond grise
-        interactionMenu_Empty.add(new JLabel("Nothing is selected."));
         //Open button
         openWhenEmpty = new JButton("Open...");
-        interactionMenu_Empty.add(openWhenEmpty);
+
+        //Adding every button to the interaction menu
+        //When empty
+        interactionMenu.add(openWhenEmpty);
+        //Graph related
+        interactionMenu.add(newVertex);
+        interactionMenu.add(newEdge);
+        //Automaton related
+        interactionMenu.add(newState);
+        interactionMenu.add(newStartingState);
+        interactionMenu.add(newAcceptingState);
+        interactionMenu.add(newTransition);
+        //Other
+        interactionMenu.add(algorithm);
+        interactionMenu.add(save);
 
         //Adding the interaction menu to the main JPanel
         mainJPanel.add(interactionMenu);
@@ -378,16 +361,15 @@ public class Gui<T> extends JFrame
 
                 //The informations tab is divided
                 informationsTitle = new JPanel(); //Title
-                informationsTitle.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.BLACK)); //Border
+                informationsTitle.setBorder(BorderFactory.createMatteBorder(1, 1, 2, 1, Color.BLACK)); //Border
 
-                //Button
-                infoTitle = new JButton("INFORMATIONS");
-                infoTitle.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.gray));
+                //JButton
+                JButton titleLabel = new JButton("Informations");
+                titleLabel.setBorder(null);
 
                 //We add the button
-                informationsTitle.add(infoTitle);
+                informationsTitle.add(titleLabel);
                 informationsTitle.setBackground(Color.gray);
-                informationsTitle.setMaximumSize(new Dimension(width,(int)(height*0.1))); //10% width, 10% height
                 informations.add(informationsTitle);
 
                 //Infos
@@ -401,10 +383,10 @@ public class Gui<T> extends JFrame
             //Tabs + drawArea
             tabsAndDraw = new JPanel();
             tabsAndDraw.setLayout(new BoxLayout(tabsAndDraw, BoxLayout.PAGE_AXIS));
-            tabsAndDraw.setMaximumSize(new Dimension((int)(width*0.9),(int)(height*0.9))); //90% width, 90% height
+            tabsAndDraw.setMaximumSize(new Dimension(width,(int)(height*0.9))); //90% width, 90% height
 
                 //Tabs area
-                tabs = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                tabs = new JPanel(new GridLayout(1,10)); //Up to 8 graph/automaton tabs at the same time
                 tabs.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.BLACK)); //Border
                 tabs.setBackground(Color.LIGHT_GRAY);
                 tabs.setMaximumSize(new Dimension(width,0));
@@ -430,7 +412,24 @@ public class Gui<T> extends JFrame
                 //Draw area
                 drawArea = new JPanel();
                 drawArea.setBackground(Color.WHITE);
-                drawArea.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.BLACK)); //Border
+
+                //Adding the mouse listeners
+                drawArea.addMouseMotionListener(new MouseMotionListener() {
+
+                    @Override
+                    public void mouseDragged(MouseEvent e) {
+                        //We dont need this function but have to implement it
+                    }
+
+                    @Override
+                    public void mouseMoved(MouseEvent e) {
+                        //updating mouse coords in the bottom jpanel
+                        bottomJPanel_coord.setText("(X,Y) = "+e.getX()+","+e.getY());
+                    }
+                });
+
+
+                drawArea.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.BLACK)); //Border
                 drawArea.setPreferredSize(new Dimension(width,height));
 
             //we add the panels to tabsAndDraw
@@ -447,39 +446,228 @@ public class Gui<T> extends JFrame
 
     private void reloadBottomArea()
     {
-        bottomJPanel = new JPanel();
+        bottomJPanel = new JPanel(new GridLayout(1,10));
         bottomJPanel.setBackground(Color.DARK_GRAY);
-        bottomJPanel.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.BLACK)); //Border
-        bottomJPanel.setMaximumSize(new Dimension(width,(int)(height*0.05))); //5% height
+
+        //Setting up the elements
+        bottomJPanel_coord = new JLabel("(X,Y) = 0,0");
+        bottomJPanel_coord.setForeground(Color.WHITE);
+        bottomJPanel.add(bottomJPanel_coord);
+
+        bottomJPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK)); //Border
         mainJPanel.add(bottomJPanel);
     }
 
-    public void reload()
-    {
-        switch(state)
-        {
-            //Nothing is opened
-            case 0 : {
-                //Interaction menu
-                interactionMenu = new JPanel(); //Reset current interaction menu
-                interactionMenu.add(interactionMenu_Empty);
-            }
+    //Getters and Setters
+    public int getHeight() {
+        return height;
+    }
 
-            //A graph is opened
-            case 1 : {
-                //Interaction menu
-                interactionMenu = new JPanel(); //Reset current interaction menu
-                interactionMenu.add(interactionMenu_Graph); //Graph buttons
-                interactionMenu.add(interactionMenu_Opened); //Save and launch algorithm buttons
-            }
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
-            //An automaton is opened
-            case 2 : {
-                //Interaction menu
-                interactionMenu = new JPanel(); //Reset current interaction menu
-                interactionMenu.add(interactionMenu_Automaton); //Automaton buttons
-                interactionMenu.add(interactionMenu_Opened); //Save and launch algorithm buttons
-            }
-        }
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setMenuBar(JMenuBar menuBar) {
+        this.menuBar = menuBar;
+    }
+
+    public JPanel getMainJPanel() {
+        return mainJPanel;
+    }
+
+    public void setMainJPanel(JPanel mainJPanel) {
+        this.mainJPanel = mainJPanel;
+    }
+
+    public JPanel getInteractionMenu() {
+        return interactionMenu;
+    }
+
+    public void setInteractionMenu(JPanel interactionMenu) {
+        this.interactionMenu = interactionMenu;
+    }
+
+    public JButton getNewVertex() {
+        return newVertex;
+    }
+
+    public void setNewVertex(JButton newVertex) {
+        this.newVertex = newVertex;
+    }
+
+    public JButton getNewEdge() {
+        return newEdge;
+    }
+
+    public void setNewEdge(JButton newEdge) {
+        this.newEdge = newEdge;
+    }
+
+    public JButton getNewState() {
+        return newState;
+    }
+
+    public void setNewState(JButton newState) {
+        this.newState = newState;
+    }
+
+    public JButton getNewStartingState() {
+        return newStartingState;
+    }
+
+    public void setNewStartingState(JButton newStartingState) {
+        this.newStartingState = newStartingState;
+    }
+
+    public JButton getNewAcceptingState() {
+        return newAcceptingState;
+    }
+
+    public void setNewAcceptingState(JButton newAcceptingState) {
+        this.newAcceptingState = newAcceptingState;
+    }
+
+    public JButton getNewTransition() {
+        return newTransition;
+    }
+
+    public void setNewTransition(JButton newTransition) {
+        this.newTransition = newTransition;
+    }
+
+    public JButton getOpenWhenEmpty() {
+        return openWhenEmpty;
+    }
+
+    public void setOpenWhenEmpty(JButton openWhenEmpty) {
+        this.openWhenEmpty = openWhenEmpty;
+    }
+
+    public JButton getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(JButton algorithm) {
+        this.algorithm = algorithm;
+    }
+
+    public JButton getSave() {
+        return save;
+    }
+
+    public void setSave(JButton save) {
+        this.save = save;
+    }
+
+    public JPanel getMiddleArea() {
+        return middleArea;
+    }
+
+    public void setMiddleArea(JPanel middleArea) {
+        this.middleArea = middleArea;
+    }
+
+    public JPanel getMiddleDivison() {
+        return middleDivison;
+    }
+
+    public void setMiddleDivison(JPanel middleDivison) {
+        this.middleDivison = middleDivison;
+    }
+
+    public JPanel getInformations() {
+        return informations;
+    }
+
+    public void setInformations(JPanel informations) {
+        this.informations = informations;
+    }
+
+    public JPanel getInformationsTitle() {
+        return informationsTitle;
+    }
+
+    public void setInformationsTitle(JPanel informationsTitle) {
+        this.informationsTitle = informationsTitle;
+    }
+
+    public JPanel getInformationsPanel() {
+        return informationsPanel;
+    }
+
+    public void setInformationsPanel(JPanel informationsPanel) {
+        this.informationsPanel = informationsPanel;
+    }
+
+    public JPanel getTabsAndDraw() {
+        return tabsAndDraw;
+    }
+
+    public void setTabsAndDraw(JPanel tabsAndDraw) {
+        this.tabsAndDraw = tabsAndDraw;
+    }
+
+    public JPanel getDrawArea() {
+        return drawArea;
+    }
+
+    public void setDrawArea(JPanel drawArea) {
+        this.drawArea = drawArea;
+    }
+
+    public JPanel getTabs() {
+        return tabs;
+    }
+
+    public void setTabs(JPanel tabs) {
+        this.tabs = tabs;
+    }
+
+    public JButton getNewGraph() {
+        return newGraph;
+    }
+
+    public void setNewGraph(JButton newGraph) {
+        this.newGraph = newGraph;
+    }
+
+    public JButton getNewAutomaton() {
+        return newAutomaton;
+    }
+
+    public void setNewAutomaton(JButton newAutomaton) {
+        this.newAutomaton = newAutomaton;
+    }
+
+    public ArrayList<Graph<T>> getOpenedTabs() {
+        return openedTabs;
+    }
+
+    public void setOpenedTabs(ArrayList<Graph<T>> openedTabs) {
+        this.openedTabs = openedTabs;
+    }
+
+    public JPanel getBottomJPanel() {
+        return bottomJPanel;
+    }
+
+    public void setBottomJPanel(JPanel bottomJPanel) {
+        this.bottomJPanel = bottomJPanel;
+    }
+
+    public JDialog getAlgorithmPage() {
+        return algorithmPage;
+    }
+
+    public void setAlgorithmPage(JDialog algorithmPage) {
+        this.algorithmPage = algorithmPage;
     }
 }
