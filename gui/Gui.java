@@ -2,11 +2,11 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.swing.*;
-import javax.swing.event.MouseInputListener;
-
 import components.Graph;
+import components.Vertex;
 import components.Automaton;
 
 public class Gui<T> extends JFrame
@@ -75,13 +75,7 @@ public class Gui<T> extends JFrame
                 JPanel informationsPanel; //Informations of the selectionned item
 
                 //This area is divided in two : tabs and draw area
-                JTabbedPane tabsAndDraw; //The JPanel that contain drawarea and tabs
-                    JPanel drawArea; //Informations tab
-                    //The tab menu contains a list of button
-                    JPanel tabs;
-                        JButton newGraph;
-                        JButton newAutomaton;
-                        ArrayList<Graph<T>> openedTabs;
+                static JTabbedPane tabsAndDraw; //The JPanel that contain drawarea and tabs
                     
         //Bottom JPanel
         JPanel bottomJPanel;
@@ -449,14 +443,13 @@ public class Gui<T> extends JFrame
             //New graph
             if(o instanceof Graph)
             {
-                
-                tabsAndDraw.addTab("Tab n°"+tabsAndDraw.getTabCount(), null, new JPanel(),"Does nothing");
+                tabsAndDraw.addTab("Tab n°"+tabsAndDraw.getTabCount(), null, new PanelPaint(),null);
             }
 
             //New automaton
             if(o instanceof Automaton)
             {
-                tabsAndDraw.addTab("Tab n°"+tabsAndDraw.getTabCount(), null, new JPanel(),"Does nothing");
+                tabsAndDraw.addTab("Tab n°"+tabsAndDraw.getTabCount(), null, new PanelPaint(),null);
             }
 
             //we add the way to get mouse coords
@@ -483,208 +476,14 @@ public class Gui<T> extends JFrame
         }
     }
 
-    //Getters and Setters
-    public int getHeight() {
-        return height;
+    public void repaint()
+    {
+
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    static public JTabbedPane getTabsAndDraw()
+    {
+        return tabsAndDraw;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setMenuBar(JMenuBar menuBar) {
-        this.menuBar = menuBar;
-    }
-
-    public JPanel getMainJPanel() {
-        return mainJPanel;
-    }
-
-    public void setMainJPanel(JPanel mainJPanel) {
-        this.mainJPanel = mainJPanel;
-    }
-
-    public JPanel getInteractionMenu() {
-        return interactionMenu;
-    }
-
-    public void setInteractionMenu(JPanel interactionMenu) {
-        this.interactionMenu = interactionMenu;
-    }
-
-    public JButton getNewVertex() {
-        return newVertex;
-    }
-
-    public void setNewVertex(JButton newVertex) {
-        this.newVertex = newVertex;
-    }
-
-    public JButton getNewEdge() {
-        return newEdge;
-    }
-
-    public void setNewEdge(JButton newEdge) {
-        this.newEdge = newEdge;
-    }
-
-    public JButton getNewState() {
-        return newState;
-    }
-
-    public void setNewState(JButton newState) {
-        this.newState = newState;
-    }
-
-    public JButton getNewStartingState() {
-        return newStartingState;
-    }
-
-    public void setNewStartingState(JButton newStartingState) {
-        this.newStartingState = newStartingState;
-    }
-
-    public JButton getNewAcceptingState() {
-        return newAcceptingState;
-    }
-
-    public void setNewAcceptingState(JButton newAcceptingState) {
-        this.newAcceptingState = newAcceptingState;
-    }
-
-    public JButton getNewTransition() {
-        return newTransition;
-    }
-
-    public void setNewTransition(JButton newTransition) {
-        this.newTransition = newTransition;
-    }
-
-    public JButton getOpenWhenEmpty() {
-        return openWhenEmpty;
-    }
-
-    public void setOpenWhenEmpty(JButton openWhenEmpty) {
-        this.openWhenEmpty = openWhenEmpty;
-    }
-
-    public JButton getAlgorithm() {
-        return algorithm;
-    }
-
-    public void setAlgorithm(JButton algorithm) {
-        this.algorithm = algorithm;
-    }
-
-    public JButton getSave() {
-        return save;
-    }
-
-    public void setSave(JButton save) {
-        this.save = save;
-    }
-
-    public JPanel getMiddleArea() {
-        return middleArea;
-    }
-
-    public void setMiddleArea(JPanel middleArea) {
-        this.middleArea = middleArea;
-    }
-
-    public JPanel getMiddleDivison() {
-        return middleDivison;
-    }
-
-    public void setMiddleDivison(JPanel middleDivison) {
-        this.middleDivison = middleDivison;
-    }
-
-    public JPanel getInformations() {
-        return informations;
-    }
-
-    public void setInformations(JPanel informations) {
-        this.informations = informations;
-    }
-
-    public JPanel getInformationsTitle() {
-        return informationsTitle;
-    }
-
-    public void setInformationsTitle(JPanel informationsTitle) {
-        this.informationsTitle = informationsTitle;
-    }
-
-    public JPanel getInformationsPanel() {
-        return informationsPanel;
-    }
-
-    public void setInformationsPanel(JPanel informationsPanel) {
-        this.informationsPanel = informationsPanel;
-    }
-
-    public JPanel getDrawArea() {
-        return drawArea;
-    }
-
-    public void setDrawArea(JPanel drawArea) {
-        this.drawArea = drawArea;
-    }
-
-    public JPanel getTabs() {
-        return tabs;
-    }
-
-    public void setTabs(JPanel tabs) {
-        this.tabs = tabs;
-    }
-
-    public JButton getNewGraph() {
-        return newGraph;
-    }
-
-    public void setNewGraph(JButton newGraph) {
-        this.newGraph = newGraph;
-    }
-
-    public JButton getNewAutomaton() {
-        return newAutomaton;
-    }
-
-    public void setNewAutomaton(JButton newAutomaton) {
-        this.newAutomaton = newAutomaton;
-    }
-
-    public ArrayList<Graph<T>> getOpenedTabs() {
-        return openedTabs;
-    }
-
-    public void setOpenedTabs(ArrayList<Graph<T>> openedTabs) {
-        this.openedTabs = openedTabs;
-    }
-
-    public JPanel getBottomJPanel() {
-        return bottomJPanel;
-    }
-
-    public void setBottomJPanel(JPanel bottomJPanel) {
-        this.bottomJPanel = bottomJPanel;
-    }
-
-    public JDialog getAlgorithmPage() {
-        return algorithmPage;
-    }
-
-    public void setAlgorithmPage(JDialog algorithmPage) {
-        this.algorithmPage = algorithmPage;
-    }
 }

@@ -20,6 +20,21 @@ public class Main
     public static void main(String[] args)
     {
         Gui page = new Gui();
+        //TEMP
+        //Creating a graph
+        Graph<Integer> test = new Graph<>("graphtest", false, false);
+        //adding some vertex
+        test.addVertex("A");
+        test.addVertex("B");
+        test.addVertex("C");
+        test.addVertex("D");
+        test.addVertex("E");
+        //Adding some edge
+        test.getVertex("A").addEdge(1, test.getVertex("B"));
+        test.getVertex("B").addEdge(2, test.getVertex("C"));
+        test.getVertex("C").addEdge(3, test.getVertex("D"));
+        test.getVertex("D").addEdge(4, test.getVertex("E"));
+        test.getVertex("E").addEdge(5, test.getVertex("A"));
     }
 }
 
