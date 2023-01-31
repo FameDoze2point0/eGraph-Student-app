@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 
 import components.Graph;
+import components.Automaton;
 
 public class Gui<T> extends JFrame
 {
@@ -74,7 +75,7 @@ public class Gui<T> extends JFrame
                 JPanel informationsPanel; //Informations of the selectionned item
 
                 //This area is divided in two : tabs and draw area
-                JPanel tabsAndDraw; //The JPanel that contain drawarea and tabs
+                JTabbedPane tabsAndDraw; //The JPanel that contain drawarea and tabs
                     JPanel drawArea; //Informations tab
                     //The tab menu contains a list of button
                     JPanel tabs;
@@ -93,6 +94,17 @@ public class Gui<T> extends JFrame
     {
         super("eGraph Student");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //Style of the application
+        try
+        {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        }
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         //we get the width and height of the user screen
         Dimension screenDimensions = Toolkit.getDefaultToolkit().getScreenSize(); //We get the screen size
@@ -181,6 +193,22 @@ public class Gui<T> extends JFrame
         //Edit section
         JMenu menuEdit = new JMenu("Edit");
         menuFile.setMnemonic('E');
+
+        JMenuItem tabClose = new JMenuItem("Close tab");
+            //icon
+            tabClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK));
+            tabClose.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(tabsAndDraw.getTabCount() != 0)
+                    {
+                        tabsAndDraw.remove(tabsAndDraw.getSelectedIndex());
+                    }
+                }
+            });
+            menuEdit.add(tabClose);
+            menuEdit.addSeparator();
 
         JMenuItem itemEdit = new JMenuItem("Undo");
             //icon
@@ -285,10 +313,6 @@ public class Gui<T> extends JFrame
         
 
         menuBar.add(menuHelp);
-
-
-
-
     }
 
     private void reloadInteractionMenu()
@@ -364,7 +388,7 @@ public class Gui<T> extends JFrame
                 informationsTitle.setBorder(BorderFactory.createMatteBorder(1, 1, 2, 1, Color.BLACK)); //Border
 
                 //JButton
-                JButton titleLabel = new JButton("Informations");
+                JLabel titleLabel = new JLabel("Informations");
                 titleLabel.setBorder(null);
 
                 //We add the button
@@ -381,61 +405,9 @@ public class Gui<T> extends JFrame
                 informations.add(informationsPanel);
 
             //Tabs + drawArea
-            tabsAndDraw = new JPanel();
-            tabsAndDraw.setLayout(new BoxLayout(tabsAndDraw, BoxLayout.PAGE_AXIS));
-            tabsAndDraw.setMaximumSize(new Dimension(width,(int)(height*0.9))); //90% width, 90% height
-
-                //Tabs area
-                tabs = new JPanel(new GridLayout(1,10)); //Up to 8 graph/automaton tabs at the same time
-                tabs.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.BLACK)); //Border
-                tabs.setBackground(Color.LIGHT_GRAY);
-                tabs.setMaximumSize(new Dimension(width,0));
-
-                    //We add a few button in the tab area
-                    //Create graph button
-                    newGraph = new JButton("New Graph +");
-                    newGraph.setBackground(Color.GREEN);
-                    newGraph.setOpaque(true);
-                    newGraph.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK)); //Border
-
-                    tabs.add(newGraph);
-                    //Create automaton button
-                    newAutomaton = new JButton("New Automaton +");
-                    newAutomaton.setBorder(null);
-                    newAutomaton.setBackground(Color.GREEN);
-                    newAutomaton.setOpaque(true);
-                    newAutomaton.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK)); //Border
-                    tabs.add(newAutomaton);
-                    //We init the tab arraylist
-                    openedTabs = new ArrayList<Graph<T>>();
-
-                //Draw area
-                drawArea = new JPanel();
-                drawArea.setBackground(Color.WHITE);
-
-                //Adding the mouse listeners
-                drawArea.addMouseMotionListener(new MouseMotionListener() {
-
-                    @Override
-                    public void mouseDragged(MouseEvent e) {
-                        //We dont need this function but have to implement it
-                    }
-
-                    @Override
-                    public void mouseMoved(MouseEvent e) {
-                        //updating mouse coords in the bottom jpanel
-                        bottomJPanel_coord.setText("(X,Y) = "+e.getX()+","+e.getY());
-                    }
-                });
-
-
-                drawArea.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.BLACK)); //Border
-                drawArea.setPreferredSize(new Dimension(width,height));
-
-            //we add the panels to tabsAndDraw
-            tabsAndDraw.add(tabs);
-            tabsAndDraw.add(drawArea);
-
+            tabsAndDraw = new JTabbedPane();
+            tabsAndDraw.setTabLayoutPolicy(1);
+            
         //We add the JPanels to middleArea
         middleArea.add(informations);
         middleArea.add(tabsAndDraw);
@@ -454,8 +426,61 @@ public class Gui<T> extends JFrame
         bottomJPanel_coord.setForeground(Color.WHITE);
         bottomJPanel.add(bottomJPanel_coord);
 
+        //TEMP
+        JButton b = new JButton();
+        b.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                newTab(new Graph<Integer>("TEST", true, true));
+            }
+        });
+        bottomJPanel.add(b);
+        //FINTEMP
+
         bottomJPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK)); //Border
         mainJPanel.add(bottomJPanel);
+    }
+
+    public void newTab(Object o)
+    {
+        try
+        {
+            //New graph
+            if(o instanceof Graph)
+            {
+                
+                tabsAndDraw.addTab("Tab n°"+tabsAndDraw.getTabCount(), null, new JPanel(),"Does nothing");
+            }
+
+            //New automaton
+            if(o instanceof Automaton)
+            {
+                tabsAndDraw.addTab("Tab n°"+tabsAndDraw.getTabCount(), null, new JPanel(),"Does nothing");
+            }
+
+            //we add the way to get mouse coords
+            tabsAndDraw.getSelectedComponent().addMouseMotionListener(new MouseMotionListener()
+            {
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                    //Not useful for now but had to implement it
+                }
+
+                @Override
+                public void mouseMoved(MouseEvent e) {
+                    bottomJPanel_coord.setText("(X,Y)=("+e.getX()+","+e.getY()+")");
+                }
+            });
+
+            return;
+        }
+
+        catch(Exception e)
+        {
+            System.out.println("newTab function called with wrong arguments, cannot create a new tab.");
+            return;
+        }
     }
 
     //Getters and Setters
@@ -605,14 +630,6 @@ public class Gui<T> extends JFrame
 
     public void setInformationsPanel(JPanel informationsPanel) {
         this.informationsPanel = informationsPanel;
-    }
-
-    public JPanel getTabsAndDraw() {
-        return tabsAndDraw;
-    }
-
-    public void setTabsAndDraw(JPanel tabsAndDraw) {
-        this.tabsAndDraw = tabsAndDraw;
     }
 
     public JPanel getDrawArea() {
