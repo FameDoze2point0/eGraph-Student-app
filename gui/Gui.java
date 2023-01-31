@@ -81,8 +81,9 @@ public class Gui<T> extends JFrame
         JPanel bottomJPanel;
             JLabel bottomJPanel_coord; //Coordinates of the mouse on the draw area
 
-        //Algorithm launcher page
+         //Algorithm launcher page
         JDialog algorithmPage;
+        JDialog newGraphPage;
 
     public Gui()
     {
@@ -143,7 +144,14 @@ public class Gui<T> extends JFrame
             itemFile.setMnemonic('N');
             //icon
             itemFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
-            //actionlistener
+            createJDialogNewGraph();
+            itemFile.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e){
+                    newGraphPage.setLocationRelativeTo(null);
+                    newGraphPage.setVisible(true);
+                }
+            });
             menuFile.add(itemFile);
 
         itemFile = new JMenuItem("Open");
@@ -175,7 +183,7 @@ public class Gui<T> extends JFrame
             itemFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
             itemFile.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    algorithmPage.setVisible(true);
+                    System.exit(0);
                 }
             });
             menuFile.addSeparator();
@@ -187,22 +195,6 @@ public class Gui<T> extends JFrame
         //Edit section
         JMenu menuEdit = new JMenu("Edit");
         menuFile.setMnemonic('E');
-
-        JMenuItem tabClose = new JMenuItem("Close tab");
-            //icon
-            tabClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK));
-            tabClose.addActionListener(new ActionListener()
-            {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if(tabsAndDraw.getTabCount() != 0)
-                    {
-                        tabsAndDraw.remove(tabsAndDraw.getSelectedIndex());
-                    }
-                }
-            });
-            menuEdit.add(tabClose);
-            menuEdit.addSeparator();
 
         JMenuItem itemEdit = new JMenuItem("Undo");
             //icon
@@ -238,6 +230,22 @@ public class Gui<T> extends JFrame
             menuEdit.addSeparator();
             menuEdit.add(itemEdit);
 
+        itemEdit = new JMenuItem("Close tab");
+            itemEdit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK));
+            itemEdit.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(tabsAndDraw.getTabCount() != 0)
+                    {
+                        tabsAndDraw.remove(tabsAndDraw.getSelectedIndex());
+                    }
+                }
+            });
+           
+            menuEdit.addSeparator();
+            menuEdit.add(itemEdit);
+
         menuBar.add(menuEdit);
 
 
@@ -251,9 +259,11 @@ public class Gui<T> extends JFrame
 
         JMenuItem itemAlgorithm = new JMenuItem("Launch Algorithm...");
             //icon
+            createJDialogAlgo();
             itemAlgorithm.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK));
-            itemFile.addActionListener(new ActionListener(){
+            itemAlgorithm.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
+                    algorithmPage.setLocationRelativeTo(null);
                     algorithmPage.setVisible(true);
                 }
             });
@@ -307,6 +317,212 @@ public class Gui<T> extends JFrame
         
 
         menuBar.add(menuHelp);
+    }
+
+
+    private void createJDialogNewGraph(){
+        if (newGraphPage == null) {
+            newGraphPage = new JDialog(this,"New Graph Page",true);
+            newGraphPage.setLocationRelativeTo(null);
+            newGraphPage.setResizable(false);
+            newGraphPage.setSize(500,500);
+            newGraphPage.setLayout(new GridLayout(6,1));
+
+            //name part
+            JPanel nameLab = new JPanel();
+            JTextField jtfName = new JTextField(); 
+            
+            //type struct part
+            String[] typeStructureOption = {"Graph", "Automaton"};
+            JPanel typeStructLab = new JPanel();
+            JComboBox<String> jcbTypeStruct = new JComboBox<String>(typeStructureOption);
+            
+            //oriented part
+            JPanel isOrientedLab = new JPanel();
+            JCheckBox jcbOriented = new JCheckBox();
+
+            //weighted part
+            JPanel isWeightedLab = new JPanel();
+            JCheckBox jcbWeight = new JCheckBox();
+
+            //type part
+            String[] typeOption = {"Integer", "String","Double","Boolean","Float",};
+            JPanel typeLab = new JPanel();
+            JComboBox jcbType = new JComboBox<String>(typeOption);
+
+            //submit part
+            JPanel submitLab = new JPanel();
+            JButton cancelB = new JButton("Cancel");
+            JButton createB = new JButton("Create");
+
+            //name part
+            nameLab.setLayout(new GridLayout(1,2));
+            nameLab.add(new JLabel("Name :"));
+            nameLab.add(jtfName);
+            newGraphPage.add(nameLab);
+            
+            //type struct part
+            typeStructLab.setLayout(new GridLayout(1,2));
+            typeStructLab.add(new JLabel("Type of structure :"));
+            jcbTypeStruct.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    if (jcbTypeStruct.getSelectedIndex() == 0) {
+                        jcbOriented.setEnabled(true);
+                        jcbWeight.setEnabled(true);
+                        jcbType.setEnabled(true);
+                    }else{
+                        jcbOriented.setSelected(true);
+                        jcbOriented.setEnabled(false);
+                        jcbWeight.setSelected(true);
+                        jcbWeight.setEnabled(false);
+                        jcbType.setSelectedIndex(1);
+                        jcbType.setEnabled(false);
+                    }
+                }
+            });
+            typeStructLab.add(jcbTypeStruct);
+            typeStructLab.setVisible(true);
+            newGraphPage.add(typeStructLab);
+
+
+            //oriented part
+            isOrientedLab.setLayout(new GridLayout(1,2));
+            isOrientedLab.add(new JLabel("Oriented :"));
+            isOrientedLab.add(jcbOriented);
+            isOrientedLab.setVisible(true);
+            newGraphPage.add(isOrientedLab);
+
+            //weighted part
+            isWeightedLab.setLayout(new GridLayout(1,2));
+            isWeightedLab.add(new JLabel("Weighted :"));
+            jcbWeight.setSelected(true);
+            jcbWeight.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    if (jcbWeight.isSelected()) {
+                        jcbType.setEnabled(true);                        
+                    }else{
+                        jcbType.setEnabled(false);
+                    }
+                }
+            });
+            isWeightedLab.add(jcbWeight);
+            isWeightedLab.setVisible(true);
+            newGraphPage.add(isWeightedLab);
+
+            //type part
+            typeLab.setLayout(new GridLayout(1,2));
+            typeLab.add(new JLabel("Type :"));
+            typeLab.add(jcbType);
+            typeLab.setVisible(true);
+            newGraphPage.add(typeLab);
+
+            //submit part
+            submitLab.setLayout(new GridLayout(1,2));
+            cancelB.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    newGraphPage.dispose();
+                }
+            });
+            submitLab.add(cancelB);
+            createB.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    if (jcbTypeStruct.getSelectedIndex() == 0) {
+                        switch (jcbType.getSelectedIndex()) { //{"Integer", "String","Double","Boolean","Float",};
+                            case 0:
+                                newTab(new Graph<Integer>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()),jtfName.getText());
+                                break;
+                            case 1:
+                                newTab(new Graph<String>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()),jtfName.getText());
+                                break;
+                            case 2:
+                                newTab(new Graph<Double>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()),jtfName.getText());
+                                break;
+                            case 3:
+                                newTab(new Graph<Boolean>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()),jtfName.getText());
+                                break;
+                            case 4:
+                                newTab(new Graph<Float>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()),jtfName.getText());
+                                break;
+                            default:
+                                break;
+                        }
+                    }else if (jcbTypeStruct.getSelectedIndex() == 1) {
+                        newTab(new Automaton(jtfName.getText()),jtfName.getText());
+                        System.out.println("create automaton");
+                    }
+                    newGraphPage.dispose();
+                }
+            });
+            submitLab.add(createB);
+            submitLab.setVisible(true);
+            newGraphPage.add(submitLab);
+
+            newGraphPage.pack();
+        }
+    }
+
+    private void createJDialogAlgo(){
+        //singleton algorithmPage
+        //The user cannot open more than 1 page
+        if (algorithmPage == null) {
+            algorithmPage = new JDialog(this,"Algorithm Launcher Page",true);
+            algorithmPage.setSize(1000,600);
+            algorithmPage.setLocationRelativeTo(null);
+            algorithmPage.setResizable(false);
+            
+            
+            
+            JPanel main = new JPanel();
+            
+            main.setSize(1000,600);
+            main.setBackground(Color.green);
+            algorithmPage.add(main);
+            main.setLayout(new BoxLayout(main, BoxLayout.LINE_AXIS));
+            
+            JPanel jpL = new JPanel();
+            jpL.setBackground(Color.RED);
+            Dimension d = new Dimension((int)(1000*0.2),600);
+            jpL.setSize(d);
+            jpL.setPreferredSize(d);
+            jpL.setMaximumSize(d);
+            jpL.setMinimumSize(d);
+
+            main.add(jpL);
+
+            JPanel jpR = new JPanel();
+            jpR.setBackground(Color.BLUE);
+            d = new Dimension((int)(1000*0.8),600);
+            jpR.setSize(d);
+            jpR.setPreferredSize(d);
+            jpR.setMaximumSize(d);
+            jpR.setMinimumSize(d);
+            jpR.setLayout(new BoxLayout(jpR,BoxLayout.PAGE_AXIS));
+            main.add(jpR);
+
+
+            JPanel jpRH = new JPanel();
+            jpRH.setBackground(Color.YELLOW);
+            d = new Dimension((int)(1000*0.8),(int)(600*0.8));
+            jpRH.setSize(d);
+            jpRH.setPreferredSize(d);
+            jpRH.setMaximumSize(d);
+            jpRH.setMinimumSize(d);
+            jpR.add(jpRH);
+
+
+
+            JPanel jpRB = new JPanel();
+            jpRB.setBackground(Color.MAGENTA);
+            d = new Dimension((int)(1000*0.8),(int)(600*0.2));
+            jpRB.setSize(d);
+            jpRB.setPreferredSize(d);
+            jpRB.setMaximumSize(d);
+            jpRB.setMinimumSize(d);
+            jpR.add(jpRB);
+
+
+        }
+
     }
 
     private void reloadInteractionMenu()
@@ -426,7 +642,7 @@ public class Gui<T> extends JFrame
         {
             @Override
             public void actionPerformed(ActionEvent e) {
-                newTab(new Graph<Integer>("TEST", true, true));
+                newTab(new Graph<Integer>("TEST", true, true),"TEST");
             }
         });
         bottomJPanel.add(b);
@@ -436,20 +652,20 @@ public class Gui<T> extends JFrame
         mainJPanel.add(bottomJPanel);
     }
 
-    public void newTab(Object o)
+    public void newTab(Object o,String name)
     {
         try
         {
             //New graph
             if(o instanceof Graph)
             {
-                tabsAndDraw.addTab("Tab n°"+tabsAndDraw.getTabCount(), null, new PanelPaint(),null);
+                tabsAndDraw.addTab(name, null, new PanelPaint(),null);
             }
 
             //New automaton
             if(o instanceof Automaton)
             {
-                tabsAndDraw.addTab("Tab n°"+tabsAndDraw.getTabCount(), null, new PanelPaint(),null);
+                tabsAndDraw.addTab(name, null, new PanelPaint(),null);
             }
 
             //we add the way to get mouse coords
