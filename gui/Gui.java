@@ -16,13 +16,8 @@ public class Gui<T> extends JFrame
     int height;
     int width;
 
-    /* Tell what state the program is currently in :
-     * 0 = nothing is opened
-     * 1 = a graph is opend
-     * 2 = an automaton is opened
-     * 3 = an algorithm is being executed
-     */
-    private static int state;
+    //Opened graphs/automatons
+    static ArrayList<Object> opened;
 
     /* We must organize the gui :
      * - At the top, a JMenuBar (menu)
@@ -30,7 +25,6 @@ public class Gui<T> extends JFrame
      *   - contains a JPanel (interaction menu)
      *   - Below, contains 3 JPanels that contains
      *      - An informations Panel
-     *      - A list of open tabs
      *      - A draw area
      *   - At the bottom, a JPanel that contains a few informations
      */
@@ -90,6 +84,9 @@ public class Gui<T> extends JFrame
         super("eGraph Student");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        //Variables initialization
+        opened = new ArrayList<Object>();
+
         //Style of the application
         try
         {
@@ -107,9 +104,6 @@ public class Gui<T> extends JFrame
         width = (int)screenDimensions.getWidth(); //Getting screen width
         this.setSize(width,height); //Setting the default size
         this.setLocationRelativeTo(null); //We center the JFrame
-
-        //By default, nothing is opened
-        state = 0;
 
         //The JMenu (not inside the main JPanel)
         createMenuBar();
@@ -430,25 +424,30 @@ public class Gui<T> extends JFrame
                         switch (jcbType.getSelectedIndex()) { //{"Integer", "String","Double","Boolean","Float",};
                             case 0:
                                 newTab(new Graph<Integer>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()),jtfName.getText());
+                                opened.add(new Graph<Integer>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()));
                                 break;
                             case 1:
                                 newTab(new Graph<String>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()),jtfName.getText());
+                                opened.add(new Graph<String>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()));
                                 break;
                             case 2:
                                 newTab(new Graph<Double>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()),jtfName.getText());
+                                opened.add(new Graph<Double>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()));
                                 break;
                             case 3:
                                 newTab(new Graph<Boolean>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()),jtfName.getText());
+                                opened.add(new Graph<Boolean>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()));
                                 break;
                             case 4:
                                 newTab(new Graph<Float>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()),jtfName.getText());
+                                opened.add(new Graph<Float>(jtfName.getText(), jcbOriented.isSelected(), jcbWeight.isSelected()));
                                 break;
                             default:
                                 break;
                         }
                     }else if (jcbTypeStruct.getSelectedIndex() == 1) {
                         newTab(new Automaton(jtfName.getText()),jtfName.getText());
-                        System.out.println("create automaton");
+                        opened.add(new Automaton(jtfName.getText()));
                     }
                     newGraphPage.dispose();
                 }
@@ -636,17 +635,17 @@ public class Gui<T> extends JFrame
         bottomJPanel_coord.setForeground(Color.WHITE);
         bottomJPanel.add(bottomJPanel_coord);
 
-        //TEMP
-        JButton b = new JButton();
-        b.addActionListener(new ActionListener()
+        //RELOAD BUTTON, TEMP
+        JButton reloadbutton = new JButton("RELOAD CURRENT TAB");
+        reloadbutton.addActionListener(new ActionListener ()
         {
             @Override
             public void actionPerformed(ActionEvent e) {
-                newTab(new Graph<Integer>("TEST", true, true),"TEST");
-            }
+                tabsAndDraw.getSelectedComponent().paint(tabsAndDraw.getSelectedComponent().getGraphics());
+            }   
         });
-        bottomJPanel.add(b);
-        //FINTEMP
+        bottomJPanel.add(reloadbutton);
+        //END TEMP
 
         bottomJPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK)); //Border
         mainJPanel.add(bottomJPanel);
@@ -663,7 +662,7 @@ public class Gui<T> extends JFrame
             }
 
             //New automaton
-            if(o instanceof Automaton)
+            else if(o instanceof Automaton)
             {
                 tabsAndDraw.addTab(name, null, new PanelPaint(),null);
             }
@@ -702,4 +701,195 @@ public class Gui<T> extends JFrame
         return tabsAndDraw;
     }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public static ArrayList<Object> getOpened() {
+        return opened;
+    }
+
+    public void setOpened(ArrayList<Object> opened) {
+        Gui.opened = opened;
+    }
+
+    public void setMenuBar(JMenuBar menuBar) {
+        this.menuBar = menuBar;
+    }
+
+    public JPanel getMainJPanel() {
+        return mainJPanel;
+    }
+
+    public void setMainJPanel(JPanel mainJPanel) {
+        this.mainJPanel = mainJPanel;
+    }
+
+    public JPanel getInteractionMenu() {
+        return interactionMenu;
+    }
+
+    public void setInteractionMenu(JPanel interactionMenu) {
+        this.interactionMenu = interactionMenu;
+    }
+
+    public JButton getNewVertex() {
+        return newVertex;
+    }
+
+    public void setNewVertex(JButton newVertex) {
+        this.newVertex = newVertex;
+    }
+
+    public JButton getNewEdge() {
+        return newEdge;
+    }
+
+    public void setNewEdge(JButton newEdge) {
+        this.newEdge = newEdge;
+    }
+
+    public JButton getNewState() {
+        return newState;
+    }
+
+    public void setNewState(JButton newState) {
+        this.newState = newState;
+    }
+
+    public JButton getNewStartingState() {
+        return newStartingState;
+    }
+
+    public void setNewStartingState(JButton newStartingState) {
+        this.newStartingState = newStartingState;
+    }
+
+    public JButton getNewAcceptingState() {
+        return newAcceptingState;
+    }
+
+    public void setNewAcceptingState(JButton newAcceptingState) {
+        this.newAcceptingState = newAcceptingState;
+    }
+
+    public JButton getNewTransition() {
+        return newTransition;
+    }
+
+    public void setNewTransition(JButton newTransition) {
+        this.newTransition = newTransition;
+    }
+
+    public JButton getOpenWhenEmpty() {
+        return openWhenEmpty;
+    }
+
+    public void setOpenWhenEmpty(JButton openWhenEmpty) {
+        this.openWhenEmpty = openWhenEmpty;
+    }
+
+    public JButton getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(JButton algorithm) {
+        this.algorithm = algorithm;
+    }
+
+    public JButton getSave() {
+        return save;
+    }
+
+    public void setSave(JButton save) {
+        this.save = save;
+    }
+
+    public JPanel getMiddleArea() {
+        return middleArea;
+    }
+
+    public void setMiddleArea(JPanel middleArea) {
+        this.middleArea = middleArea;
+    }
+
+    public JPanel getMiddleDivison() {
+        return middleDivison;
+    }
+
+    public void setMiddleDivison(JPanel middleDivison) {
+        this.middleDivison = middleDivison;
+    }
+
+    public JPanel getInformations() {
+        return informations;
+    }
+
+    public void setInformations(JPanel informations) {
+        this.informations = informations;
+    }
+
+    public JPanel getInformationsTitle() {
+        return informationsTitle;
+    }
+
+    public void setInformationsTitle(JPanel informationsTitle) {
+        this.informationsTitle = informationsTitle;
+    }
+
+    public JPanel getInformationsPanel() {
+        return informationsPanel;
+    }
+
+    public void setInformationsPanel(JPanel informationsPanel) {
+        this.informationsPanel = informationsPanel;
+    }
+
+    public static void setTabsAndDraw(JTabbedPane tabsAndDraw) {
+        Gui.tabsAndDraw = tabsAndDraw;
+    }
+
+    public JPanel getBottomJPanel() {
+        return bottomJPanel;
+    }
+
+    public void setBottomJPanel(JPanel bottomJPanel) {
+        this.bottomJPanel = bottomJPanel;
+    }
+
+    public JLabel getBottomJPanel_coord() {
+        return bottomJPanel_coord;
+    }
+
+    public void setBottomJPanel_coord(JLabel bottomJPanel_coord) {
+        this.bottomJPanel_coord = bottomJPanel_coord;
+    }
+
+    public JDialog getAlgorithmPage() {
+        return algorithmPage;
+    }
+
+    public void setAlgorithmPage(JDialog algorithmPage) {
+        this.algorithmPage = algorithmPage;
+    }
+
+    public JDialog getNewGraphPage() {
+        return newGraphPage;
+    }
+
+    public void setNewGraphPage(JDialog newGraphPage) {
+        this.newGraphPage = newGraphPage;
+    }
 }

@@ -61,5 +61,33 @@ public class Edge<T> implements Serializable
         return arrival;
     }
 
+    public void setWeight(T weight) {
+        this.weight = weight;
+    }
+
+    public void setStart(Vertex<T> start) {
+        this.start = start;
+    }
+
+    public void setArrival(Vertex<T> arrival) {
+        this.arrival = arrival;
+    }
+
+    public Color getInside() {
+        return inside;
+    }
+
+    public void setInside(Color inside) {
+        this.inside = inside;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
     
 }

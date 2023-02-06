@@ -134,14 +134,55 @@ public class Graph<T> implements Serializable
 
         ArrayList<ArrayList<T>> array = toArray();
 
-        for (ArrayList<T> vertex : array) {
-            for (T weight : vertex) {
+        rep += "\t";
+        for (Vertex<T> vertex : vertices)
+            rep = rep + vertex.getName() + "\t";
+        
+        rep += "\n";
+
+        for (int i = 0; i < array.size(); i++) {
+            rep = rep + vertices.get(i).getName() + "\t";
+            for (T weight : array.get(i)) {
                 rep = rep + weight + "\t";
             }
             rep = rep + "\n";
         }
         
         return rep;
+    }
+    
+    public void toNotOriented(){
+
+        ArrayList<ArrayList<T>> array = toArray();
+
+        for (int i = 0; i < array.size(); i++) {
+            for (int j = 0; j < array.get(i).size(); j++) {
+                if (array.get(i).get(j) != null) {
+                    getVertex(vertices.get(j).getName()).addEdge(array.get(i).get(j), vertices.get(i));
+                }
+            }
+        }
+    }
+
+
+
+
+    public void BFS(Vertex<T> vertex){
+        
+        ArrayList<Edge<T>> edgeList = new ArrayList<Edge<T>>();
+        ArrayList<String> visitedList = new ArrayList<String>();
+        Edge<T> edgeTemp;
+
+        visitedList.add(vertex.getName());
+        for (Edge<T> edge : vertex.getEdges()) 
+            edgeList.add(edge);
+
+        while (edgeList.size() != 0) {
+            
+            
+
+        }
+    
     }
     
     

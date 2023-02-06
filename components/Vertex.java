@@ -65,5 +65,49 @@ public class Vertex<T> extends Point
         return "Vertex [name=" + name + ", edges=" + edges + "]";
     }
 
+    public static int getCpt() {
+        return cpt;
+    }
+
+    public static void setCpt(int cpt) {
+        Vertex.cpt = cpt;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEdges(ArrayList<Edge<T>> edges) {
+        this.edges = edges;
+    }
+
+    public Color getOutside() {
+        return outside;
+    }
+
+    public void setOutside(Color outside) {
+        this.outside = outside;
+    }
+
+    public Color getInside() {
+        return inside;
+    }
+
+    public void setInside(Color inside) {
+        this.inside = inside;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
     
 }
