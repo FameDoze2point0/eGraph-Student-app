@@ -13,6 +13,7 @@ import gui.*;
 //Other
 import java.util.*;
 import java.lang.Integer;
+import java.awt.Color;
 
 public class Main
 {
@@ -20,33 +21,20 @@ public class Main
     public static void main(String[] args)
     {
         Gui page = new Gui();
+
+        //ARTIFICIAL GRAPH TO TEST
+        Graph g = new Graph("test", false, false);
+        g.addVertex("A");
+        //g.getVertex("A").setOutside(Color.GRAY);
+        //g.getVertex("A").setInside(Color.RED);
+        g.addVertex("B");
+        g.addVertex("C");
+        g.getVertex("A").addEdge(null, g.getVertex("B"));
+        g.getVertex("B").addEdge(null, g.getVertex("C"));
+        g.getVertex("C").addEdge(null, g.getVertex("A"));
+        //
+
+        Gui.getTabsAndDraw().addTab("test", null, new PanelPaint(),null);
+        Gui.getOpened().add(g);
     }
 }
-
-
-
-/*
- *  System.out.println("New graph made !");
- *      Graph<Integer> g = new Graph<Integer>("Mon graphe", false, false);
- *       graphs.add(g);
- *
- *        Vertex<Integer> a = new Vertex<Integer>("A", 0, 0, new ArrayList<Edge<Integer>>());
- *        Vertex<Integer> b = new Vertex<Integer>("B", 0, 0, new ArrayList<Edge<Integer>>());
- *        Vertex<Integer> c = new Vertex<Integer>("C", 0, 0, new ArrayList<Edge<Integer>>());
- *        Vertex<Integer> d = new Vertex<Integer>("D", 0, 0, new ArrayList<Edge<Integer>>());
- *        g.addVertex(a);
- *        g.addVertex(b);
- *        g.addVertex(c);
- *        g.addVertex(d);
- *
- *        a.addEdge(1, d);
- *
- *        b.addEdge(1,c);
- *        b.addEdge(1,d);
- *
- *        c.addEdge(1,a);
- *        c.addEdge(1,d);
- *
- *      
- *        System.out.println(g.toString());
- */

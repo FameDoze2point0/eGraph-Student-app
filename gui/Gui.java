@@ -417,6 +417,7 @@ public class Gui<T> extends JFrame
                     newGraphPage.dispose();
                 }
             });
+
             submitLab.add(cancelB);
             createB.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
@@ -634,18 +635,6 @@ public class Gui<T> extends JFrame
         bottomJPanel_coord = new JLabel("(X,Y) = 0,0");
         bottomJPanel_coord.setForeground(Color.WHITE);
         bottomJPanel.add(bottomJPanel_coord);
-
-        //RELOAD BUTTON, TEMP
-        JButton reloadbutton = new JButton("RELOAD CURRENT TAB");
-        reloadbutton.addActionListener(new ActionListener ()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tabsAndDraw.getSelectedComponent().paint(tabsAndDraw.getSelectedComponent().getGraphics());
-            }   
-        });
-        bottomJPanel.add(reloadbutton);
-        //END TEMP
 
         bottomJPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK)); //Border
         mainJPanel.add(bottomJPanel);

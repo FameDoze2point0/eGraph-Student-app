@@ -34,8 +34,8 @@ public class Vertex<T> extends Point
         this.edges = edges;
         //By defaults, colors are black and radius is 10 pixels
         outside = Color.BLACK;
-        inside = Color.BLACK;
-        radius = 10;
+        inside = Color.WHITE;
+        radius = 30;
     }
 
     // === Getters and setters ===
@@ -109,5 +109,13 @@ public class Vertex<T> extends Point
         this.radius = radius;
     }
 
-    
+    public void setX(int x)
+    {
+        this.x = x;
+    }
+
+    public void setY(int y)
+    {
+        this.y = y;
+    }
 }
