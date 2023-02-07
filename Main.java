@@ -49,7 +49,11 @@ public class Main
         g.addVertex(v4);
         g.addVertex(v5);
         //
+<<<<<<< Updated upstream
 
+=======
+        System.out.println("GUI");
+>>>>>>> Stashed changes
         Gui.getTabsAndDraw().addTab("test", null, new PanelPaint(),null);
         Gui.getOpened().add(g);
     }
