@@ -4,9 +4,9 @@
  * The <b>vertex</b> class represents vertices (or nodes) which are used in graph theory.
  */
 
-package components;
+package util;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Vertex
 {
@@ -38,7 +38,7 @@ public class Vertex
     }
 
     /**
-     * Method to get the x coordinat
+     * Method to get the x coordinate
      * @return Return the value of the X coordinate
      */
     public int getCoordX() {
