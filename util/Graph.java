@@ -10,7 +10,7 @@ public class Graph {
 
     public Graph(String name, Boolean oriented, Boolean weighted) {
         this.name = name;
-        this.vertices = new ArrayList<>();
+        this.vertices = new ArrayList<Vertex>();
         this.oriented = oriented;
         this.weighted = weighted;
     }
@@ -25,10 +25,6 @@ public class Graph {
 
     public ArrayList<Vertex> getVertices() {
         return vertices;
-    }
-
-    public void setVertices(ArrayList<Vertex> vertices) {
-        this.vertices = vertices;
     }
 
     public Boolean getOriented() {
@@ -47,7 +43,12 @@ public class Graph {
         this.weighted = weighted;
     }
 
-        
-
+    public void addVertex(Vertex v){
+        vertices.add(v);
+    }        
+    public void removeVertex(Vertex v){
+        if (vertices.contains(v))
+            vertices.remove(v);
+    }
 
 }

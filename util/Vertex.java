@@ -104,4 +104,17 @@ public class Vertex
     public void setEdgeList(ArrayList<Edge> edgeList) {
         this.edgeList = edgeList;
     }
+
+    public void addEdge(Edge e){
+        edgeList.add(e);
+    }
+
+    public void addEdge(Vertex v1, Vertex v2, Object weight, int strokeWidth, Color color){
+        edgeList.add(new Edge(v1, v2, weight, strokeWidth, color));
+    }
+
+    public void removeEdge(Edge e){
+        if(edgeList.contains(e))
+            edgeList.remove(e);
+    }
 }
