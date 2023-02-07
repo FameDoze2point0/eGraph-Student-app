@@ -6,9 +6,13 @@
  */
 
 //Graph and automaton
+<<<<<<< Updated upstream
 import components.*;
 //Graphic interface
 import gui.*;
+=======
+import util.*;
+>>>>>>> Stashed changes
 
 //Other
 import java.util.*;
