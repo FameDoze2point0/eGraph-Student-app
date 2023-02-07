@@ -7,6 +7,7 @@
 
 //Graph and automaton
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import components.*;
 //Graphic interface
 import gui.*;
@@ -18,6 +19,9 @@ import util.*;
 import java.util.*;
 import java.lang.Integer;
 import java.awt.Color;
+=======
+import util.*;
+>>>>>>> Stashed changes
 
 public class Main
 {
