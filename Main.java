@@ -23,15 +23,31 @@ public class Main
         Gui page = new Gui();
 
         //ARTIFICIAL GRAPH TO TEST
-        Graph g = new Graph("test", false, false);
-        g.addVertex("A");
-        //g.getVertex("A").setOutside(Color.GRAY);
-        //g.getVertex("A").setInside(Color.RED);
-        g.addVertex("B");
-        g.addVertex("C");
-        g.getVertex("A").addEdge(null, g.getVertex("B"));
-        g.getVertex("B").addEdge(null, g.getVertex("C"));
-        g.getVertex("C").addEdge(null, g.getVertex("A"));
+        Graph<Integer> g = new Graph<Integer>("test", false, false);
+        
+        Vertex<Integer> v1 =  new Vertex<Integer>("1", 50, 50,null);
+        Vertex<Integer> v2 =  new Vertex<Integer>("2", 450, 50,null);
+        Vertex<Integer> v3 =  new Vertex<Integer>("3", 250 , 150,null);
+        Vertex<Integer> v4 =  new Vertex<Integer>("4", 450, 300,null);
+        Vertex<Integer> v5 =  new Vertex<Integer>("5", 50, 300,null);
+        
+
+        v1.addEdge(1, v3);
+
+        v2.addEdge(2, v1);
+
+        v3.addEdge(3, v2);
+        v3.addEdge(3, v4);
+        v3.addEdge(3, v5);
+
+        v4.addEdge(4, v2);
+        v4.addEdge(4, v5);
+
+        g.addVertex(v1);
+        g.addVertex(v2);
+        g.addVertex(v3);
+        g.addVertex(v4);
+        g.addVertex(v5);
         //
 
         Gui.getTabsAndDraw().addTab("test", null, new PanelPaint(),null);

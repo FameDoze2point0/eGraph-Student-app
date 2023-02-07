@@ -31,7 +31,10 @@ public class Vertex<T> extends Point
         super(x,y); //Setting coordinates
         this.id = cpt++;
         this.name = name; //Setting name
-        this.edges = edges;
+        if (edges != null)
+            this.edges = edges;
+        else
+            this.edges = new ArrayList<Edge<T>>();
         //By defaults, colors are black and radius is 10 pixels
         outside = Color.BLACK;
         inside = Color.WHITE;

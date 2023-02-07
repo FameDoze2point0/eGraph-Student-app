@@ -171,18 +171,30 @@ public class Graph<T> implements Serializable
         
         ArrayList<Edge<T>> edgeList = new ArrayList<Edge<T>>();
         ArrayList<String> visitedList = new ArrayList<String>();
-        Edge<T> edgeTemp;
+        Vertex<T> vertexTemp;
+        String rep = "";
 
         visitedList.add(vertex.getName());
         for (Edge<T> edge : vertex.getEdges()) 
             edgeList.add(edge);
 
         while (edgeList.size() != 0) {
-            
-            
 
+            vertexTemp = edgeList.get(0).getArrival();
+            edgeList.remove(0);
+            visitedList.add(vertexTemp.getName());
+            if (!visitedList.contains(vertexTemp.getName())) {
+                
+                for (Edge<T> edge : vertexTemp.getEdges()) {
+                    edgeList.add(edge);
+                }
+            }
+            
         }
-    
+        for (int i = 0; i < visitedList.size(); i++) {
+            rep += visitedList.get(i) + " ";
+        }
+        System.out.println(rep);   
     }
     
     
