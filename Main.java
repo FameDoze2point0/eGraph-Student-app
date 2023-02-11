@@ -4,12 +4,14 @@
  *
  *  Description : this class is used to launch our program
  */
- 
+
+import gui.Gui;
+
 public class Main
 {
     //Main function
     public static void main(String[] args)
     {
-        
+        Gui gui = new Gui();
     }
 }
