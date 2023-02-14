@@ -5,8 +5,8 @@ import java.awt.event.*;
 
 public class Algorithms extends JMenu
 {
-    JMenuItem launch;
-    JMenuItem add;
+    private JMenuItem launch;
+    private JMenuItem add;
 
     public Algorithms()
     {

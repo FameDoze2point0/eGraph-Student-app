@@ -5,10 +5,10 @@ import java.awt.event.*;
 
 public class Other extends JMenu
 {
-    JMenuItem documentation;
-    JMenuItem licence;
-    JMenuItem contacts;
-    JMenuItem about;
+    private JMenuItem documentation;
+    private JMenuItem licence;
+    private JMenuItem contacts;
+    private JMenuItem about;
 
     public Other()
     {

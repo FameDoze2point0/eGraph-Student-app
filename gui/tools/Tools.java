@@ -4,48 +4,52 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
+import gui.Gui;
+import gui.draw.Draw;
+import gui.popups.newElement.NewElement;
+
 public class Tools extends JToolBar
 {
     //New graph/automaton
-    JButton newGraph;
-    JButton newAutomaton;
+    JButton newElement;
 
     //Add elements to a graph/automaton
+    JButton cursor;
     JButton newVertex;
     JButton newEdge;
     JButton addWeight;
 
 
-    public Tools()
+    public Tools(Gui gui, Draw drawArea)
     {
         super("Tools", JToolBar.HORIZONTAL);
 
         //Create Graph
-        newGraph = new JButton("Graph +");
-        newGraph.addActionListener(new ActionListener()
+        newElement = new JButton("New...");
+        newElement.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("new graph !");
-                
+                new NewElement(gui, drawArea);
             }
         });
-        this.add(newGraph);
-
-        //Create automaton
-        newAutomaton = new JButton("Automaton +");
-        newAutomaton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("new automaton !");
-                
-            }
-        });
-        this.add(newAutomaton);
+        this.add(newElement);
 
         //Adding a separator
         this.add(new JToolBar.Separator());
+
+        //Use cursor
+        cursor = new JButton("Cursor");
+        cursor.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Programme enter state 0
+                gui.setState(0);
+                //State 0 cursor
+            }
+        });
+        this.add(cursor);
 
         //New Vertex/State
         newVertex = new JButton("Vertex +");
@@ -53,8 +57,9 @@ public class Tools extends JToolBar
         {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("new vertex !");
-                
+                //Programme enter state 1
+                gui.setState(1);
+                //State 1 cursor
             }
         });
         this.add(newVertex);
@@ -65,33 +70,13 @@ public class Tools extends JToolBar
         {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("new edge !");
-                
+                //Programme enter state 2
+                gui.setState(2);
+                //State 2 cursor
             }
         });
         this.add(newEdge);
     }
-
-
-    public JButton getNewGraph() {
-        return newGraph;
-    }
-
-
-    public void setNewGraph(JButton newGraph) {
-        this.newGraph = newGraph;
-    }
-
-
-    public JButton getNewAutomaton() {
-        return newAutomaton;
-    }
-
-
-    public void setNewAutomaton(JButton newAutomaton) {
-        this.newAutomaton = newAutomaton;
-    }
-
 
     public JButton getNewVertex() {
         return newVertex;
@@ -120,5 +105,13 @@ public class Tools extends JToolBar
 
     public void setAddWeight(JButton addWeight) {
         this.addWeight = addWeight;
+    }
+
+    public JButton getNewElement() {
+        return newElement;
+    }
+
+    public void setNewElement(JButton newElement) {
+        this.newElement = newElement;
     }
 }

@@ -1,22 +1,27 @@
 package gui.menu.components;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
+import gui.Gui;
+import gui.draw.Draw;
+import gui.popups.newElement.NewElement;
+
 import java.awt.event.*;
 
 public class File extends JMenu
 {
-    JMenuItem newFile;
-    JMenuItem openFile;
-    JMenuItem saveAs;
+    private JMenuItem newFile;
+    private JMenuItem openFile;
+    private JMenuItem saveAs;
     
-    JMenu exportFile;
+    private JMenu exportFile;
         //exportFile have 2 sub components
-        JMenuItem exportPDF;
-        JMenuItem exportSVG;
+        private JMenuItem exportPDF;
+        private JMenuItem exportSVG;
 
-    JMenuItem exit;
+    private JMenuItem exit;
 
-    public File()
+    public File(Gui gui, Draw drawArea)
     {
         super("File");
         // - File (New, Open, Save, Export (PDF, SVG), Exit)
@@ -27,7 +32,7 @@ public class File extends JMenu
         {
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("new file popup");
+                new NewElement(gui, drawArea);
             }
         });
         this.add(newFile);

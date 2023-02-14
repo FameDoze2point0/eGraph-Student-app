@@ -1,6 +1,8 @@
 package gui.menu;
 import javax.swing.JMenuBar;
 
+import gui.Gui;
+import gui.draw.Draw;
 import gui.menu.components.Algorithms;
 import gui.menu.components.Edit;
 import gui.menu.components.File;
@@ -9,7 +11,7 @@ import gui.menu.components.Settings;
 
 public class Menu extends JMenuBar
 {
-    public Menu()
+    public Menu(Gui gui, Draw drawArea)
     {
         super(); //Init of the JMenuBar
         /* The menu will have :
@@ -20,7 +22,7 @@ public class Menu extends JMenuBar
          * - Other (Documentation, Licence, Contacts, About)
          */
 
-        this.add(new File());
+        this.add(new File(gui, drawArea));
         this.add(new Edit());
         this.add(new Algorithms());
         this.add(new Settings());

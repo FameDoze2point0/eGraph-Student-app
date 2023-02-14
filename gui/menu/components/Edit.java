@@ -5,11 +5,11 @@ import java.awt.event.*;
 
 public class Edit extends JMenu
 {
-    JMenuItem undo;
-    JMenuItem redo;
-    JMenuItem cut;
-    JMenuItem copy;
-    JMenuItem paste;
+    private JMenuItem undo;
+    private JMenuItem redo;
+    private JMenuItem cut;
+    private JMenuItem copy;
+    private JMenuItem paste;
 
     public Edit()
     {

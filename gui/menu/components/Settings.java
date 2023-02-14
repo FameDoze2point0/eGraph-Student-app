@@ -6,9 +6,9 @@ import java.awt.event.*;
 
 public class Settings extends JMenu
 {
-    JMenuItem shortcuts;
-    JMenuItem defaultGraph;
-    JMenuItem defaultAutomaton;
+    private JMenuItem shortcuts;
+    private JMenuItem defaultGraph;
+    private JMenuItem defaultAutomaton;
 
     public Settings()
     {
