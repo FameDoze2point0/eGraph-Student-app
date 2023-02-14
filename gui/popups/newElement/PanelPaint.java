@@ -4,6 +4,7 @@ import java.awt.event.*;
 import javax.swing.JPanel;
 import gui.Gui;
 import gui.draw.Draw;
+import gui.popups.newElement.rightclickmenu.RightClick;
 import util.Edge;
 import util.Graph;
 import util.Vertex;
@@ -27,6 +28,9 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     private int X;
     private int Y;
 
+    //Menu when we right click
+    RightClick rightClickMenu;
+
 
     public PanelPaint(Gui gui, Draw drawArea)
     {
@@ -38,58 +42,72 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         //MouseListener
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
+
+        //Right click menu
+        rightClickMenu = new RightClick();
+        this.add(rightClickMenu);   
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        switch(gui.getState())
+        //If this is a left click
+        if(e.getButton() == MouseEvent.BUTTON1)
         {
-            case(0): {
-                //Nothing happen in state 0 when the mouse is clicked
-                break;
-            }
+            switch(gui.getState())
+            {
+                case(0): {
+                    //Nothing happen in state 0 when the mouse is clicked
+                    break;
+                }
 
-            case(1): {
-                //In state 1, when the mouse is clicked, we create a new vertex/state
-                //We retrieve the actual graph/automaton
-                Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
-                Vertex vertex = new Vertex(e.getX() - defaultRadius/2, e.getY() - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "A");
-                graph.addVertex(vertex); //We add the new vertex to the graph
-                //We repaint
-                this.repaint();
-                break;
-            }
+                case(1): {
+                    //In state 1, when the mouse is clicked, we create a new vertex/state
+                    //We retrieve the actual graph/automaton
+                    Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
+                    Vertex vertex = new Vertex(e.getX() - defaultRadius/2, e.getY() - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "A");
+                    graph.addVertex(vertex); //We add the new vertex to the graph
+                    //We repaint
+                    this.repaint();
+                    break;
+                }
 
-            case(2): {
-                //In state 2, we want the user to click on 2 differents vertex/state to create an edge
-                //We first look if the user clicked on a vertex
-                Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
-                for(Vertex vertex : graph.getVertices())
-                {
-                    if(((e.getX() - (vertex.getCoordX()+vertex.getRadius()/2))*(e.getX() - (vertex.getCoordX()+vertex.getRadius()/2)) + (e.getY() - (vertex.getCoordY()+vertex.getRadius()/2))*(e.getY() - (vertex.getCoordY()+vertex.getRadius()/2))) <= (vertex.getRadius()/2)*(vertex.getRadius()/2))
+                case(2): {
+                    //In state 2, we want the user to click on 2 differents vertex/state to create an edge
+                    //We first look if the user clicked on a vertex
+                    Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
+                    for(Vertex vertex : graph.getVertices())
                     {
-                        //The user clicked on this vertex
-                        //If the start vertex is != null, then we have both vertex required to draw the edge
-                        if(start == null)
+                        if(((e.getX() - (vertex.getCoordX()+vertex.getRadius()/2))*(e.getX() - (vertex.getCoordX()+vertex.getRadius()/2)) + (e.getY() - (vertex.getCoordY()+vertex.getRadius()/2))*(e.getY() - (vertex.getCoordY()+vertex.getRadius()/2))) <= (vertex.getRadius()/2)*(vertex.getRadius()/2))
                         {
-                            start = vertex;
-                            break;
-                        }
-                        else
-                        {
-                            start.addEdge(new Edge(start, vertex, null, defaultWidth, defaultEdgeColor));
-                            start = null;
-                            this.repaint();
-                            break;
+                            //The user clicked on this vertex
+                            //If the start vertex is != null, then we have both vertex required to draw the edge
+                            if(start == null)
+                            {
+                                start = vertex;
+                                break;
+                            }
+                            else
+                            {
+                                start.addEdge(new Edge(start, vertex, null, defaultWidth, defaultEdgeColor));
+                                start = null;
+                                this.repaint();
+                                break;
+                            }
                         }
                     }
+                    break;
                 }
-                break;
-            }
 
-            default: {
-                break;
+                default: {
+                    break;
+                }
             }
+        }
+
+        //Right click
+        else if(e.getButton() == MouseEvent.BUTTON3)
+        {
+            rightClickMenu.show(drawArea.getSelectedComponent() , e.getX(), e.getY()); 
         }
     }
 
@@ -105,12 +123,12 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        // TODO Auto-generated method stub
+        repaint();
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        // TODO Auto-generated method stub
+        repaint();
     }
 
     public void paint(Graphics graphics)
