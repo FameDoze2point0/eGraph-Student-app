@@ -10,7 +10,8 @@ import java.util.*;
 
 public class Vertex
 {
-    private int coordX, coordY, radius, strokeWidth;
+    private static int cpt = 0;
+    private int id, coordX, coordY, radius, strokeWidth;
     private Color insideColor, borderColor;
     private String name;
     private ArrayList<Edge> edgeList;
@@ -25,8 +26,8 @@ public class Vertex
      * @param borderColor Color of the vertex's outside
      * @param name Name of the vertex that will be displayed
      */
-    public Vertex(int coordX, int coordY, int radius, int strokeWidth, Color insideColor, Color borderColor, String name)
-    {
+    public Vertex(int coordX, int coordY, int radius, int strokeWidth, Color insideColor, Color borderColor, String name){
+        this.id = cpt++;
         this.coordX = coordX;
         this.coordY = coordY;
         this.radius = radius;
@@ -35,12 +36,35 @@ public class Vertex
         this.borderColor = borderColor;
         this.name = name;
         this.edgeList = new ArrayList<Edge>();
+        System.out.println(name + " " + id);
+    }
+
+    public Vertex(String name){
+        this.id = cpt++;
+        this.coordX = 0;
+        this.coordY = 0;
+        this.radius = 5;
+        this.strokeWidth = 5;
+        this.insideColor = Color.black;
+        this.borderColor = Color.black;
+        this.name = name;
+        this.edgeList = new ArrayList<Edge>();
+        System.out.println(name + " " + id);
+
     }
 
     /**
      * Method to get the x coordinate
      * @return Return the value of the X coordinate
      */
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getCoordX() {
         return coordX;
     }
@@ -109,8 +133,8 @@ public class Vertex
         edgeList.add(e);
     }
 
-    public void addEdge(Vertex v1, Vertex v2, Object weight, int strokeWidth, Color color){
-        edgeList.add(new Edge(v1, v2, weight, strokeWidth, color));
+    public void addEdge( Vertex v2, Object weight, int strokeWidth, Color color){
+        edgeList.add(new Edge(this, v2, weight, strokeWidth, color));
     }
 
     public void removeEdge(Edge e){
