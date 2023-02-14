@@ -46,7 +46,6 @@ public class Tools extends JToolBar
             public void actionPerformed(ActionEvent e) {
                 //Programme enter state 0
                 gui.setState(0);
-                //State 0 cursor
             }
         });
         this.add(cursor);
@@ -59,7 +58,6 @@ public class Tools extends JToolBar
             public void actionPerformed(ActionEvent e) {
                 //Programme enter state 1
                 gui.setState(1);
-                //State 1 cursor
             }
         });
         this.add(newVertex);
@@ -72,7 +70,6 @@ public class Tools extends JToolBar
             public void actionPerformed(ActionEvent e) {
                 //Programme enter state 2
                 gui.setState(2);
-                //State 2 cursor
             }
         });
         this.add(newEdge);
