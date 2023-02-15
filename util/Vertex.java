@@ -14,7 +14,6 @@ public class Vertex
     private int id, coordX, coordY, radius, strokeWidth;
     private Color insideColor, borderColor;
     private String name;
-    private ArrayList<Edge> edgeList;
 
     /**
      * Constructor of the vertex class
@@ -35,7 +34,6 @@ public class Vertex
         this.insideColor = insideColor;
         this.borderColor = borderColor;
         this.name = name;
-        this.edgeList = new ArrayList<Edge>();
         System.out.println(name + " " + id);
     }
 
@@ -48,7 +46,6 @@ public class Vertex
         this.insideColor = Color.black;
         this.borderColor = Color.black;
         this.name = name;
-        this.edgeList = new ArrayList<Edge>();
         System.out.println(name + " " + id);
 
     }
@@ -121,24 +118,5 @@ public class Vertex
         this.name = name;
     }
 
-    public ArrayList<Edge> getEdgeList() {
-        return edgeList;
-    }
-
-    public void setEdgeList(ArrayList<Edge> edgeList) {
-        this.edgeList = edgeList;
-    }
-
-    public void addEdge(Edge e){
-        edgeList.add(e);
-    }
-
-    public void addEdge( Vertex v2, Object weight, int strokeWidth, Color color){
-        edgeList.add(new Edge(this, v2, weight, strokeWidth, color));
-    }
-
-    public void removeEdge(Edge e){
-        if(edgeList.contains(e))
-            edgeList.remove(e);
-    }
+    
 }

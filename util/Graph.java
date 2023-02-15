@@ -2,7 +2,7 @@ package util;
 
 import java.util.*;
 
-import javax.swing.border.StrokeBorder;
+import javax.swing.*;
 
 import java.awt.*;
 
@@ -106,6 +106,16 @@ public class Graph {
     }
 
 
+
+
+
+    public ArrayList<Edge> getEdges() {
+        return edges;
+    }
+
+    public void setEdges(ArrayList<Edge> edges) {
+        this.edges = edges;
+    }
 
 
 
@@ -371,9 +381,33 @@ public class Graph {
     }
 
     public void addEdge(Edge e){
-        edges.add(e);
-        if (!oriented)
-            edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), e.getStrokeWidth(), e.getStrokeColor()));
+        
+        Boolean existed = false;
+
+        for (Edge edge : edges) 
+            if (edge.getStart().equals(e.getStart()) && edge.getEnd().equals(e.getEnd())) {
+                existed = true;
+                JDialog jdg = new JDialog();
+                JLabel jl = new JLabel("The edge that you've tried to add already exists");
+                jl.setHorizontalAlignment(SwingConstants.CENTER);
+                jl.setVerticalAlignment(SwingConstants.CENTER);
+                jl.setForeground(Color.red);
+                jl.setFont(new Font("Arial",Font.BOLD,20));
+
+
+                jdg.add(jl);
+                jdg.setSize(500,100);
+                jdg.setModal(true);
+                jdg.setLocationRelativeTo(null);
+                jdg.setVisible(true);
+
+                break;
+            }
+        if (!existed) {
+            edges.add(e);
+            if (!oriented && !e.getStart().equals(e.getEnd()))
+                edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), e.getStrokeWidth(), e.getStrokeColor()));
+        }
     }
 
     public void addEdge(Vertex v1, Vertex v2, Object weight, int strokeWidth, Color color){

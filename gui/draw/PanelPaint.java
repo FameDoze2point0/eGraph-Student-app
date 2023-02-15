@@ -64,7 +64,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                     //In state 1, when the mouse is clicked, we create a new vertex/state
                     //We retrieve the actual graph/automaton
                     Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
-                    Vertex vertex = new Vertex(e.getX() - defaultRadius/2, e.getY() - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "A");
+                    Vertex vertex = new Vertex(e.getX() - defaultRadius/2, e.getY() - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, ""+(graph.getVertices().size()+1));
                     graph.addVertex(vertex); //We add the new vertex to the graph
                     //We repaint
                     this.repaint();
@@ -88,7 +88,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                             }
                             else
                             {
-                                start.addEdge(new Edge(start, vertex, null, defaultWidth, defaultEdgeColor));
+                                graph.addEdge(new Edge(start, vertex, null, defaultWidth, defaultEdgeColor));
                                 start = null;
                                 this.repaint();
                                 break;
@@ -102,6 +102,8 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                     break;
                 }
             }
+            Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
+            System.out.println(graph.toString());
         }
 
         //Right click
@@ -140,7 +142,8 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         //Draw every edges
         for(Vertex vertex : graph.getVertices())
         {
-            for(Edge edge : vertex.getEdgeList())
+            
+            for(Edge edge : graph.getEdges())
             {
                 graphics.setColor(edge.getStrokeColor());
                 ((Graphics2D)graphics).setStroke(new BasicStroke(edge.getStrokeWidth())); //Change stroke
