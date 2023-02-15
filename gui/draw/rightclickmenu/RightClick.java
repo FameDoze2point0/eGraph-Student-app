@@ -1,4 +1,4 @@
-package gui.popups.newElement.rightclickmenu;
+package gui.draw.rightclickmenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 

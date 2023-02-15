@@ -37,19 +37,6 @@ public class Vertex
         System.out.println(name + " " + id);
     }
 
-    public Vertex(String name){
-        this.id = cpt++;
-        this.coordX = 0;
-        this.coordY = 0;
-        this.radius = 5;
-        this.strokeWidth = 5;
-        this.insideColor = Color.black;
-        this.borderColor = Color.black;
-        this.name = name;
-        System.out.println(name + " " + id);
-
-    }
-
     /**
      * Method to get the x coordinate
      * @return Return the value of the X coordinate

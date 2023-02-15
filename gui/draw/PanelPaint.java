@@ -1,10 +1,9 @@
-package gui.popups.newElement;
+package gui.draw;
 import java.awt.Color;
 import java.awt.event.*;
 import javax.swing.JPanel;
 import gui.Gui;
-import gui.draw.Draw;
-import gui.popups.newElement.rightclickmenu.RightClick;
+import gui.draw.rightclickmenu.RightClick;
 import util.Edge;
 import util.Graph;
 import util.Vertex;

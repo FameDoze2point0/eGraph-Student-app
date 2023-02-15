@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
 import gui.Gui;
 import gui.draw.Draw;
 import util.Graph;
+import gui.draw.PanelPaint;
 
 public class NewElement extends JDialog
 {

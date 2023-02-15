@@ -97,4 +97,28 @@ public class Gui extends JFrame
     public void setState(int state) {
         this.state = state;
     }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
+    public Tools getTools() {
+        return tools;
+    }
+
+    public void setTools(Tools tools) {
+        this.tools = tools;
+    }
+
+    public Draw getDraw() {
+        return draw;
+    }
+
+    public void setDraw(Draw draw) {
+        this.draw = draw;
+    }
 }
