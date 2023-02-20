@@ -84,7 +84,10 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             for(Edge edge : graph.getEdges())
             {
                 //We draw the weight at the center of the edge
-                graphics.drawString(edge.getWeight().toString(), (int)((edge.getStart().getCoordX()+edge.getEnd().getCoordX())/2), (int)((edge.getStart().getCoordY()+edge.getEnd().getCoordY())/2)); 
+                if(edge.getWeight() != null)
+                {
+                    graphics.drawString(edge.getWeight().toString(), (int)((edge.getStart().getCoordX()+edge.getEnd().getCoordX())/2), (int)((edge.getStart().getCoordY()+edge.getEnd().getCoordY())/2));
+                }
             }
         }
 
