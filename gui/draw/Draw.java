@@ -16,4 +16,7 @@ public class Draw extends JTabbedPane implements ChangeListener
     public void stateChanged(ChangeEvent e) {
         this.getSelectedComponent().repaint();
     }
+
+    public static void showRightClickMenu() {
+    }
 }

@@ -5,26 +5,21 @@
  *  Description : this class is used to launch our program
  */
 
-//Graph and automaton
-import util.*;
-
-//Other
-import java.util.*;
-
-import javax.swing.JPanel;
-
-import java.lang.Integer;
-import java.awt.Color;
 import gui.Gui;
 import gui.draw.PanelPaint;
+import util.Graph;
+import util.Vertex;
+
+import java.awt.Color;
+
+import javax.swing.JPanel;
 
 public class Main
 {
     //Main function
     public static void main(String[] args)
-    {        
+    {
         Gui gui = new Gui();
-
 
         //TEMP
         int defaultWidth = 5; //For edges
@@ -35,13 +30,13 @@ public class Main
 
         Graph g = new Graph("Test", false, true);
 
-        Vertex v0 = new Vertex(100 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, ""+(g.getVertices().size()+1));
-        Vertex v1 = new Vertex(300 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, ""+(g.getVertices().size()+1));
-        Vertex v2 = new Vertex(100 - defaultRadius/2, 300 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, ""+(g.getVertices().size()+1));
-        Vertex v3 = new Vertex(100 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, ""+(g.getVertices().size()+1));
-        Vertex v4 = new Vertex(300 - defaultRadius/2, 200 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, ""+(g.getVertices().size()+1));
-        Vertex v5 = new Vertex(450 - defaultRadius/2, 300 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, ""+(g.getVertices().size()+1));
-        Vertex v6 = new Vertex(450 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, ""+(g.getVertices().size()+1));
+        Vertex v0 = new Vertex(100 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "0");
+        Vertex v1 = new Vertex(300 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "1");
+        Vertex v2 = new Vertex(100 - defaultRadius/2, 300 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "2");
+        Vertex v3 = new Vertex(100 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "3");
+        Vertex v4 = new Vertex(300 - defaultRadius/2, 200 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "4");
+        Vertex v5 = new Vertex(450 - defaultRadius/2, 300 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "5");
+        Vertex v6 = new Vertex(450 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "6");
 
         
         g.addVertex(v0);
