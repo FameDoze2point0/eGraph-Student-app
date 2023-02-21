@@ -72,7 +72,16 @@ public class RightClick extends JPopupMenu
                 else if(panel.getRightClickedOnElement() instanceof Edge)
                 {
                     //We remove the edge
-                    graph.removeEdge((Edge)panel.getRightClickedOnElement());
+                    Edge edgeTemp = (Edge)panel.getRightClickedOnElement();
+                    if (!graph.getOriented()) {
+                        for (Edge edge : graph.getEdges()) {
+                            if (edge.getEnd().equals(edgeTemp.getStart()) && edge.getStart().equals(edgeTemp.getEnd())) {
+                                graph.removeEdge(edge);
+                                break;
+                            }
+                        }
+                    }
+                    graph.removeEdge(edgeTemp);
                 }
 
                 //No more "right click element"

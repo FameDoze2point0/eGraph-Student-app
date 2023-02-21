@@ -69,29 +69,25 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
 
         // === WE FIRST DRAW THE GRAPH / AUTOMATON ===
-
-        //Draw every edges
+        //We draw every edges
         for(Edge edge : graph.getEdges())
         {
             graphics.setColor(edge.getStrokeColor());
             ((Graphics2D)graphics).setStroke(new BasicStroke(edge.getStrokeWidth())); //Change stroke
-            graphics.drawLine((edge.getStart().getCoordX()+edge.getStart().getRadius()/2), edge.getStart().getCoordY()+edge.getStart().getRadius()/2, edge.getEnd().getCoordX()+edge.getStart().getRadius()/2, edge.getEnd().getCoordY()+edge.getStart().getRadius()/2);
-        }
 
-        //If the graph is weighted, we then draw every weight (after we have drawn every edge)
-        if(graph.getWeighted())
-        {
-            for(Edge edge : graph.getEdges())
+            //Case where the starting and ending point is the same
+            if(edge.getStart().equals(edge.getEnd()) == false)
             {
-                //We draw the weight at the center of the edge
-                if(edge.getWeight() != null)
+                graphics.drawLine((int)(edge.getEdgePoints(edge).get(0).getX()), (int)(edge.getEdgePoints(edge).get(0).getY()), (int)(edge.getEdgePoints(edge).get(1).getX()), (int)(edge.getEdgePoints(edge).get(1).getY()));
+                if(graph.getOriented()) //If the graph is oriented, we also have to draw an arrow displaying the arrival vertex
                 {
-                    graphics.drawString(edge.getWeight().toString(), (int)((edge.getStart().getCoordX()+edge.getEnd().getCoordX())/2), (int)((edge.getStart().getCoordY()+edge.getEnd().getCoordY())/2));
+                    graphics.drawLine((int)(edge.getArrow(edge, 15).get(0).getX()),(int)(edge.getArrow(edge, 15).get(0).getY()), (int)(edge.getArrow(edge, 15).get(1).getX()), (int)(edge.getArrow(edge, 15).get(1).getY()));
+                    graphics.drawLine((int)(edge.getArrow(edge, 15).get(0).getX()),(int)(edge.getArrow(edge, 15).get(0).getY()), (int)(edge.getArrow(edge, 15).get(2).getX()), (int)(edge.getArrow(edge, 15).get(2).getY()));
                 }
             }
         }
 
-        //We then draw every vertex
+        //We draw every vertex
         for(Vertex vertex : graph.getVertices())
         {
             //Borders
@@ -105,6 +101,19 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             //We draw vertex name on top of the vertex (color of border)
             graphics.setColor(vertex.getBorderColor());
             graphics.drawString(vertex.getName(), (int)(vertex.getCoordX()+vertex.getRadius()/2.7), (int)(vertex.getCoordY()+vertex.getRadius()/1.5));
+        }
+
+        //If the graph is weighted, we then draw every weight (after we have drawn every edge)
+        if(graph.getWeighted())
+        {
+            for(Edge edge : graph.getEdges())
+            {
+                //We draw the weight at the center of the edge
+                if(edge.getWeight() != null)
+                {
+                    graphics.drawString(edge.getWeight().toString(), (int)((edge.getStart().getCoordX()+edge.getEnd().getCoordX())/2), (int)((edge.getStart().getCoordY()+edge.getEnd().getCoordY())/2));
+                }
+            }
         }
 
 
@@ -132,10 +141,19 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         //We look in a rectangular pattern
         if((edge = this.edgeCollision(graph,X,Y)) != null && vertex == null)   //Y Coord
         {
-            //We highlight the edge
-            graphics.setColor(Color.RED);
-            ((Graphics2D)graphics).setStroke(new BasicStroke(edge.getStrokeWidth())); //Change stroke
-            graphics.drawLine(edge.getStart().getCoordX()+edge.getStart().getRadius()/2, edge.getStart().getCoordY()+edge.getStart().getRadius()/2, edge.getEnd().getCoordX()+edge.getStart().getRadius()/2, edge.getEnd().getCoordY()+edge.getStart().getRadius()/2);
+            graphics.setColor(edge.getStart().getInsideColor());
+            ((Graphics2D)graphics).setStroke(new BasicStroke(edge.getStrokeWidth()/edge.getStart().getStrokeWidth())); //Change stroke
+
+            //Case where the starting and ending point is the same
+            if(edge.getStart().equals(edge.getEnd()) == false)
+            {
+                graphics.drawLine((int)(edge.getEdgePoints(edge).get(0).getX()), (int)(edge.getEdgePoints(edge).get(0).getY()), (int)(edge.getEdgePoints(edge).get(1).getX()), (int)(edge.getEdgePoints(edge).get(1).getY()));
+                if(graph.getOriented()) //If the graph is oriented, we also have to draw an arrow displaying the arrival vertex
+                {
+                    graphics.drawLine((int)(edge.getArrow(edge, 15).get(0).getX()),(int)(edge.getArrow(edge, 15).get(0).getY()), (int)(edge.getArrow(edge, 15).get(1).getX()), (int)(edge.getArrow(edge, 15).get(1).getY()));
+                    graphics.drawLine((int)(edge.getArrow(edge, 15).get(0).getX()),(int)(edge.getArrow(edge, 15).get(0).getY()), (int)(edge.getArrow(edge, 15).get(2).getX()), (int)(edge.getArrow(edge, 15).get(2).getY()));
+                }
+            }
         }
 
 
