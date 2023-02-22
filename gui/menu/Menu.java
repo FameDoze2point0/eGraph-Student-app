@@ -24,7 +24,7 @@ public class Menu extends JMenuBar
 
         this.add(new File(gui, drawArea));
         this.add(new Edit());
-        this.add(new Algorithms());
+        this.add(new Algorithms(gui, drawArea));
         this.add(new Settings());
         this.add(new Other());
     }

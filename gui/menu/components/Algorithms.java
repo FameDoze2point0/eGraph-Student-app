@@ -3,12 +3,16 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.*;
 
+import gui.Gui;
+import gui.draw.Draw;
+import gui.popups.algorithms.algorithmsPage;;
+
 public class Algorithms extends JMenu
 {
     private JMenuItem launch;
     private JMenuItem add;
 
-    public Algorithms()
+    public Algorithms(Gui gui, Draw drawArea)
     {
         super("Algorithms");
         // - Algorithms (Launch, Add)
@@ -19,7 +23,7 @@ public class Algorithms extends JMenu
         {
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("launch algo");
+                new algorithmsPage(gui, drawArea);
             }
         });
         this.add(launch);
