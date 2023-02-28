@@ -7,7 +7,6 @@ import gui.Gui;
 import gui.draw.Draw;
 import util.*;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
@@ -155,7 +154,8 @@ public class algorithmsPage extends JDialog{
                         v2 = vertex;
                     
                 }
-
+                //fermer la page
+                dispose();
                 String s = (String)algoList.getSelectedItem();
                 switch (s) {
                     case "BFS": //BFS
@@ -206,6 +206,10 @@ public class algorithmsPage extends JDialog{
                         break;
                 }
 
+            
+            
+            
+            
             }
         };
 

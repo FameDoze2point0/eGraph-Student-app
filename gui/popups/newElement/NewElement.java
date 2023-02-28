@@ -176,12 +176,13 @@ public class NewElement extends JDialog
         //We first read if its an automaton or a graph
         if(graphButton.isSelected())
         {
-            //Creating a new Graph
-            //Each graph is associated with a tabulation
-            Graph graph = new Graph(nameTextArea.getText(), isOriented.isSelected(), isWeighted.isSelected());
+            
             //Creating the tabulation
             PanelPaint panelPaint = new PanelPaint(gui, drawArea);
             drawArea.addTab(nameTextArea.getText(), null, panelPaint, nameTextArea.getText()); //We create the new tab and retrieve it
+            //Creating a new Graph
+            //Each graph is associated with a tabulation
+            Graph graph = new Graph(nameTextArea.getText(), isOriented.isSelected(), isWeighted.isSelected(), panelPaint);
             //We then add these two components to the list of opened tabulations
             gui.getTabulations().put(panelPaint,graph);
 

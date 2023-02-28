@@ -1,6 +1,9 @@
 package gui.menu.components;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
+
+import java.awt.Event;
 import java.awt.event.*;
 
 import gui.Gui;
@@ -26,6 +29,8 @@ public class Algorithms extends JMenu
                 new algorithmsPage(gui, drawArea);
             }
         });
+        launch.setMnemonic(KeyEvent.VK_A);
+        launch.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK));
         this.add(launch);
 
         //Add

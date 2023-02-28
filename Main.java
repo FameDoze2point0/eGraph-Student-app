@@ -13,14 +13,12 @@ import util.Vertex;
 import java.awt.Color;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class Main
 {
-    //Main function
-    public static void main(String[] args)
-    {
-        Gui gui = new Gui();
 
+    private static void init(Gui gui){
         //TEMP
         int defaultWidth = 5; //For edges
         int defaultRadius = 30; //For vertexs
@@ -28,7 +26,10 @@ public class Main
         Color defaultInside = Color.WHITE;
         Color defaultEdgeColor = Color.BLACK;
 
-        Graph g = new Graph("Test", false, true);
+        PanelPaint pp = new PanelPaint(gui, gui.getDraw());
+        gui.getDraw().addTab("temp_graph", null, pp, "temporary graph");
+
+        Graph g = new Graph("Test", false, true, pp);
 
         Vertex v0 = new Vertex(200 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "0");
         Vertex v1 = new Vertex(400 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "1");
@@ -76,7 +77,7 @@ public class Main
         //g.algo_RS(v0);
 
         //On ajoute le graph g temporairement
-        gui.getDraw().addTab("temp_graph", null, new PanelPaint(gui, gui.getDraw()), "temporary graph");
+        
         gui.getTabulations().put((JPanel) gui.getDraw().getSelectedComponent(),g);
 
         try {
@@ -99,6 +100,21 @@ public class Main
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+    //Main function
+    public static void main(String[] args)
+    {
+        
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Gui gui = new Gui();
+                init(gui);
+            }
+        });
+        
+
+        
         
 
     }

@@ -99,7 +99,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             graphics.fillOval(vertex.getCoordX()+((int)(vertex.getRadius()*0.2)/2), vertex.getCoordY()+((int)(vertex.getRadius()*0.2)/2), (int)(vertex.getRadius()*0.8), (int)(vertex.getRadius()*0.8));
 
             //We draw vertex name on top of the vertex (color of border)
-            graphics.setColor(vertex.getBorderColor());
+            graphics.setColor(Color.BLACK);
             graphics.drawString(vertex.getName(), (int)(vertex.getCoordX()+vertex.getRadius()/2.7), (int)(vertex.getCoordY()+vertex.getRadius()/1.5));
         }
 

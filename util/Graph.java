@@ -1,8 +1,11 @@
 package util;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
+
+import gui.draw.PanelPaint;
 
 import java.awt.*;
 
@@ -12,43 +15,137 @@ public class Graph {
     private ArrayList<Vertex> vertices;
     private ArrayList<Edge> edges;
     private Boolean oriented, weighted;
+    private PanelPaint panelPaint;
 
-    public Graph(String name, Boolean oriented, Boolean weighted) {
+    private Test test;
+
+
+
+    public Graph(String name, Boolean oriented, Boolean weighted, PanelPaint panelPaint) {
         this.name = name;
         this.vertices = new ArrayList<Vertex>();
         this.oriented = oriented;
         this.weighted = weighted;
         this.edges = new ArrayList<Edge>();
+        this.panelPaint = panelPaint;
     }
 
 
+    private class Test extends Thread{
+        Graph graph;
+        Vertex start;
+
+        Color vertexDefaultColor;
+
+        Test(Graph g, Vertex start){
+            graph = g;
+            this.start = start;
+            vertexDefaultColor = g.getVertices().get(0).getBorderColor();
+        }
+
+        private void reset(){
+            for (Vertex vertex : graph.getVertices()) {
+                vertex.setBorderColor(vertexDefaultColor);
+            }
+        }
+
+        @Override
+        public void run() {
+            ArrayList<Vertex> visited = new ArrayList<Vertex>();
+        ArrayList<Vertex> list = new ArrayList<Vertex>();
+            String rep = "answer";
+
+            list.add(start);
+            visited.add(start);
+
+            while (!list.isEmpty()) {
+                Vertex vertex = list.get(0);
+                list.remove(0);
+                rep += " > " + vertex.getName();
+                for (Edge edge : edges) {
+                    if (vertex.equals(edge.getStart()) && !list.contains(edge.getEnd()) && !visited.contains(edge.getEnd())){
+                        list.add(edge.getEnd());
+                        edge.getEnd().setBorderColor(Color.orange);
+                    } 
+                        
+                }
+                visited.add(vertex);
+                vertex.setBorderColor(Color.red);
+                try {
+
+                    Thread.sleep(3000);
+                    panelPaint.repaint();
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                System.out.println("ahahah" + Thread.currentThread());
+            }
+            //start.setBorderColor(Color.magenta);
+            System.out.println(rep);
+            
+            try {
+                Thread.sleep(5000);
+                reset();
+                panelPaint.repaint();
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+            //return visited;
+        }
+    }
+
 
     // Algorithm Part
-    //Breadth-first search / Parcours largeur
+    // Breadth-first search / Parcours largeur
     public ArrayList<Vertex> algo_BFS(Vertex start){
 
-        ArrayList<Vertex> visited = new ArrayList<Vertex>();
-        ArrayList<Vertex> list = new ArrayList<Vertex>();
-        Vertex vertex;
-        String rep = "answer";
+        test = new Test(this, start);
+        test.start();
 
-        list.add(start);
-        visited.add(start);
+        return null;
+        // ArrayList<Vertex> visited = new ArrayList<Vertex>();
+        // ArrayList<Vertex> list = new ArrayList<Vertex>();
+        // String rep = "answer";
 
-        while (!list.isEmpty()) {
-            vertex = list.get(0);
-            list.remove(0);
-            rep += " > " + vertex.getName();
-            for (Edge edge : edges) {
-                if (vertex.equals(edge.getStart()) && !list.contains(edge.getEnd()) && !visited.contains(edge.getEnd())) 
-                    list.add(edge.getEnd());
-            }
-            visited.add(vertex);
-        }
-        
-        System.out.println(rep);
-        
-        return visited;
+        // list.add(start);
+        // visited.add(start);
+
+        // while (!list.isEmpty()) {
+        //     Vertex vertex = list.get(0);
+        //     list.remove(0);
+        //     rep += " > " + vertex.getName();
+        //     for (Edge edge : edges) {
+        //         if (vertex.equals(edge.getStart()) && !list.contains(edge.getEnd()) && !visited.contains(edge.getEnd())){
+        //             list.add(edge.getEnd());
+
+        //             SwingUtilities.invokeLater(new Runnable() {
+        //                 @Override
+        //                 public void run() {
+        //                     // TODO Auto-generated method stub
+        //                     edge.getEnd().setBorderColor(Color.orange);
+        //                 }
+        //             });
+        //         } 
+                    
+        //     }
+        //     visited.add(vertex);
+        //     SwingUtilities.invokeLater(new Runnable() {
+        //         @Override
+        //         public void run() {
+        //             // TODO Auto-generated method stub
+        //             vertex.setBorderColor(Color.red);
+        //             try {
+        //                 System.out.println(Thread.currentThread());
+        //             } catch (Exception e) {
+        //                 // TODO: handle exception
+        //             }
+        //         }
+        //     });
+        // }
+        // //start.setBorderColor(Color.magenta);
+        // System.out.println(rep);
+        // //resetColor();
+        // return visited;
     }
 
     //Deep-first search / Parcours profondeur
@@ -214,7 +311,7 @@ public class Graph {
 
         int n = vertices.size();
         int [][] M = new int [n][n];
-        Graph g = new Graph("Floyd-Warshall", oriented, weighted);
+        Graph g = new Graph("Floyd-Warshall", oriented, weighted, null);
         for (Vertex vertex : vertices)
             g.addVertex(vertex);
         
@@ -271,7 +368,7 @@ public class Graph {
         if (oriented || !weighted)
             throw new Exception("The graph has to be not oriented and weighted to launch Prim's Algorithm !");
 
-        Graph ACPM = new Graph("ACPM", oriented, weighted);
+        Graph ACPM = new Graph("ACPM", oriented, weighted, null);
         ArrayList<Vertex> set = new ArrayList<Vertex>();
         ArrayList<Triplet> inter = new ArrayList<Triplet>();
         int id = 0, max;
@@ -314,7 +411,7 @@ public class Graph {
 
     public void algo_Kruskal(){
 
-        Graph ACPM = new Graph("ACPM", oriented, weighted);
+        Graph ACPM = new Graph("ACPM", oriented, weighted, null);
         for (Vertex vertex : vertices) 
             ACPM.addVertex(vertex);
         ArrayList<Triplet> L = new ArrayList<Triplet>();
