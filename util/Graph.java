@@ -1,7 +1,6 @@
 package util;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 
@@ -17,7 +16,6 @@ public class Graph {
     private Boolean oriented, weighted;
     private PanelPaint panelPaint;
 
-    private Test test;
 
 
 
@@ -29,80 +27,14 @@ public class Graph {
         this.edges = new ArrayList<Edge>();
         this.panelPaint = panelPaint;
     }
-
-
-    private class Test extends Thread{
-        Graph graph;
-        Vertex start;
-
-        Color vertexDefaultColor;
-
-        Test(Graph g, Vertex start){
-            graph = g;
-            this.start = start;
-            vertexDefaultColor = g.getVertices().get(0).getBorderColor();
-        }
-
-        private void reset(){
-            for (Vertex vertex : graph.getVertices()) {
-                vertex.setBorderColor(vertexDefaultColor);
-            }
-        }
-
-        @Override
-        public void run() {
-            ArrayList<Vertex> visited = new ArrayList<Vertex>();
-        ArrayList<Vertex> list = new ArrayList<Vertex>();
-            String rep = "answer";
-
-            list.add(start);
-            visited.add(start);
-
-            while (!list.isEmpty()) {
-                Vertex vertex = list.get(0);
-                list.remove(0);
-                rep += " > " + vertex.getName();
-                for (Edge edge : edges) {
-                    if (vertex.equals(edge.getStart()) && !list.contains(edge.getEnd()) && !visited.contains(edge.getEnd())){
-                        list.add(edge.getEnd());
-                        edge.getEnd().setBorderColor(Color.orange);
-                    } 
-                        
-                }
-                visited.add(vertex);
-                vertex.setBorderColor(Color.red);
-                try {
-
-                    Thread.sleep(3000);
-                    panelPaint.repaint();
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
-                System.out.println("ahahah" + Thread.currentThread());
-            }
-            //start.setBorderColor(Color.magenta);
-            System.out.println(rep);
-            
-            try {
-                Thread.sleep(5000);
-                reset();
-                panelPaint.repaint();
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-            //return visited;
-        }
-    }
-
-
-    // Algorithm Part
+    
+    //DFS
+    {
+// Algorithm Part
     // Breadth-first search / Parcours largeur
-    public ArrayList<Vertex> algo_BFS(Vertex start){
+    // public ArrayList<Vertex> algo_BFS(Vertex start){
 
-        test = new Test(this, start);
-        test.start();
-
-        return null;
+        
         // ArrayList<Vertex> visited = new ArrayList<Vertex>();
         // ArrayList<Vertex> list = new ArrayList<Vertex>();
         // String rep = "answer";
@@ -146,61 +78,12 @@ public class Graph {
         // System.out.println(rep);
         // //resetColor();
         // return visited;
+    //}
+
     }
+    
 
-    //Deep-first search / Parcours profondeur
-    public ArrayList<Vertex> algo_DFS(Vertex start){
-
-        ArrayList<Vertex> visited = new ArrayList<Vertex>();
-        ArrayList<Vertex> list = new ArrayList<Vertex>();
-        Vertex vertex;
-        String rep = "answer";
-
-        list.add(start);
-
-        while (!list.isEmpty()) {
-            vertex = list.get(0);
-            list.remove(0);
-            if (!visited.contains(vertex)) {
-                    rep += " > " + vertex.getName();
-                for (Edge edge : edges) {
-                    if (vertex.equals(edge.getStart()) && !visited.contains(edge.getEnd())) 
-                        list.add(0,edge.getEnd());   
-                }
-                visited.add(vertex);    
-            }
-        }
-        System.out.println(rep);
-        
-        return visited;
-    }
-
-    //Random Search / Parcours quelconque
-    public ArrayList<Vertex> algo_RS(Vertex start){
-
-        ArrayList<Vertex> visited = new ArrayList<Vertex>();
-        ArrayList<Vertex> list = new ArrayList<Vertex>();
-        Vertex vertex;
-        String rep = "answer";
-
-        list.add(start);
-        visited.add(start);
-
-        while (!list.isEmpty()) {
-            int i = (int)(Math.random()*list.size());
-            vertex = list.get(i);
-            list.remove(i);
-            rep += " > " + vertex.getName();
-            for (Edge edge : edges) {
-                if ( vertex.equals(edge.getStart())&& !list.contains(edge.getEnd()) && !visited.contains(edge.getEnd())) 
-                    list.add(edge.getEnd());
-            }
-            visited.add(vertex);
-        }
-        System.out.println(rep);
-        
-        return visited;
-    }
+  
 
 
 
@@ -403,37 +286,37 @@ public class Graph {
         System.out.println("Minimum Spanning Tree with Prim : \n" + ACPM.toString());
     }
 
-    public Boolean isInCc(Vertex a, Graph g, Vertex b){
-        ArrayList<Vertex> visited =  g.algo_DFS(a);
+    // public Boolean isInCc(Vertex a, Graph g, Vertex b){
+    //     ArrayList<Vertex> visited =  g.algo_DFS(a);
         
-        return (visited.contains(b)?true:false);
-    }
+    //     return (visited.contains(b)?true:false);
+    // }
 
-    public void algo_Kruskal(){
+    // public void algo_Kruskal(){
 
-        Graph ACPM = new Graph("ACPM", oriented, weighted, null);
-        for (Vertex vertex : vertices) 
-            ACPM.addVertex(vertex);
-        ArrayList<Triplet> L = new ArrayList<Triplet>();
+    //     Graph ACPM = new Graph("ACPM", oriented, weighted, null);
+    //     for (Vertex vertex : vertices) 
+    //         ACPM.addVertex(vertex);
+    //     ArrayList<Triplet> L = new ArrayList<Triplet>();
 
-        for (Vertex vertex : vertices) {
-            for (Edge edge : getNeighbours(vertex)) {
-                L.add(new Triplet(null, edge, (int)edge.getWeight()));
-            }
-        }
-        Collections.sort(L);
+    //     for (Vertex vertex : vertices) {
+    //         for (Edge edge : getNeighbours(vertex)) {
+    //             L.add(new Triplet(null, edge, (int)edge.getWeight()));
+    //         }
+    //     }
+    //     Collections.sort(L);
 
 
-        while (!L.isEmpty()) {
-            Triplet temp = L.get(0);
-            L.remove(0);
-            if (!isInCc(temp.edge.getStart(), ACPM, temp.edge.getEnd())) {
-                ACPM.addEdge(temp.edge);
-            }
-        }
+    //     while (!L.isEmpty()) {
+    //         Triplet temp = L.get(0);
+    //         L.remove(0);
+    //         if (!isInCc(temp.edge.getStart(), ACPM, temp.edge.getEnd())) {
+    //             ACPM.addEdge(temp.edge);
+    //         }
+    //     }
 
-        System.out.println(ACPM.toString());
-    }
+    //     System.out.println(ACPM.toString());
+    // }
 
 
 
@@ -516,6 +399,14 @@ public class Graph {
     public void removeEdge(Edge e){
         if(edges.contains(e))
             edges.remove(e);
+    }
+
+    public PanelPaint getPanelPaint() {
+        return panelPaint;
+    }
+
+    public void setPanelPaint(PanelPaint panelPaint) {
+        this.panelPaint = panelPaint;
     }
 
     @Override

@@ -6,6 +6,9 @@ import java.awt.*;
 import gui.Gui;
 import gui.draw.Draw;
 import util.*;
+import util.algorithm.BFS;
+import util.algorithm.DFS;
+import util.algorithm.RS;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -159,15 +162,19 @@ public class algorithmsPage extends JDialog{
                 String s = (String)algoList.getSelectedItem();
                 switch (s) {
                     case "BFS": //BFS
-                        graph.algo_BFS(v1);
+                        BFS algoBFS = new BFS(graph, v1);
+                        algoBFS.start();
+                        //graph.algo_BFS(v1);
                         break;
 
                     case "DFS": //DFS
-                        graph.algo_DFS(v1);
+                        DFS algoDFS = new DFS(graph, v1);
+                        algoDFS.start();;
                         break;
                 
                     case "RS": //RS
-                        graph.algo_RS(v1);
+                        RS algoRS = new RS(graph, v1);
+                        algoRS.start();
                         break;
 
                     case "Dijkstra": //Dijkstra
@@ -199,7 +206,7 @@ public class algorithmsPage extends JDialog{
                         break;
                     
                     case "Kruskal": // Kruskal
-                        graph.algo_Kruskal();
+                        //graph.algo_Kruskal();
                         break;
 
                     default:

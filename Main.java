@@ -22,13 +22,15 @@ public class Main
         Gui gui = new Gui();
 
         //TEMP
-        // int defaultWidth = 5; //For edges
-        // int defaultRadius = 30; //For vertexs
-        // Color defaultBorder = Color.BLACK;
-        // Color defaultInside = Color.WHITE;
-        // Color defaultEdgeColor = Color.BLACK;
+        int defaultWidth = 5; //For edges
+        int defaultRadius = 30; //For vertexs
+        Color defaultBorder = Color.BLACK;
+        Color defaultInside = Color.WHITE;
+        Color defaultEdgeColor = Color.BLACK;
 
-        // Graph g = new Graph("Test", false, true);
+        // PanelPaint pp = new PanelPaint(gui, gui.getDraw());
+        // gui.getDraw().addTab("temp_graph", null, pp, "temporary graph");
+        // Graph g = new Graph("Test", true, true, pp);
 
         // Vertex v0 = new Vertex(200 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "0");
         // Vertex v1 = new Vertex(400 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "1");
@@ -76,7 +78,7 @@ public class Main
         // //g.algo_RS(v0);
 
         // //On ajoute le graph g temporairement
-        // gui.getDraw().addTab("temp_graph", null, new PanelPaint(gui, gui.getDraw()), "temporary graph");
+        
         // gui.getTabulations().put((JPanel) gui.getDraw().getSelectedComponent(),g);
 
         // try {
