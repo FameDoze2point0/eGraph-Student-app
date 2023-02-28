@@ -23,9 +23,6 @@ public class Gui extends JFrame
     //Each tabulation is associated with an object
     private HashMap<JPanel,Graph> tabulations;
 
-    //Each edge have an associated Path2D (to detect collision)
-    private HashMap<Edge,Path2D.Float> edgeLine;
-
     //Components of the gui
     private Menu menu;
     private Tools tools;
@@ -70,8 +67,6 @@ public class Gui extends JFrame
         //Initiating the list of tabulations
         tabulations = new HashMap<JPanel,Graph>();
 
-        //Initiating the edge collision hashmap
-        edgeLine = new HashMap<Edge,Path2D.Float>();
     }
 
     public int getWidth() {
@@ -128,13 +123,5 @@ public class Gui extends JFrame
 
     public void setDraw(Draw draw) {
         this.draw = draw;
-    }
-
-    public HashMap<Edge, Path2D.Float> getEdgeLine() {
-        return edgeLine;
-    }
-
-    public void setEdgeLine(HashMap<Edge, Path2D.Float> edgeLine) {
-        this.edgeLine = edgeLine;
     }
 }

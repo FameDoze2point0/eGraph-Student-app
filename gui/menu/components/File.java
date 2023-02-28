@@ -73,7 +73,7 @@ public class File extends JMenu
             exportFile.add(exportPDF);
 
             //As SVG
-            exportSVG = new JMenuItem("New...");
+            exportSVG = new JMenuItem("SVG...");
             exportSVG.addActionListener(new ActionListener()
             {
                 public void actionPerformed(ActionEvent e)

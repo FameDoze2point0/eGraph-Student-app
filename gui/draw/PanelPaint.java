@@ -1,28 +1,18 @@
 package gui.draw;
-import java.awt.Color;
 import java.awt.event.*;
 import javax.swing.JPanel;
 import gui.Gui;
-import gui.draw.Draw;
 import gui.draw.rightclickmenu.RightClick;
 import util.Edge;
 import util.Graph;
 import util.Vertex;
 import java.awt.*;
-import java.util.ArrayList;
-import java.awt.geom.*;
+import java.util.*;
 
 public class PanelPaint extends JPanel implements MouseListener, MouseMotionListener
 {
     private Gui gui;
     private Draw drawArea;
-
-    //Settings, might be implemented later
-    private int defaultWidth = 5; //For edges
-    private int defaultRadius = 30; //For vertexs
-    private Color defaultBorder = Color.BLACK;
-    private Color defaultInside = Color.WHITE;
-    private Color defaultEdgeColor = Color.BLACK;
 
     //When we add an edge, if the starting point is already selected
     private Vertex start = null; //If not selected = null
@@ -68,113 +58,73 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     {
         super.paint(graphics); //Refresh the JPanel with blank space
         Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
-
-        // === WE FIRST DRAW THE GRAPH / AUTOMATON ===
-        //We draw every edges
-        for(Edge edge : graph.getEdges())
-        {
-            graphics.setColor(edge.getStrokeColor());
-            ((Graphics2D)graphics).setStroke(new BasicStroke(edge.getStrokeWidth())); //Change stroke
-
-            //Case where the starting and ending point is the same
-            if(edge.getStart().equals(edge.getEnd()) == false)
-            {
-
-                //((Graphics2D)graphics).draw(gui.getEdgeLine().get(edge));
-                graphics.drawLine((int)(edge.getEdgePoints(edge).get(0).getX()), (int)(edge.getEdgePoints(edge).get(0).getY()), (int)(edge.getEdgePoints(edge).get(1).getX()), (int)(edge.getEdgePoints(edge).get(1).getY()));
-                if(graph.getOriented()) //If the graph is oriented, we also have to draw an arrow displaying the arrival vertex
-                {
-                    graphics.drawLine((int)(edge.getArrow(edge, 15).get(0).getX()),(int)(edge.getArrow(edge, 15).get(0).getY()), (int)(edge.getArrow(edge, 15).get(1).getX()), (int)(edge.getArrow(edge, 15).get(1).getY()));
-                    graphics.drawLine((int)(edge.getArrow(edge, 15).get(0).getX()),(int)(edge.getArrow(edge, 15).get(0).getY()), (int)(edge.getArrow(edge, 15).get(2).getX()), (int)(edge.getArrow(edge, 15).get(2).getY()));
-                }
+        if (graph != null) {
+            Object var = vertexCollision(graph, X, Y);
+            if (var == null) {
+                var = edgeCollision(graph, X, Y);
             }
+            graph.paint(graphics, var);    
         }
 
-        //We draw every vertex
-        for(Vertex vertex : graph.getVertices())
+        //save
         {
-            //Borders
-            graphics.setColor(vertex.getBorderColor());
-            graphics.fillOval(vertex.getCoordX(), vertex.getCoordY(), vertex.getRadius(), vertex.getRadius());
+            // // === IF THE CURSOR IS ON TOP OF A VERTEX/EGDE, WE HIGHLIGHT THE EDGE/VERTEX ===
+        // Vertex vertex;
+        // if((vertex = this.vertexCollision(graph,X,Y)) != null)
+        // {
+        //     //We highlight this vertex
+        //     //Borders
+        //     graphics.setColor(vertex.getBorderColor());
+        //     graphics.fillOval(vertex.getCoordX(), vertex.getCoordY(), vertex.getDiameter(), vertex.getDiameter());
 
-            //Inside
-            graphics.setColor(vertex.getInsideColor());
-            graphics.fillOval(vertex.getCoordX()+((int)(vertex.getRadius()*0.2)/2), vertex.getCoordY()+((int)(vertex.getRadius()*0.2)/2), (int)(vertex.getRadius()*0.8), (int)(vertex.getRadius()*0.8));
+        //     //Inside
+        //     graphics.setColor(vertex.getInsideColor());
+        //     graphics.fillOval(vertex.getCoordX()+((int)(vertex.getDiameter()*0.4)/2), vertex.getCoordY()+((int)(vertex.getDiameter()*0.4)/2), (int)(vertex.getDiameter()*0.6), (int)(vertex.getDiameter()*0.6));
 
-            //We draw vertex name on top of the vertex (color of border)
-            graphics.setColor(Color.BLACK);
-            graphics.drawString(vertex.getName(), (int)(vertex.getCoordX()+vertex.getRadius()/2.7), (int)(vertex.getCoordY()+vertex.getRadius()/1.5));
+        //     //We draw vertex name on top of the vertex (color of border)
+        //     graphics.setColor(vertex.getBorderColor());
+        //     graphics.drawString(vertex.getName(), (int)(vertex.getCoordX()+vertex.getDiameter()/2.7), (int)(vertex.getCoordY()+vertex.getDiameter()/1.5));
+        // }
+
+        // //We then search for every edges
+        // Edge edge;
+        // //We look in a rectangular pattern
+        // if((edge = this.edgeCollision(graph,X,Y)) != null && vertex == null)   //Y Coord
+        // {
+        //     graphics.setColor(edge.getStart().getInsideColor());
+        //     ((Graphics2D)graphics).setStroke(new BasicStroke(edge.getStrokeWidth()/edge.getStart().getStrokeWidth())); //Change stroke
+
+        //     //Case where the starting and ending point is the same
+        //     if(edge.getStart().equals(edge.getEnd()) == false)
+        //     {
+        //         graphics.drawLine((int)(edge.getEdgePoints(edge).get(0).getX()), (int)(edge.getEdgePoints(edge).get(0).getY()), (int)(edge.getEdgePoints(edge).get(1).getX()), (int)(edge.getEdgePoints(edge).get(1).getY()));
+        //         if(graph.getOriented()) //If the graph is oriented, we also have to draw an arrow displaying the arrival vertex
+        //         {
+        //             graphics.drawLine((int)(edge.getArrow(edge, 15).get(0).getX()),(int)(edge.getArrow(edge, 15).get(0).getY()), (int)(edge.getArrow(edge, 15).get(1).getX()), (int)(edge.getArrow(edge, 15).get(1).getY()));
+        //             graphics.drawLine((int)(edge.getArrow(edge, 15).get(0).getX()),(int)(edge.getArrow(edge, 15).get(0).getY()), (int)(edge.getArrow(edge, 15).get(2).getX()), (int)(edge.getArrow(edge, 15).get(2).getY()));
+        //         }
+        //     }
+        // }
         }
-
-        //If the graph is weighted, we then draw every weight (after we have drawn every edge)
-        if(graph.getWeighted())
-        {
-            for(Edge edge : graph.getEdges())
-            {
-                //We draw the weight at the center of the edge
-                if(edge.getWeight() != null)
-                {
-                    graphics.drawString(edge.getWeight().toString(), (int)((edge.getStart().getCoordX()+edge.getEnd().getCoordX())/2), (int)((edge.getStart().getCoordY()+edge.getEnd().getCoordY())/2));
-                }
-            }
-        }
-
-
-
-        // === IF THE CURSOR IS ON TOP OF A VERTEX/EGDE, WE HIGHLIGHT THE EDGE/VERTEX ===
-        Vertex vertex;
-        if((vertex = this.vertexCollision(graph,X,Y)) != null)
-        {
-            //We highlight this vertex
-            //Borders
-            graphics.setColor(vertex.getBorderColor());
-            graphics.fillOval(vertex.getCoordX(), vertex.getCoordY(), vertex.getRadius(), vertex.getRadius());
-
-            //Inside
-            graphics.setColor(vertex.getInsideColor());
-            graphics.fillOval(vertex.getCoordX()+((int)(vertex.getRadius()*0.4)/2), vertex.getCoordY()+((int)(vertex.getRadius()*0.4)/2), (int)(vertex.getRadius()*0.6), (int)(vertex.getRadius()*0.6));
-
-            //We draw vertex name on top of the vertex (color of border)
-            graphics.setColor(vertex.getBorderColor());
-            graphics.drawString(vertex.getName(), (int)(vertex.getCoordX()+vertex.getRadius()/2.7), (int)(vertex.getCoordY()+vertex.getRadius()/1.5));
-        }
-
-        //We then search for every edges
-        Edge edge;
-        //We look in a rectangular pattern
-        if((edge = this.edgeCollision(graph,X,Y)) != null && vertex == null)   //Y Coord
-        {
-            graphics.setColor(edge.getStart().getInsideColor());
-            ((Graphics2D)graphics).setStroke(new BasicStroke(edge.getStrokeWidth()/edge.getStart().getStrokeWidth())); //Change stroke
-
-            //Case where the starting and ending point is the same
-            if(edge.getStart().equals(edge.getEnd()) == false)
-            {
-                graphics.drawLine((int)(edge.getEdgePoints(edge).get(0).getX()), (int)(edge.getEdgePoints(edge).get(0).getY()), (int)(edge.getEdgePoints(edge).get(1).getX()), (int)(edge.getEdgePoints(edge).get(1).getY()));
-                if(graph.getOriented()) //If the graph is oriented, we also have to draw an arrow displaying the arrival vertex
-                {
-                    graphics.drawLine((int)(edge.getArrow(edge, 15).get(0).getX()),(int)(edge.getArrow(edge, 15).get(0).getY()), (int)(edge.getArrow(edge, 15).get(1).getX()), (int)(edge.getArrow(edge, 15).get(1).getY()));
-                    graphics.drawLine((int)(edge.getArrow(edge, 15).get(0).getX()),(int)(edge.getArrow(edge, 15).get(0).getY()), (int)(edge.getArrow(edge, 15).get(2).getX()), (int)(edge.getArrow(edge, 15).get(2).getY()));
-                }
-            }
-        }
-
+        
 
 
         /// === FINALLY, IF WE ARE IN STATE 1 OR 2, SHOW A PREVIEW OF THE NEW EDGE/VERTEX ===
         //If we are in state 1, we previzualize the new vertex
         if(gui.getState() == 1)
         {
+            int radius = graph.getVertexDiameter()/2;
+            int diameter = graph.getVertexDiameter();
             //We draw a vertex on top of the mouse with 50% opacity
             //Setting 50% opacity
             ((Graphics2D)graphics).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f));
             //Borders
-            graphics.setColor(defaultBorder);
-            graphics.fillOval(X-defaultRadius/2, Y-defaultRadius/2, defaultRadius, defaultRadius);
+            graphics.setColor(graph.getVertexOutsideColor());
+            graphics.fillOval(X-radius, Y-radius, diameter, diameter);
 
             //Inside
-            graphics.setColor(defaultInside);
-            graphics.fillOval((X+((int)(defaultRadius*0.2)/2))-(defaultRadius/2), (Y+((int)(defaultRadius*0.2)/2))-(defaultRadius/2), (int)(defaultRadius*0.8), (int)(defaultRadius*0.8));
+            graphics.setColor(graph.getVertexInsideColor());
+            graphics.fillOval((X+((int)(radius*0.2)))-(radius), (Y+((int)(radius*0.2)))-(radius), (int)(diameter*0.8), (int)(diameter*0.8));
         }
 
         //If we are in state 2 and the first vertex is selectionned, we previzualize the new edge (if first vertex selectionned)
@@ -183,9 +133,9 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             //Setting 50% opacity
             ((Graphics2D)graphics).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f));
             //Drawing the line
-            graphics.setColor(defaultEdgeColor);
-            ((Graphics2D)graphics).setStroke(new BasicStroke(defaultWidth)); //Change stroke
-            graphics.drawLine(start.getCoordX()+defaultRadius/2, start.getCoordY()+defaultRadius/2, X, Y);
+            graphics.setColor(graph.getEdgeStrokeColor());
+            ((Graphics2D)graphics).setStroke(new BasicStroke(graph.getEdgeStrokeWidth())); //Change stroke
+            graphics.drawLine(start.getCoordX()+graph.getVertexDiameter()/2, start.getCoordY()+graph.getVertexDiameter()/2, X, Y);
         }
     }
 
@@ -214,6 +164,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
         Vertex vertex;
         Edge edge;
+        int radius = graph.getVertexDiameter()/2, diameter = graph.getVertexDiameter();
         //=== LEFT CLICK DETECTION === to create new elements and interact
         if(e.getButton() == MouseEvent.BUTTON1)
         {
@@ -227,7 +178,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                 case(1): {
                     //In state 1, when the mouse is clicked, we create a new vertex/state
                     //We retrieve the actual graph/automaton
-                    vertex = new Vertex(e.getX() - defaultRadius/2, e.getY() - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, ""+(graph.getVertices().size()));
+                    vertex = new Vertex(e.getX() - radius, e.getY() - radius, diameter, graph.getVertexStrokeWidth(), graph.getVertexInsideColor(), graph.getVertexOutsideColor(), ""+(graph.getVertices().size()), graph.getVertexNameColor());
                     graph.addVertex(vertex); //We add the new vertex to the graph
                     //We repaint
                     this.repaint();
@@ -249,24 +200,9 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                         else
                         {
                             //Adding the edge to the graph
-                            Edge toMap = new Edge(start, vertex, null, defaultWidth, defaultEdgeColor);
+                            Edge toMap = new Edge(start, vertex, null, graph.getEdgeStrokeWidth(), graph.getEdgeStrokeColor(), graph.getEdgeHighlightColor());
                             graph.addEdge(toMap);
-                            Path2D.Float path = new Path2D.Float(); //The path
-                            
-                            path.moveTo(toMap.getEdgePoints(toMap).get(0).getX()-(toMap.getStrokeWidth()*2), toMap.getEdgePoints(toMap).get(0).getY()-(toMap.getStrokeWidth()*2)); //Starting point
-                            path.lineTo(toMap.getEdgePoints(toMap).get(0).getX()+(toMap.getStrokeWidth()*2), toMap.getEdgePoints(toMap).get(0).getY()+(toMap.getStrokeWidth()*2));
-                            path.lineTo(toMap.getEdgePoints(toMap).get(1).getX()+(toMap.getStrokeWidth()*2), toMap.getEdgePoints(toMap).get(1).getY()+(toMap.getStrokeWidth()*2)); 
-                            path.lineTo(toMap.getEdgePoints(toMap).get(1).getX()-(toMap.getStrokeWidth()*2), toMap.getEdgePoints(toMap).get(1).getY()-(toMap.getStrokeWidth()*2)); //End point
-                            
-                            path.closePath();
-
-                            //Association of the edge and the path
-                            gui.getEdgeLine().put(toMap, path);
-
-                            if(gui.getEdgeLine().get(toMap) == null)
-                            {
-                                System.out.println("problem creation");
-                            }
+                            toMap.setCollisionArea(toMap.refreshCollisionArea());
 
                             start = null;
                             this.repaint();
@@ -335,22 +271,17 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
         for(Vertex vertex : graph.getVertices())
         {
-            if(((e.getX() - (vertex.getCoordX()+vertex.getRadius()/2))*(e.getX() - (vertex.getCoordX()+vertex.getRadius()/2)) + (e.getY() - (vertex.getCoordY()+vertex.getRadius()/2))*(e.getY() - (vertex.getCoordY()+vertex.getRadius()/2))) <= (vertex.getRadius()/2)*(vertex.getRadius()/2))
+            if(((e.getX() - (vertex.getCoordX()+vertex.getDiameter()/2))*(e.getX() - (vertex.getCoordX()+vertex.getDiameter()/2)) + (e.getY() - (vertex.getCoordY()+vertex.getDiameter()/2))*(e.getY() - (vertex.getCoordY()+vertex.getDiameter()/2))) <= (vertex.getDiameter()/2)*(vertex.getDiameter()/2))
             {
                 X = e.getX();
                 Y = e.getY();
-                vertex.setCoordX(e.getX()-vertex.getRadius()/2);
-                vertex.setCoordY(e.getY()-vertex.getRadius()/2);
+                vertex.setCoordX(e.getX()-vertex.getDiameter()/2);
+                vertex.setCoordY(e.getY()-vertex.getDiameter()/2);
                 //We must reset every path
+                
                 for(Edge edge : graph.getEdges())
                 {
-                    Path2D path = gui.getEdgeLine().get(edge);
-                    path.reset();
-                    path.moveTo(edge.getEdgePoints(edge).get(0).getX()-(edge.getStrokeWidth()*2), edge.getEdgePoints(edge).get(0).getY()-(edge.getStrokeWidth()*2)); //Starting point
-                    path.lineTo(edge.getEdgePoints(edge).get(0).getX()+(edge.getStrokeWidth()*2), edge.getEdgePoints(edge).get(0).getY()+(edge.getStrokeWidth()*2));
-                    path.lineTo(edge.getEdgePoints(edge).get(1).getX()+(edge.getStrokeWidth()*2), edge.getEdgePoints(edge).get(1).getY()+(edge.getStrokeWidth()*2)); 
-                    path.lineTo(edge.getEdgePoints(edge).get(1).getX()-(edge.getStrokeWidth()*2), edge.getEdgePoints(edge).get(1).getY()-(edge.getStrokeWidth()*2)); //End point
-                    path.closePath();
+                    edge.setCollisionArea(edge.refreshCollisionArea());
                 }
 
                 repaint();
@@ -397,11 +328,9 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     {
         for(Edge edge : graph.getEdges())
         {
-            //if((Math.min(edge.getStart().getCoordX(), edge.getEnd().getCoordX()) <= X) && (X <= Math.max(edge.getStart().getCoordX(), edge.getEnd().getCoordX())) && //X Coord
-            //(Math.min(edge.getStart().getCoordY(), edge.getEnd().getCoordY()) <= Y) && (Y <= Math.max(edge.getStart().getCoordY(), edge.getEnd().getCoordY()))) //Y Coord
-            if(gui.getEdgeLine().get(edge).contains(X,Y))
+            if(edge.getCollisionArea().contains(X,Y))
             {
-                putFirstEdge(graph.getEdges(), edge);
+                Collections.swap(graph.getEdges(), 0, graph.getEdges().indexOf(edge));
                 return edge;
             }
         }
@@ -415,29 +344,15 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         for(Vertex vertex : graph.getVertices())
         {
             //Formula to detect if the mouse is on top of a vertex
-            if(((X - (vertex.getCoordX()+vertex.getRadius()/2))*(X - (vertex.getCoordX()+vertex.getRadius()/2)) + (Y - (vertex.getCoordY()+vertex.getRadius()/2))*(Y - (vertex.getCoordY()+vertex.getRadius()/2))) <= (vertex.getRadius()/2)*(vertex.getRadius()/2))
+            if(((X - (vertex.getCoordX()+vertex.getDiameter()/2))*(X - (vertex.getCoordX()+vertex.getDiameter()/2)) + (Y - (vertex.getCoordY()+vertex.getDiameter()/2))*(Y - (vertex.getCoordY()+vertex.getDiameter()/2))) <= (vertex.getDiameter()/2)*(vertex.getDiameter()/2))
             {
                 //We put the detected vertex on top of the list
-                putFirstVertex(graph.getVertices(), vertex);
+                Collections.swap(graph.getVertices(), 0, graph.getVertices().indexOf(vertex));
                 return vertex;
             }
         }
 
         return null;
-    }
-
-    //Functions that take an element from a list and put it in first position (index 0)
-    public void putFirstVertex(ArrayList<Vertex> list, Vertex toPutFirst)
-    {
-        list.remove(toPutFirst);
-        list.add(0, toPutFirst);
-        return;
-    }
-    public void putFirstEdge(ArrayList<Edge> list, Edge toPutFirst)
-    {
-        list.remove(toPutFirst);
-        list.add(0, toPutFirst);
-        return;
     }
 
 

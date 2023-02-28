@@ -11,10 +11,12 @@ public class Triplet implements Comparable<Triplet>{
     }
 
     public int compareTo(Triplet compareTo){
-        if (weight == compareTo.weight)
+        if (weight == compareTo.weight){
             return 0;
-        if (weight > compareTo.weight)
+        }
+        if (weight > compareTo.weight){
             return 1;
+        }
         return -1;
     }
 }

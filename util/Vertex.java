@@ -11,30 +11,51 @@ import java.util.*;
 public class Vertex
 {
     private static int cpt = 0;
-    private int id, coordX, coordY, radius, strokeWidth;
-    private Color insideColor, borderColor;
+    private int id, coordX, coordY, diameter, strokeWidth;
+    private Color insideColor, borderColor, nameColor;
     private String name;
 
     /**
      * Constructor of the vertex class
      * @param coordX X position of the vertex's center
      * @param coordY Y position of the vertex's center
-     * @param radius Radius of the vertex
+     * @param radius Diameter of the vertex
      * @param strokeWidth Width of the vertex's stroke
      * @param insideColor Color of the vertex's inside
      * @param borderColor Color of the vertex's outside
      * @param name Name of the vertex that will be displayed
      */
-    public Vertex(int coordX, int coordY, int radius, int strokeWidth, Color insideColor, Color borderColor, String name){
+    public Vertex(int coordX, int coordY, int diameter, int strokeWidth, Color insideColor, Color borderColor, String name, Color nameColor){
         this.id = cpt++;
         this.coordX = coordX;
         this.coordY = coordY;
-        this.radius = radius;
+        this.diameter = diameter;
         this.strokeWidth = strokeWidth;
         this.insideColor = insideColor;
         this.borderColor = borderColor;
         this.name = name;
+        this.nameColor = nameColor;
         System.out.println(name + " " + id);
+    }
+
+    public void paint(Graphics graphics, Object collision){
+        //Borders
+        
+        if (collision == this) {
+            ((Graphics2D)graphics).setStroke(new BasicStroke((int)(strokeWidth*2)));    
+        }else{
+            ((Graphics2D)graphics).setStroke(new BasicStroke(strokeWidth));
+        }
+        graphics.setColor(borderColor);
+        graphics.drawOval(coordX, coordY, diameter, diameter);
+
+        graphics.setColor(insideColor);
+        graphics.fillOval(coordX+((int)(diameter*0.2)/2), coordY+((int)(diameter*0.2)/2), (int)(diameter*0.8), (int)(diameter*0.8));
+
+        //We draw vertex name on top of the vertex (color of border)
+        graphics.setColor(nameColor);
+        graphics.drawString(name, (int)(coordX+diameter/2.7), (int)(coordY+diameter/1.5));
+        
     }
 
     /**
@@ -65,12 +86,12 @@ public class Vertex
         this.coordY = coordY;
     }
 
-    public int getRadius() {
-        return radius;
+    public int getDiameter() {
+        return diameter;
     }
 
-    public void setRadius(int radius) {
-        this.radius = radius;
+    public void setDiameter(int radius) {
+        this.diameter = radius;
     }
 
     public int getStrokeWidth() {

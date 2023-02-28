@@ -15,6 +15,13 @@ public class Graph {
     private ArrayList<Edge> edges;
     private Boolean oriented, weighted;
     private PanelPaint panelPaint;
+    private Color vertexInsideColor = Color.white, 
+                  vertexOutsideColor = Color.black, 
+                  edgeStrokeColor = Color.black, 
+                  edgeHighlightColor = Color.white,
+                  vertexNameColor = Color.black;
+    private int edgeStrokeWidth = 5, arrowLength = 15; //For edges
+    private int vertexDiameter = 30, vertexStrokeWidth = 5; //For vertexs
 
 
 
@@ -26,6 +33,16 @@ public class Graph {
         this.weighted = weighted;
         this.edges = new ArrayList<Edge>();
         this.panelPaint = panelPaint;
+    }
+
+    public void paint(Graphics graphics, Object collision){
+        for (Edge edge : edges) {
+            edge.paint(graphics, oriented, weighted, collision);
+        }
+        for (Vertex vertex : vertices) {
+            vertex.paint(graphics, collision);
+        }
+        
     }
     
     //DFS
@@ -82,10 +99,6 @@ public class Graph {
 
     }
     
-
-  
-
-
 
 
 
@@ -227,7 +240,7 @@ public class Graph {
 
         for (int i = 0; i < M.length; i++) 
             for (int j = 0; j < i; j++) 
-                g.addEdge(vertices.get(i), vertices.get(j), M[i][j], 1, Color.black);
+                g.addEdge(vertices.get(i), vertices.get(j), M[i][j]);
                     
         System.out.println(g.toString());
 
@@ -386,15 +399,15 @@ public class Graph {
         if (!existed) {
             edges.add(e);
             if (!oriented && !e.getStart().equals(e.getEnd()))
-                edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), e.getStrokeWidth(), e.getStrokeColor()));
+                edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor));
         }
     }
 
-    public void addEdge(Vertex v1, Vertex v2, Object weight, int strokeWidth, Color color){
+    public void addEdge(Vertex v1, Vertex v2, Object weight){
         if (!oriented) 
-            edges.add(new Edge(v2, v1, weight, strokeWidth, color));    
+            edges.add(new Edge(v2, v1, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor));    
         
-        edges.add(new Edge(v1, v2, weight, strokeWidth, color));
+        edges.add(new Edge(v1, v2, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor));
     }
     public void removeEdge(Edge e){
         if(edges.contains(e))
@@ -408,6 +421,75 @@ public class Graph {
     public void setPanelPaint(PanelPaint panelPaint) {
         this.panelPaint = panelPaint;
     }
+
+    public void setVertices(ArrayList<Vertex> vertices) {
+        this.vertices = vertices;
+    }
+
+    public Color getVertexInsideColor() {
+        return vertexInsideColor;
+    }
+
+    public void setVertexInsideColor(Color vertexInsideColor) {
+        this.vertexInsideColor = vertexInsideColor;
+    }
+
+    public Color getVertexOutsideColor() {
+        return vertexOutsideColor;
+    }
+
+    public void setVertexOutsideColor(Color vertexOutsideColor) {
+        this.vertexOutsideColor = vertexOutsideColor;
+    }
+
+    public Color getEdgeStrokeColor() {
+        return edgeStrokeColor;
+    }
+
+    public void setEdgeStrokeColor(Color edgeStrokeColor) {
+        this.edgeStrokeColor = edgeStrokeColor;
+    }
+
+    public Color getEdgeHighlightColor() {
+        return edgeHighlightColor;
+    }
+
+    public void setEdgeHighlightColor(Color edgeHighlightColor) {
+        this.edgeHighlightColor = edgeHighlightColor;
+    }
+
+    public int getEdgeStrokeWidth() {
+        return edgeStrokeWidth;
+    }
+
+    public void setEdgeStrokeWidth(int edgeStrokeWidth) {
+        this.edgeStrokeWidth = edgeStrokeWidth;
+    }
+
+    public int getVertexDiameter() {
+        return vertexDiameter;
+    }
+
+    public void setVertexDiameter(int vertexDiameter) {
+        this.vertexDiameter = vertexDiameter;
+    }
+
+    public Color getVertexNameColor() {
+        return vertexNameColor;
+    }
+
+    public void setVertexNameColor(Color vertexNameColor) {
+        this.vertexNameColor = vertexNameColor;
+    }
+
+    public int getVertexStrokeWidth() {
+        return vertexStrokeWidth;
+    }
+
+    public void setVertexStrokeWidth(int vertexStrokeWidth) {
+        this.vertexStrokeWidth = vertexStrokeWidth;
+    }
+    
 
     @Override
     public String toString() {
@@ -428,6 +510,14 @@ public class Graph {
                 rep += "}\n";
         }
         return rep;
+    }
+
+    public int getArrowLength() {
+        return arrowLength;
+    }
+
+    public void setArrowLength(int arrowLength) {
+        this.arrowLength = arrowLength;
     }
 
     
