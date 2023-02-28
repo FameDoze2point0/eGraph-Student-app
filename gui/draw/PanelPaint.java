@@ -10,6 +10,7 @@ import util.Graph;
 import util.Vertex;
 import java.awt.*;
 import java.util.ArrayList;
+import java.awt.geom.*;
 
 public class PanelPaint extends JPanel implements MouseListener, MouseMotionListener
 {
@@ -78,6 +79,8 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             //Case where the starting and ending point is the same
             if(edge.getStart().equals(edge.getEnd()) == false)
             {
+
+                //((Graphics2D)graphics).draw(gui.getEdgeLine().get(edge));
                 graphics.drawLine((int)(edge.getEdgePoints(edge).get(0).getX()), (int)(edge.getEdgePoints(edge).get(0).getY()), (int)(edge.getEdgePoints(edge).get(1).getX()), (int)(edge.getEdgePoints(edge).get(1).getY()));
                 if(graph.getOriented()) //If the graph is oriented, we also have to draw an arrow displaying the arrival vertex
                 {
@@ -245,7 +248,26 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                         }
                         else
                         {
-                            graph.addEdge(new Edge(start, vertex, null, defaultWidth, defaultEdgeColor));
+                            //Adding the edge to the graph
+                            Edge toMap = new Edge(start, vertex, null, defaultWidth, defaultEdgeColor);
+                            graph.addEdge(toMap);
+                            Path2D.Float path = new Path2D.Float(); //The path
+                            
+                            path.moveTo(toMap.getEdgePoints(toMap).get(0).getX()-(toMap.getStrokeWidth()*2), toMap.getEdgePoints(toMap).get(0).getY()-(toMap.getStrokeWidth()*2)); //Starting point
+                            path.lineTo(toMap.getEdgePoints(toMap).get(0).getX()+(toMap.getStrokeWidth()*2), toMap.getEdgePoints(toMap).get(0).getY()+(toMap.getStrokeWidth()*2));
+                            path.lineTo(toMap.getEdgePoints(toMap).get(1).getX()+(toMap.getStrokeWidth()*2), toMap.getEdgePoints(toMap).get(1).getY()+(toMap.getStrokeWidth()*2)); 
+                            path.lineTo(toMap.getEdgePoints(toMap).get(1).getX()-(toMap.getStrokeWidth()*2), toMap.getEdgePoints(toMap).get(1).getY()-(toMap.getStrokeWidth()*2)); //End point
+                            
+                            path.closePath();
+
+                            //Association of the edge and the path
+                            gui.getEdgeLine().put(toMap, path);
+
+                            if(gui.getEdgeLine().get(toMap) == null)
+                            {
+                                System.out.println("problem creation");
+                            }
+
                             start = null;
                             this.repaint();
                             break;
@@ -319,6 +341,18 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                 Y = e.getY();
                 vertex.setCoordX(e.getX()-vertex.getRadius()/2);
                 vertex.setCoordY(e.getY()-vertex.getRadius()/2);
+                //We must reset every path
+                for(Edge edge : graph.getEdges())
+                {
+                    Path2D path = gui.getEdgeLine().get(edge);
+                    path.reset();
+                    path.moveTo(edge.getEdgePoints(edge).get(0).getX()-(edge.getStrokeWidth()*2), edge.getEdgePoints(edge).get(0).getY()-(edge.getStrokeWidth()*2)); //Starting point
+                    path.lineTo(edge.getEdgePoints(edge).get(0).getX()+(edge.getStrokeWidth()*2), edge.getEdgePoints(edge).get(0).getY()+(edge.getStrokeWidth()*2));
+                    path.lineTo(edge.getEdgePoints(edge).get(1).getX()+(edge.getStrokeWidth()*2), edge.getEdgePoints(edge).get(1).getY()+(edge.getStrokeWidth()*2)); 
+                    path.lineTo(edge.getEdgePoints(edge).get(1).getX()-(edge.getStrokeWidth()*2), edge.getEdgePoints(edge).get(1).getY()-(edge.getStrokeWidth()*2)); //End point
+                    path.closePath();
+                }
+
                 repaint();
                 break;
             }
@@ -363,8 +397,9 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     {
         for(Edge edge : graph.getEdges())
         {
-            if((Math.min(edge.getStart().getCoordX(), edge.getEnd().getCoordX()) <= X) && (X <= Math.max(edge.getStart().getCoordX(), edge.getEnd().getCoordX())) && //X Coord
-            (Math.min(edge.getStart().getCoordY(), edge.getEnd().getCoordY()) <= Y) && (Y <= Math.max(edge.getStart().getCoordY(), edge.getEnd().getCoordY()))) //Y Coord
+            //if((Math.min(edge.getStart().getCoordX(), edge.getEnd().getCoordX()) <= X) && (X <= Math.max(edge.getStart().getCoordX(), edge.getEnd().getCoordX())) && //X Coord
+            //(Math.min(edge.getStart().getCoordY(), edge.getEnd().getCoordY()) <= Y) && (Y <= Math.max(edge.getStart().getCoordY(), edge.getEnd().getCoordY()))) //Y Coord
+            if(gui.getEdgeLine().get(edge).contains(X,Y))
             {
                 putFirstEdge(graph.getEdges(), edge);
                 return edge;
