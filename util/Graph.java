@@ -125,52 +125,10 @@ public class Graph {
         return graph;
     }
 
-
-    public int minDistance(int dist[],Boolean sptSet[]){
-        
-        int min = Integer.MAX_VALUE, min_index = -1;
-
-        for (int i = 0; i < vertices.size(); i++) 
-            if (!sptSet[i] && dist[i] <= min) {
-                min = dist[i];
-                min_index = i;
-            }
-        
-        return min_index;
-    }
-
     public void printArray(int dist[]){
         System.out.println("Vertex \t\t Distance from Source");
         for (int i = 0; i < vertices.size(); i++)
             System.out.println(vertices.get(i).getName() + " \t\t " + dist[i]);
-    }
-
-    //Dijkstra
-    public void algo_Dijkstra(Vertex start) throws Exception{
-
-        if (!weighted)
-            throw new Exception("The graph has to be weighted to launch Dijkstra's Algorithm !");
-
-        int graph[][] = graphToArray();
-
-        int dist[] = new int[vertices.size()];
-        Boolean sptSet[] = new Boolean[vertices.size()];
-
-        for (int i = 0; i < vertices.size(); i++) {
-            dist[i] = Integer.MAX_VALUE;
-            sptSet[i] = false;
-        }
-        dist[start.getId()] = 0;
-
-        for (int count = 0; count < vertices.size() - 1; count++) {
-            int u = minDistance(dist,sptSet);
-            sptSet[u] = true;
-
-            for (int i = 0; i < vertices.size(); i++) 
-                if (!sptSet[i] && graph[u][i] != 0 && dist[u] != Integer.MAX_VALUE && dist[u] + graph[u][i] < dist[i]) 
-                    dist[i] = dist[u] + graph[u][i];
-        }
-        printArray(dist);
     }
 
     //Bellman-Ford
@@ -194,6 +152,7 @@ public class Graph {
                     if (graph[i][j] != 0 && dist[i] + graph[i][j] < dist[j]) {
                         dist[j] = dist[i] + graph[i][j];
                         pred[j] = i;
+                        System.out.println("je pars de i = " + i + " vers j = " + j);
                     }
                 }
             }

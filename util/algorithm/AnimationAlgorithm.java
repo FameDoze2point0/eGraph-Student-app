@@ -13,6 +13,11 @@ public class AnimationAlgorithm {
     private Vertex start = null;
     private Color defaultColorVertex, defaultColorEdge;
 
+    private Color red = new Color(255, 0, 0),
+        darkOrange = new Color(255, 107, 51), 
+        orange = new Color(255, 181, 102),
+        lightred = new Color(255,139,139);
+
     public AnimationAlgorithm(Graph graph, Color defaultColorVertex, Color defaultColorEdge){
         this.graph = graph;
         this.defaultColorVertex = defaultColorVertex;
@@ -44,16 +49,22 @@ public class AnimationAlgorithm {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                if (toVisite != null) {
+                    for (Vertex vertex : toVisite) {
+                        vertex.setBorderColor(lightred);
+                    }    
+                }
+                if (visited != null) {
+                    for (Vertex vertex : visited) {
+                        vertex.setBorderColor(red);
+                    }
+                }
+                if (edgeBrowsed != null) {
+                    for (Edge edge : edgeBrowsed) {
+                        edge.setStrokeColor(orange);
+                    }    
+                }
                 
-                for (Vertex vertex : toVisite) {
-                    vertex.setBorderColor(Color.orange);
-                }
-                for (Vertex vertex : visited) {
-                    vertex.setBorderColor(Color.red);
-                }
-                for (Edge edge : edgeBrowsed) {
-                    edge.setStrokeColor(Color.orange);
-                }
             }
         });
         

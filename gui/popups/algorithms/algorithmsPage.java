@@ -7,7 +7,9 @@ import gui.Gui;
 import gui.draw.Draw;
 import util.*;
 import util.algorithm.BFS;
+import util.algorithm.BellmanFord;
 import util.algorithm.DFS;
+import util.algorithm.Dijkstra;
 import util.algorithm.RS;
 
 import java.awt.event.ActionEvent;
@@ -179,7 +181,8 @@ public class algorithmsPage extends JDialog{
 
                     case "Dijkstra": //Dijkstra
                         try {
-                            graph.algo_Dijkstra(v1);
+                            Dijkstra algoDijkstra = new Dijkstra(graph, v1);
+                            algoDijkstra.start();
                         } catch (Exception exce) {
                             System.out.println(exce);
                         }  
@@ -187,7 +190,8 @@ public class algorithmsPage extends JDialog{
 
                     case "Bellman-Ford": // Bellman-Ford
                         try {
-                            graph.algo_BellmanFord(v1);
+                            BellmanFord algoBellmanFord = new BellmanFord(graph, v1);
+                            algoBellmanFord.start();
                         } catch (Exception exce) {
                             System.out.println(e);
                         }
