@@ -22,7 +22,6 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
     // //Menu when we right click
     RightClick rightClickMenu;
-    Object rightClickedOnElement; //Element that got right clicked on and will be affected by right click option
 
     public PanelPaint(Gui gui, Draw drawArea)
     {
@@ -59,11 +58,11 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         super.paint(graphics); //Refresh the JPanel with blank space
         Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
         if (graph != null) {
-            Object var = vertexCollision(graph, X, Y);
-            if (var == null) {
-                var = edgeCollision(graph, X, Y);
+            Object itemCollision = graph.vertexCollision(X, Y);
+            if (itemCollision == null) {
+                itemCollision = graph.edgeCollision( X, Y);
             }
-            graph.paint(graphics, var);    
+            graph.paint(graphics, itemCollision);    
         }
 
         //save
@@ -170,43 +169,29 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         {
             switch(gui.getState())
             {
-                case(0): {
-                    //Nothing happen in state 0 when the mouse is clicked
-                    break;
-                }
-
                 case(1): {
                     //In state 1, when the mouse is clicked, we create a new vertex/state
                     //We retrieve the actual graph/automaton
-                    vertex = new Vertex(e.getX() - radius, e.getY() - radius, diameter, graph.getVertexStrokeWidth(), graph.getVertexInsideColor(), graph.getVertexOutsideColor(), ""+(graph.getVertices().size()), graph.getVertexNameColor());
-                    graph.addVertex(vertex); //We add the new vertex to the graph
-                    //We repaint
-                    this.repaint();
+                    graph.addVertex(new Vertex(e.getX() - radius, e.getY() - radius, diameter, graph.getVertexStrokeWidth(), graph.getVertexInsideColor(), graph.getVertexOutsideColor(), ""+(graph.getVertices().size()), graph.getVertexNameColor())); //We add the new vertex to the graph
                     break;
                 }
 
                 case(2): {
                     //In state 2, we want the user to click on 2 differents vertex/state to create an edge
                     //We first look if the user clicked on a vertex
-                    if((vertex = this.vertexCollision(graph,X,Y)) != null)
+                    if((vertex = graph.vertexCollision(X,Y)) != null)
                     {
                         //The user clicked on this vertex
                         //If the start vertex is != null, then we have both vertex required to draw the edge
                         if(start == null)
                         {
                             start = vertex;
-                            break;
                         }
                         else
                         {
                             //Adding the edge to the graph
-                            Edge toMap = new Edge(start, vertex, null, graph.getEdgeStrokeWidth(), graph.getEdgeStrokeColor(), graph.getEdgeHighlightColor());
-                            graph.addEdge(toMap);
-                            toMap.setCollisionArea(toMap.refreshCollisionArea());
-
+                            graph.addEdge(new Edge(start, vertex, null, graph.getEdgeStrokeWidth(), graph.getEdgeStrokeColor(), graph.getEdgeHighlightColor(), graph.getEdgeArrowTipColor()));
                             start = null;
-                            this.repaint();
-                            break;
                         }
                     }
                     break;
@@ -216,6 +201,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                     break;
                 }
             }
+            this.repaint();
         }
 
 
@@ -224,44 +210,25 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         else if(e.getButton() == MouseEvent.BUTTON3)
         {
             //When we right click, we detect if we are on top of a vertex or an edge to add some quick interactions to them
-            if((vertex = this.vertexCollision(graph, e.getX(), e.getY())) != null)
+            if((vertex = graph.vertexCollision(e.getX(), e.getY())) != null)
             {
-                //When we right click on a vertex, we disable "change weight" option
-                rightClickMenu.getChangeWeight().setVisible(false);
-                //In case Rename is disable, we re-enable it
-                rightClickMenu.getRenameElement().setVisible(true);
-                //Enabling delete option
-                rightClickMenu.getDeleteElement().setVisible(true);
-                //We get the rightclicked on element
-                rightClickedOnElement = vertex;
+
+                rightClickMenu.changeState(false, true, true, vertex);
             }
-            else if((edge = this.edgeCollision(graph, e.getX(), e.getY())) != null)
+            else if((edge = graph.edgeCollision(e.getX(), e.getY())) != null)
             {
-                //When we right click on an edge, we enable "change weight" option
-                rightClickMenu.getChangeWeight().setVisible(true);
-                //In case Rename is enabled, we disable it
-                rightClickMenu.getRenameElement().setVisible(false);
-                //Enabling delete option
-                rightClickMenu.getDeleteElement().setVisible(true);
-                //We get the rightclicked on element
-                rightClickedOnElement = edge;
+                rightClickMenu.changeState(true, false, true, edge);
             }
             else
             {
-                //Else, when we right click on "no element", we disable delete, change weight and rename options
-                rightClickMenu.getChangeWeight().setVisible(false);
-                //In case Rename is enabled, we disable it
-                rightClickMenu.getRenameElement().setVisible(false);
-                //Enabling delete option
-                rightClickMenu.getDeleteElement().setVisible(false);
-                //No element got clicked on
-                rightClickedOnElement = null;
+                rightClickMenu.changeState(false, false, false, null);
             }
-
             //We then have some default features, always there
             rightClickMenu.show(drawArea.getSelectedComponent() , e.getX(), e.getY()); 
         }
     }
+
+    
 
 
 
@@ -323,47 +290,5 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
 
 
-    //Function that return the first edge we are on top of, else null
-    public Edge edgeCollision(Graph graph, int X, int Y)
-    {
-        for(Edge edge : graph.getEdges())
-        {
-            if(edge.getCollisionArea().contains(X,Y))
-            {
-                Collections.swap(graph.getEdges(), 0, graph.getEdges().indexOf(edge));
-                return edge;
-            }
-        }
-
-        return null;
-    }
-
-    //Function that return the first vertex we are on top of, else null
-    public Vertex vertexCollision(Graph graph, int X, int Y)
-    {
-        for(Vertex vertex : graph.getVertices())
-        {
-            //Formula to detect if the mouse is on top of a vertex
-            if(((X - (vertex.getCoordX()+vertex.getDiameter()/2))*(X - (vertex.getCoordX()+vertex.getDiameter()/2)) + (Y - (vertex.getCoordY()+vertex.getDiameter()/2))*(Y - (vertex.getCoordY()+vertex.getDiameter()/2))) <= (vertex.getDiameter()/2)*(vertex.getDiameter()/2))
-            {
-                //We put the detected vertex on top of the list
-                Collections.swap(graph.getVertices(), 0, graph.getVertices().indexOf(vertex));
-                return vertex;
-            }
-        }
-
-        return null;
-    }
-
-
-
-
-
-    public Object getRightClickedOnElement() {
-        return rightClickedOnElement;
-    }
-
-    public void setRightClickedOnElement(Object rightClickedOnElement) {
-        this.rightClickedOnElement = rightClickedOnElement;
-    }
+    
 }

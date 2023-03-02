@@ -19,6 +19,7 @@ public class Graph {
                   vertexOutsideColor = Color.black, 
                   edgeStrokeColor = Color.black, 
                   edgeHighlightColor = Color.white,
+                  edgeArrowTipColor = Color.red,
                   vertexNameColor = Color.black;
     private int edgeStrokeWidth = 5, arrowLength = 15; //For edges
     private int vertexDiameter = 30, vertexStrokeWidth = 5; //For vertexs
@@ -44,6 +45,41 @@ public class Graph {
         }
         
     }
+
+    //Function that return the first edge we are on top of, else null
+    public Edge edgeCollision( int X, int Y)
+    {
+        for(Edge edge : edges)
+        {
+            if(edge.getCollisionArea().contains(X,Y))
+            {
+                Collections.swap(edges, 0, edges.indexOf(edge));
+                return edge;
+            }
+        }
+
+        return null;
+    }
+
+    //Function that return the first vertex we are on top of, else null
+    public Vertex vertexCollision( int X, int Y)
+    {
+        for(Vertex vertex : vertices)
+        {
+            //Formula to detect if the mouse is on top of a vertex
+            if(((X - (vertex.getCoordX()+vertex.getDiameter()/2))*(X - (vertex.getCoordX()+vertex.getDiameter()/2)) + (Y - (vertex.getCoordY()+vertex.getDiameter()/2))*(Y - (vertex.getCoordY()+vertex.getDiameter()/2))) <= (vertex.getDiameter()/2)*(vertex.getDiameter()/2))
+            {
+                //We put the detected vertex on top of the list
+                Collections.swap(vertices, 0, vertices.indexOf(vertex));
+                return vertex;
+            }
+        }
+
+        return null;
+    }
+
+
+
     
     //DFS
     {
@@ -162,48 +198,50 @@ public class Graph {
 
 
     //Floyd-Warshall
-    public void algo_FloydWarshall(){
+    // public void algo_FloydWarshall(){
 
-        int n = vertices.size();
-        int [][] M = new int [n][n];
-        Graph g = new Graph("Floyd-Warshall", oriented, weighted, null);
-        for (Vertex vertex : vertices)
-            g.addVertex(vertex);
+    //     int n = vertices.size();
+    //     int [][] M = new int [n][n];
+    //     Graph g = new Graph("Floyd-Warshall", oriented, weighted, null);
         
-        for (int i = 0; i < M.length; i++) {
-            for (int j = 0; j < M.length; j++) {
-                M[i][j] = Integer.MAX_VALUE/2;
-                if (i == j)
-                    M[i][j] = 0;
-            }
-        }
-        for (Edge edge : edges) 
-            M[vertices.indexOf(edge.getStart())][vertices.indexOf(edge.getEnd())] = (int)edge.getWeight();
+    //     //initialisation
+    //     for (Vertex vertex : vertices)
+    //         g.addVertex(vertex);
         
-        for (int k = 0; k < M.length; k++) {
-            for (int i = 0; i < M.length; i++) {
-                for (int j = 0; j < M.length; j++) {
-                    M[i][j] = Integer.min(M[i][j], M[i][k] + M[k][j]);
-                }
-            }
-        }
+    //     for (int i = 0; i < M.length; i++) {
+    //         for (int j = 0; j < M.length; j++) {
+    //             M[i][j] = Integer.MAX_VALUE/2;
+    //             if (i == j)
+    //                 M[i][j] = 0;
+    //         }
+    //     }
+    //     for (Edge edge : edges) 
+    //         M[vertices.indexOf(edge.getStart())][vertices.indexOf(edge.getEnd())] = (int)edge.getWeight();
+        
+    //     for (int k = 0; k < M.length; k++) {
+    //         for (int i = 0; i < M.length; i++) {
+    //             for (int j = 0; j < M.length; j++) {
+    //                 M[i][j] = Integer.min(M[i][j], M[i][k] + M[k][j]);
+    //             }
+    //         }
+    //     }
 
-        String res = "";
-        for (int i = 0; i < M.length; i++) {
-            for (int j = 0; j < M.length; j++) {
-                res += M[i][j] + "\t";
-            }
-            res += "\n";
-        }
-        System.out.println(res);
+    //     // String res = "";
+    //     // for (int i = 0; i < M.length; i++) {
+    //     //     for (int j = 0; j < M.length; j++) {
+    //     //         res += M[i][j] + "\t";
+    //     //     }
+    //     //     res += "\n";
+    //     // }
+    //     // System.out.println(res);
 
-        for (int i = 0; i < M.length; i++) 
-            for (int j = 0; j < i; j++) 
-                g.addEdge(vertices.get(i), vertices.get(j), M[i][j]);
+    //     for (int i = 0; i < M.length; i++) 
+    //         for (int j = 0; j < i; j++) 
+    //             g.addEdge(vertices.get(i), vertices.get(j), M[i][j]);
                     
-        System.out.println(g.toString());
+    //     System.out.println(g.toString());
 
-    }
+    // }
 
 
     public ArrayList<Edge> getNeighbours(Vertex vertex){
@@ -358,15 +396,15 @@ public class Graph {
         if (!existed) {
             edges.add(e);
             if (!oriented && !e.getStart().equals(e.getEnd()))
-                edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor));
+                edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor));
         }
     }
 
     public void addEdge(Vertex v1, Vertex v2, Object weight){
         if (!oriented) 
-            edges.add(new Edge(v2, v1, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor));    
+            edges.add(new Edge(v2, v1, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor));    
         
-        edges.add(new Edge(v1, v2, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor));
+        edges.add(new Edge(v1, v2, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor));
     }
     public void removeEdge(Edge e){
         if(edges.contains(e))
@@ -479,5 +517,14 @@ public class Graph {
         this.arrowLength = arrowLength;
     }
 
+    public Color getEdgeArrowTipColor() {
+        return edgeArrowTipColor;
+    }
+
+    public void setEdgeArrowTipColor(Color edgeArrowTipColor) {
+        this.edgeArrowTipColor = edgeArrowTipColor;
+    }
+
+    
     
 }

@@ -10,6 +10,7 @@ import util.algorithm.BFS;
 import util.algorithm.BellmanFord;
 import util.algorithm.DFS;
 import util.algorithm.Dijkstra;
+import util.algorithm.FloydWarshall;
 import util.algorithm.RS;
 
 import java.awt.event.ActionEvent;
@@ -198,7 +199,8 @@ public class algorithmsPage extends JDialog{
                         break;
 
                     case "Floyd-Warshall": //Floyd Warshall
-                        graph.algo_FloydWarshall();
+                        FloydWarshall algoFloydWarshall = new FloydWarshall(graph);
+                        algoFloydWarshall.start();
                         break;
 
                     case "Prim": // Prim

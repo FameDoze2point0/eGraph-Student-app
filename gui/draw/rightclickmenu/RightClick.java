@@ -1,6 +1,7 @@
 package gui.draw.rightclickmenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -15,6 +16,9 @@ import util.Vertex;
 
 public class RightClick extends JPopupMenu
 {
+
+    Object rightClickedOnElement; //Element that got right clicked on and will be affected by right click option
+
     //When right click on an element
     JMenuItem deleteElement;
 
@@ -52,27 +56,30 @@ public class RightClick extends JPopupMenu
                 //We either delete the selectionned vertex/edge
                 Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
 
-                if(panel.getRightClickedOnElement() instanceof Vertex)
+                if(rightClickedOnElement instanceof Vertex)
                 {
-                    Vertex toDelete = (Vertex)panel.getRightClickedOnElement();
+                    Vertex toDelete = (Vertex)rightClickedOnElement;
+                    ArrayList<Edge> edgeToDelete = new ArrayList<Edge>();
                     //We remove all the edges, then the vertex
                     for(Edge edge : graph.getEdges())
                     {
                         if(edge.getStart().equals(toDelete) || edge.getEnd().equals(toDelete))
                         {
-                            graph.removeEdge(edge);
+                            edgeToDelete.add(edge);
                         }
                     }
-
+                    for (Edge edge : edgeToDelete) {
+                        graph.removeEdge(edge);
+                    }
                     //We then remove the vertex
                     graph.getVertices().remove(toDelete);
                 }
 
                 //Removing edge
-                else if(panel.getRightClickedOnElement() instanceof Edge)
+                else if(rightClickedOnElement instanceof Edge)
                 {
                     //We remove the edge
-                    Edge edgeTemp = (Edge)panel.getRightClickedOnElement();
+                    Edge edgeTemp = (Edge)rightClickedOnElement;
                     if (!graph.getOriented()) {
                         for (Edge edge : graph.getEdges()) {
                             if (edge.getEnd().equals(edgeTemp.getStart()) && edge.getStart().equals(edgeTemp.getEnd())) {
@@ -85,7 +92,7 @@ public class RightClick extends JPopupMenu
                 }
 
                 //No more "right click element"
-                panel.setRightClickedOnElement(null);
+                rightClickedOnElement = null;
 
                 //We the element is deleted, we redraw the area
                 panel.repaint();
@@ -98,7 +105,7 @@ public class RightClick extends JPopupMenu
         {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new TextInput(gui, panel.getRightClickedOnElement());
+                new TextInput(gui, rightClickedOnElement);
             }    
         });
         this.add(renameElement);
@@ -108,7 +115,7 @@ public class RightClick extends JPopupMenu
         {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new TextInput(gui, panel.getRightClickedOnElement());
+                new TextInput(gui, rightClickedOnElement);
             }    
         });
         this.add(changeWeight);
@@ -154,6 +161,13 @@ public class RightClick extends JPopupMenu
 
         launchAlgo = new JMenuItem("Launch algorithm...");
         this.add(launchAlgo);
+    }
+
+    public void changeState(Boolean changeWeight, Boolean renameElement, Boolean deleteElement, Object itemSelected){
+        this.changeWeight.setVisible(changeWeight);
+        this.renameElement.setVisible(renameElement);
+        this.deleteElement.setVisible(deleteElement);
+        rightClickedOnElement = itemSelected;
     }
 
     public JMenuItem getDeleteElement() {
@@ -274,5 +288,23 @@ public class RightClick extends JPopupMenu
 
     public void setLaunchAlgo(JMenuItem launchAlgo) {
         this.launchAlgo = launchAlgo;
+    }
+
+    public Object getRightClickedOnElement() {
+        return rightClickedOnElement;
+    }
+
+    public void setRightClickedOnElement(Object rightClickedOnElement) {
+        this.rightClickedOnElement = rightClickedOnElement;
+    }
+
+    public JMenuItem getCursorMode() {
+        return cursorMode;
+    }
+
+    public void setCursorMode(JMenuItem cursorMode) {
+        this.cursorMode = cursorMode;
     }   
+
+    
 }

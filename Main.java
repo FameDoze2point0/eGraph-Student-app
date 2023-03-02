@@ -31,7 +31,7 @@ public class Main
 
         PanelPaint pp = new PanelPaint(gui, gui.getDraw());
         gui.getDraw().addTab("temp_graph", null, pp, "temporary graph");
-        Graph g = new Graph("Test", false, true, pp);
+        Graph g = new Graph("Test", true, true, pp);
 
         Vertex v0 = new Vertex(200 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "0", defaultNameColor);
         Vertex v1 = new Vertex(400 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "1", defaultNameColor);

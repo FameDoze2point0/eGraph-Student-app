@@ -75,4 +75,15 @@ public class AnimationAlgorithm {
             // TODO: handle exception
         }
     }
+
+
+
+    public void refresh(){
+        graph.getPanelPaint().repaint();
+        try {
+            Thread.sleep(2500);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
 }

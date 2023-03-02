@@ -1,24 +1,26 @@
 package util;
 import java.util.*;
 import java.awt.geom.*;
+import java.lang.module.ResolutionException;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Edge {
     private Vertex start, end;
     private Object weight;
-    private int strokeWidth, arrowTipWidth = 15;
-    private Color strokeColor, highlightColor;
+    private int strokeWidth, arrowTipWidth = 20, edgeCurveRatio = 50;
+    private Color strokeColor, highlightColor, edgeArrowTipColor;
     private Path2D.Float collisionArea;
 
 
-    public Edge(Vertex start, Vertex end, Object weight, int strokeWidth, Color strokeColor, Color highlightColor) {
+    public Edge(Vertex start, Vertex end, Object weight, int strokeWidth, Color strokeColor, Color highlightColor, Color edgeArrowTipColor) {
         this.start = start;
         this.end = end;
         this.weight = weight;
         this.strokeWidth = strokeWidth;
         this.strokeColor = strokeColor;
         this.highlightColor = highlightColor;
+        this.edgeArrowTipColor = edgeArrowTipColor;
         collisionArea = refreshCollisionArea();
     }
 
@@ -46,18 +48,41 @@ public class Edge {
     public void paint(Graphics graphics, Boolean isOriented, Boolean isWeighted, Object collision){
         graphics.setColor(strokeColor);
         if (collision == this) {
-            ((Graphics2D)graphics).setStroke(new BasicStroke(strokeWidth*2)); //Change stroke
+            ((Graphics2D)graphics).setStroke(new BasicStroke(strokeWidth*1.5f)); //Change stroke
         }else{
             ((Graphics2D)graphics).setStroke(new BasicStroke(strokeWidth)); //Change stroke
         }
 
-        ArrayList<Point> edgePoint = getEdgePoints(this), 
-            arrowTip = getArrow(this, arrowTipWidth);
+        ArrayList<Point> edgePoint = getEdgePoints(this), arrowTip ;
+        double startX = edgePoint.get(0).getX(),
+            startY = edgePoint.get(0).getY(),
+            endX = edgePoint.get(1).getX(),
+            endY = edgePoint.get(1).getY();
 
-        graphics.drawLine((int)(edgePoint.get(0).getX()), (int)(edgePoint.get(0).getY()), (int)(edgePoint.get(1).getX()), (int)(edgePoint.get(1).getY()));
-        if(isOriented) //If the graph is oriented, we also have to draw an arrow displaying the arrival vertex
+
+        GeneralPath GPath = new GeneralPath();
+        if (start == end) {
+            GPath.moveTo(startX, startY);
+            GPath.curveTo(startX,  startY,  startX+strokeWidth*10,  startY-strokeWidth*9, endX, endY-strokeWidth*10);
+            GPath.curveTo(endX, endY-strokeWidth*10,  startX-strokeWidth*10,  startY-strokeWidth*9, startX,  startY);
+        }else{
+            GPath.moveTo(startX, startY);
+            if (start.getId() < end.getId()) {
+                GPath.curveTo(startX,  startY,  (startX+endX)/2-edgeCurveRatio,  (startY+endY)/2-edgeCurveRatio, endX, endY);
+                GPath.curveTo(endX, endY,  (startX+endX)/2-edgeCurveRatio,  (startY+endY)/2-edgeCurveRatio,startX,  startY );
+            }else{
+                GPath.curveTo(startX,  startY,  (startX+endX)/2+edgeCurveRatio,  (startY+endY)/2+edgeCurveRatio, endX, endY);
+                GPath.curveTo(endX, endY,  (startX+endX)/2+edgeCurveRatio,  (startY+endY)/2+edgeCurveRatio,startX,  startY );
+            }
+
+            //graphics.drawLine((int)(startX), (int)(startY), (int)(endX), (int)(endY));
+        }
+        GPath.closePath();
+        ((Graphics2D) graphics).draw(GPath);
+        if(isOriented && start != end) //If the graph is oriented, we also have to draw an arrow displaying the arrival vertex
         {
-
+            graphics.setColor(edgeArrowTipColor);
+            arrowTip = getArrow(this, arrowTipWidth);
             graphics.drawLine((int)(arrowTip.get(0).getX()),(int)(arrowTip.get(0).getY()), (int)(arrowTip.get(1).getX()), (int)(arrowTip.get(1).getY()));
             graphics.drawLine((int)(arrowTip.get(0).getX()),(int)(arrowTip.get(0).getY()), (int)(arrowTip.get(2).getX()), (int)(arrowTip.get(2).getY()));
         }
@@ -72,10 +97,13 @@ public class Edge {
     public ArrayList<Point> getEdgePoints(Edge edge)
     {
         //Step 1 : retreiving the center of the starting point and ending point
-        int startingVertexCenterX = start.getCoordX() + start.getDiameter()/2,
-            startingVertexCenterY = start.getCoordY() + start.getDiameter()/2,
-            endingVertexCenterX = end.getCoordX() + end.getDiameter()/2,
-            endingVertexCenterY = end.getCoordY() + end.getDiameter()/2;
+        int startRadius = start.getDiameter()/2,
+            endRadius = end.getDiameter()/2;
+        int startingVertexCenterX = start.getCoordX() + startRadius,
+            startingVertexCenterY = start.getCoordY() + startRadius,
+            endingVertexCenterX = end.getCoordX() + endRadius,
+            endingVertexCenterY = end.getCoordY() + endRadius;
+        
         
         //Step 2 : We must determine the edge direction
         int vectorDirX = endingVertexCenterX - startingVertexCenterX,
@@ -88,10 +116,16 @@ public class Edge {
         //Step 4 : getting the starting and ending coordinates thanks to the normalized vector
         ArrayList<Point> result = new ArrayList<Point>(); 
 
-        result.add(new Point((int)(startingVertexCenterX + ((start.getDiameter()/2)*normalizedVectorX)),//Starting point first (index 0)
-                            (int)(startingVertexCenterY + ((start.getDiameter()/2)*normalizedVectorY))));
-        result.add(new Point((int)(endingVertexCenterX - ((end.getDiameter()/2)*normalizedVectorX)),//Ending point (index 1)
-                             (int)(endingVertexCenterY - ((end.getDiameter()/2)*normalizedVectorY))));
+        if (start == end) {
+            result.add(new Point(startingVertexCenterX,start.getCoordY()));
+            result.add(new Point(endingVertexCenterX,end.getCoordY()));
+            return result;
+        }
+
+        result.add(new Point((int)(startingVertexCenterX + ((startRadius)*normalizedVectorX)),//Starting point first (index 0)
+                            (int)(startingVertexCenterY + (startRadius*normalizedVectorY))));
+        result.add(new Point((int)(endingVertexCenterX - ((endRadius)*normalizedVectorX)),//Ending point (index 1)
+                             (int)(endingVertexCenterY - ((endRadius)*normalizedVectorY))));
 
         //We can now return the result
         return result;
@@ -177,5 +211,22 @@ public class Edge {
     public void setHighlightColor(Color highlightColor) {
         this.highlightColor = highlightColor;
     }
+
+    public int getArrowTipWidth() {
+        return arrowTipWidth;
+    }
+
+    public void setArrowTipWidth(int arrowTipWidth) {
+        this.arrowTipWidth = arrowTipWidth;
+    }
+
+    public Color getEdgeArrowTipColor() {
+        return edgeArrowTipColor;
+    }
+
+    public void setEdgeArrowTipColor(Color edgeArrowTipColor) {
+        this.edgeArrowTipColor = edgeArrowTipColor;
+    }
+    
     
 }
