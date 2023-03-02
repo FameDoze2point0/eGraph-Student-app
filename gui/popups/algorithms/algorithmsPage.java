@@ -11,6 +11,8 @@ import util.algorithm.BellmanFord;
 import util.algorithm.DFS;
 import util.algorithm.Dijkstra;
 import util.algorithm.FloydWarshall;
+import util.algorithm.Kruskal;
+import util.algorithm.Prim;
 import util.algorithm.RS;
 
 import java.awt.event.ActionEvent;
@@ -205,24 +207,21 @@ public class algorithmsPage extends JDialog{
 
                     case "Prim": // Prim
                         try {
-                            graph.algo_Prim(v1);
+                            Prim algoPrim = new Prim(graph, v1);
+                            algoPrim.start();
                         } catch (Exception exce) {
                             System.out.println(e);
                         }
                         break;
                     
                     case "Kruskal": // Kruskal
-                        //graph.algo_Kruskal();
+                        Kruskal algoKruskal = new Kruskal(graph); 
+                        algoKruskal.start();
                         break;
 
                     default:
                         break;
                 }
-
-            
-            
-            
-            
             }
         };
 
