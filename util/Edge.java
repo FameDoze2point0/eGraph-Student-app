@@ -45,7 +45,21 @@ public class Edge {
         return path;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void paint(Graphics graphics, Boolean isOriented, Boolean isWeighted, Object collision){
+        
         graphics.setColor(strokeColor);
         if (collision == this) {
             ((Graphics2D)graphics).setStroke(new BasicStroke(strokeWidth*1.5f)); //Change stroke
@@ -59,39 +73,113 @@ public class Edge {
             endX = edgePoint.get(1).getX(),
             endY = edgePoint.get(1).getY();
 
-
-        GeneralPath GPath = new GeneralPath();
         if (start == end) {
+            GeneralPath GPath =  new GeneralPath();
             GPath.moveTo(startX, startY);
-            GPath.curveTo(startX,  startY,  startX+strokeWidth*10,  startY-strokeWidth*9, endX, endY-strokeWidth*10);
-            GPath.curveTo(endX, endY-strokeWidth*10,  startX-strokeWidth*10,  startY-strokeWidth*9, startX,  startY);
+            GPath.curveTo(startX, startY, startX+strokeWidth*10, startY-strokeWidth*9, endX, endY-strokeWidth*10);
+            GPath.curveTo(endX, endY-strokeWidth*10, startX-strokeWidth*10, startY-strokeWidth*9, startX, startY);
+            GPath.closePath();
+            ((Graphics2D) graphics).draw(GPath);
         }else{
-            GPath.moveTo(startX, startY);
-            if (start.getId() < end.getId()) {
-                GPath.curveTo(startX,  startY,  (startX+endX)/2-edgeCurveRatio,  (startY+endY)/2-edgeCurveRatio, endX, endY);
-                GPath.curveTo(endX, endY,  (startX+endX)/2-edgeCurveRatio,  (startY+endY)/2-edgeCurveRatio,startX,  startY );
-            }else{
-                GPath.curveTo(startX,  startY,  (startX+endX)/2+edgeCurveRatio,  (startY+endY)/2+edgeCurveRatio, endX, endY);
-                GPath.curveTo(endX, endY,  (startX+endX)/2+edgeCurveRatio,  (startY+endY)/2+edgeCurveRatio,startX,  startY );
-            }
+            if (isOriented) {
+                GeneralPath GPath =  new GeneralPath();
+                GPath.moveTo(startX, startY);
+                if (start.getId() < end.getId()) {
+                    GPath.curveTo(startX,  startY,  (startX+endX)/2-edgeCurveRatio,  (startY+endY)/2-edgeCurveRatio, endX, endY);
+                    GPath.curveTo(endX, endY,  (startX+endX)/2-edgeCurveRatio,  (startY+endY)/2-edgeCurveRatio,startX,  startY );
+                }else{
+                    GPath.curveTo(startX,  startY,  (startX+endX)/2+edgeCurveRatio,  (startY+endY)/2+edgeCurveRatio, endX, endY);
+                    GPath.curveTo(endX, endY,  (startX+endX)/2+edgeCurveRatio,  (startY+endY)/2+edgeCurveRatio,startX,  startY );
+                }
+                GPath.closePath();
+                ((Graphics2D) graphics).draw(GPath);
 
-            //graphics.drawLine((int)(startX), (int)(startY), (int)(endX), (int)(endY));
+                graphics.setColor(edgeArrowTipColor);
+                arrowTip = getArrow(this, arrowTipWidth);
+                graphics.drawLine((int)(arrowTip.get(0).getX()),(int)(arrowTip.get(0).getY()), (int)(arrowTip.get(1).getX()), (int)(arrowTip.get(1).getY()));
+                graphics.drawLine((int)(arrowTip.get(0).getX()),(int)(arrowTip.get(0).getY()), (int)(arrowTip.get(2).getX()), (int)(arrowTip.get(2).getY()));
+
+            }else{
+                graphics.drawLine((int)startX, (int)startY, (int)endX, (int)endY);
+            }
+            //If the graph is weighted, we then draw every weight (after we have drawn every edge)
+            if (isWeighted) {
+                graphics.setColor(Color.black);
+                graphics.drawString(weight.toString(), (int)((start.getCoordX()+end.getCoordX())/2), (int)((start.getCoordY()+end.getCoordY())/2));
+            }
         }
-        GPath.closePath();
-        ((Graphics2D) graphics).draw(GPath);
-        if(isOriented && start != end) //If the graph is oriented, we also have to draw an arrow displaying the arrival vertex
-        {
-            graphics.setColor(edgeArrowTipColor);
-            arrowTip = getArrow(this, arrowTipWidth);
-            graphics.drawLine((int)(arrowTip.get(0).getX()),(int)(arrowTip.get(0).getY()), (int)(arrowTip.get(1).getX()), (int)(arrowTip.get(1).getY()));
-            graphics.drawLine((int)(arrowTip.get(0).getX()),(int)(arrowTip.get(0).getY()), (int)(arrowTip.get(2).getX()), (int)(arrowTip.get(2).getY()));
-        }
-        //If the graph is weighted, we then draw every weight (after we have drawn every edge)
-        if(isWeighted && weight != null)
-        {
-            graphics.drawString(weight.toString(), (int)((start.getCoordX()+end.getCoordX())/2), (int)((start.getCoordY()+end.getCoordY())/2));
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // GeneralPath GPath = new GeneralPath();
+        // if (start == end) {
+        //     GPath.moveTo(startX, startY);
+        //     GPath.curveTo(startX,  startY,  startX+strokeWidth*10,  startY-strokeWidth*9, endX, endY-strokeWidth*10);
+        //     GPath.curveTo(endX, endY-strokeWidth*10,  startX-strokeWidth*10,  startY-strokeWidth*9, startX,  startY);
+        // }else{
+        //     GPath.moveTo(startX, startY);
+        //     if (start.getId() < end.getId()) {
+        //         GPath.curveTo(startX,  startY,  (startX+endX)/2-edgeCurveRatio,  (startY+endY)/2-edgeCurveRatio, endX, endY);
+        //         GPath.curveTo(endX, endY,  (startX+endX)/2-edgeCurveRatio,  (startY+endY)/2-edgeCurveRatio,startX,  startY );
+        //     }else{
+        //         GPath.curveTo(startX,  startY,  (startX+endX)/2+edgeCurveRatio,  (startY+endY)/2+edgeCurveRatio, endX, endY);
+        //         GPath.curveTo(endX, endY,  (startX+endX)/2+edgeCurveRatio,  (startY+endY)/2+edgeCurveRatio,startX,  startY );
+        //     }
+
+        //     //graphics.drawLine((int)(startX), (int)(startY), (int)(endX), (int)(endY));
+        // }
+        // GPath.closePath();
+        // ((Graphics2D) graphics).draw(GPath);
+        // if(isOriented && start != end) //If the graph is oriented, we also have to draw an arrow displaying the arrival vertex
+        // {
+        //     graphics.setColor(edgeArrowTipColor);
+        //     arrowTip = getArrow(this, arrowTipWidth);
+        //     graphics.drawLine((int)(arrowTip.get(0).getX()),(int)(arrowTip.get(0).getY()), (int)(arrowTip.get(1).getX()), (int)(arrowTip.get(1).getY()));
+        //     graphics.drawLine((int)(arrowTip.get(0).getX()),(int)(arrowTip.get(0).getY()), (int)(arrowTip.get(2).getX()), (int)(arrowTip.get(2).getY()));
+        // }
+        // //If the graph is weighted, we then draw every weight (after we have drawn every edge)
+        // if(isWeighted && weight != null)
+        // {
+        //     graphics.drawString(weight.toString(), (int)((start.getCoordX()+end.getCoordX())/2), (int)((start.getCoordY()+end.getCoordY())/2));
+        // }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //Allow to get the precise starting and ending coordinates of the edge
     public ArrayList<Point> getEdgePoints(Edge edge)
