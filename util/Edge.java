@@ -8,12 +8,12 @@ import java.util.ArrayList;
 public class Edge {
     private Vertex start, end;
     private Object weight;
-    private int strokeWidth, arrowTipWidth = 20, edgeCurveRatio = 50;
+    private int strokeWidth, arrowTipWidth = 20;
     private Color strokeColor, highlightColor, edgeArrowTipColor;
     private Path2D.Float collisionArea;
 
 
-    public Edge(Vertex start, Vertex end, Object weight, int strokeWidth, Color strokeColor, Color highlightColor, Color edgeArrowTipColor) {
+    public Edge(Vertex start, Vertex end, Object weight, int strokeWidth, Color strokeColor, Color highlightColor, Color edgeArrowTipColor, Graph graph) {
         this.start = start;
         this.end = end;
         this.weight = weight;
@@ -21,75 +21,123 @@ public class Edge {
         this.strokeColor = strokeColor;
         this.highlightColor = highlightColor;
         this.edgeArrowTipColor = edgeArrowTipColor;
-        collisionArea = refreshCollisionArea();
+        collisionArea = refreshCollisionArea(graph.getOriented(), graph.bothDirections(this));
     }
 
-    public Path2D.Float refreshCollisionArea(){ 
-
+    public Path2D.Float refreshCollisionArea(Boolean isOriented, Boolean bothDirections)
+    { 
         Path2D.Float path = new Path2D.Float();
 
-        ArrayList<Point> edgePoint = getEdgePoints(this);
+        //If the edge have the same starting and ending vertexs
+        if(start == end)
+        {
+            ArrayList<Point> edgePoint = getEdgePoints(this);
 
-        int startX = (int)edgePoint.get(0).getX(),
-            startY = (int)edgePoint.get(0).getY(), 
-            endX = (int)edgePoint.get(1).getX(), 
-            endY = (int)edgePoint.get(1).getY(),
-            width = getStrokeWidth() * 2;
+            double startX = edgePoint.get(0).getX(),
+                startY = edgePoint.get(0).getY(),
+                endX = edgePoint.get(1).getX(),
+                endY = edgePoint.get(1).getY();
 
-        path.moveTo(startX-width, startY-width); //Starting point
-        path.lineTo(startX+width, startY+width);
-        path.lineTo(endX+width, endY+width); 
-        path.lineTo(endX-width, endY-width); //End point
-        path.closePath();
+            //It's a loop
+            path.moveTo(startX, startY);
+            path.curveTo(startX,  startY,  startX+strokeWidth*10,  startY-strokeWidth*9, endX, endY-strokeWidth*10);
+            path.curveTo(endX, endY-strokeWidth*10,  startX-strokeWidth*10,  startY-strokeWidth*9, startX,  startY);
+            path.closePath();
+        }
+
+        //If this is an edge that don't have the same starting and ending vertex
+        else
+        {
+            ArrayList<Point> edgePoint = getEdgePoints(this);
+
+            int index = 0;
+            if(isOriented && bothDirections)
+            {
+                index = index + 2;
+            }
+
+            int startX = (int)edgePoint.get(index).getX(),
+                startY = (int)edgePoint.get(index).getY(), 
+                endX = (int)edgePoint.get(index + 1).getX(), 
+                endY = (int)edgePoint.get(index + 1).getY(),
+                width = getStrokeWidth() * 2;
+
+            path.moveTo(startX-width, startY-width); //Starting point
+            path.lineTo(startX+width, startY+width);
+            path.lineTo(endX+width, endY+width); 
+            path.lineTo(endX-width, endY-width); //End point
+            path.closePath();
+        }
 
         return path;
     }
 
-    public void paint(Graphics graphics, Boolean isOriented, Boolean isWeighted, Object collision){
+    public void paint(Graphics graphics, Boolean isOriented, Boolean isWeighted, Object collision, Graph graph, Boolean bothDirections)
+    {
         graphics.setColor(strokeColor);
-        if (collision == this) {
+        if (collision == this)
+        {
             ((Graphics2D)graphics).setStroke(new BasicStroke(strokeWidth*1.5f)); //Change stroke
-        }else{
+        }
+        else
+        {
             ((Graphics2D)graphics).setStroke(new BasicStroke(strokeWidth)); //Change stroke
         }
 
-        ArrayList<Point> edgePoint = getEdgePoints(this), arrowTip ;
-        double startX = edgePoint.get(0).getX(),
-            startY = edgePoint.get(0).getY(),
-            endX = edgePoint.get(1).getX(),
-            endY = edgePoint.get(1).getY();
+        ArrayList<Point> edgePoint = getEdgePoints(this), arrowTip;
 
+        int index = 0;
+        //If the graph is oriented and the edge go both direction (there is an edge with this edge end as a start and this edge start as an end) we move the edge a bit
+        if(isOriented)
+        {
+            if(bothDirections)
+            {
+                index = index + 2;
+            }
+        }
 
-        GeneralPath GPath = new GeneralPath();
-        if (start == end) {
+        double startX = edgePoint.get(index).getX(),
+            startY = edgePoint.get(index).getY(),
+            endX = edgePoint.get(index + 1).getX(),
+            endY = edgePoint.get(index + 1).getY();
+
+        if (start == end)
+        {
+            //It's a loop
+            GeneralPath GPath = new GeneralPath();
             GPath.moveTo(startX, startY);
             GPath.curveTo(startX,  startY,  startX+strokeWidth*10,  startY-strokeWidth*9, endX, endY-strokeWidth*10);
             GPath.curveTo(endX, endY-strokeWidth*10,  startX-strokeWidth*10,  startY-strokeWidth*9, startX,  startY);
-        }else{
-            GPath.moveTo(startX, startY);
-            if (start.getId() < end.getId()) {
-                GPath.curveTo(startX,  startY,  (startX+endX)/2-edgeCurveRatio,  (startY+endY)/2-edgeCurveRatio, endX, endY);
-                GPath.curveTo(endX, endY,  (startX+endX)/2-edgeCurveRatio,  (startY+endY)/2-edgeCurveRatio,startX,  startY );
-            }else{
-                GPath.curveTo(startX,  startY,  (startX+endX)/2+edgeCurveRatio,  (startY+endY)/2+edgeCurveRatio, endX, endY);
-                GPath.curveTo(endX, endY,  (startX+endX)/2+edgeCurveRatio,  (startY+endY)/2+edgeCurveRatio,startX,  startY );
-            }
-
-            //graphics.drawLine((int)(startX), (int)(startY), (int)(endX), (int)(endY));
+            GPath.closePath();
+            ((Graphics2D) graphics).draw(GPath);
         }
-        GPath.closePath();
-        ((Graphics2D) graphics).draw(GPath);
+        else
+        {
+            //We draw the edge
+            graphics.setColor(strokeColor);
+            graphics.drawLine((int)startX, (int)startY, (int)endX, (int)endY);
+        }
+
+        
         if(isOriented && start != end) //If the graph is oriented, we also have to draw an arrow displaying the arrival vertex
         {
             graphics.setColor(edgeArrowTipColor);
-            arrowTip = getArrow(this, arrowTipWidth);
+            arrowTip = getArrow(this, index + 1, arrowTipWidth); // + 1 because we want the end vertex
             graphics.drawLine((int)(arrowTip.get(0).getX()),(int)(arrowTip.get(0).getY()), (int)(arrowTip.get(1).getX()), (int)(arrowTip.get(1).getY()));
             graphics.drawLine((int)(arrowTip.get(0).getX()),(int)(arrowTip.get(0).getY()), (int)(arrowTip.get(2).getX()), (int)(arrowTip.get(2).getY()));
         }
+        
         //If the graph is weighted, we then draw every weight (after we have drawn every edge)
-        if(isWeighted && weight != null)
+        if(isWeighted)
         {
-            graphics.drawString(weight.toString(), (int)((start.getCoordX()+end.getCoordX())/2), (int)((start.getCoordY()+end.getCoordY())/2));
+            if(weight == null)
+            {
+                graphics.drawString("0", (int)((start.getCoordX()+end.getCoordX())/2), (int)((start.getCoordY()+end.getCoordY())/2));
+            }
+            else
+            {
+                graphics.drawString(weight.toString(), (int)((start.getCoordX()+end.getCoordX())/2), (int)((start.getCoordY()+end.getCoordY())/2));
+            }
         }
     }
 
@@ -104,7 +152,6 @@ public class Edge {
             endingVertexCenterX = end.getCoordX() + endRadius,
             endingVertexCenterY = end.getCoordY() + endRadius;
         
-        
         //Step 2 : We must determine the edge direction
         int vectorDirX = endingVertexCenterX - startingVertexCenterX,
             vectorDirY = endingVertexCenterY - startingVertexCenterY;
@@ -116,28 +163,52 @@ public class Edge {
         //Step 4 : getting the starting and ending coordinates thanks to the normalized vector
         ArrayList<Point> result = new ArrayList<Point>(); 
 
-        if (start == end) {
-            result.add(new Point(startingVertexCenterX,start.getCoordY()));
-            result.add(new Point(endingVertexCenterX,end.getCoordY()));
-            return result;
-        }
+        // === POINTS TO DRAW A STRAIGHT LINE ===
+        {
+            if (start == end) {
+                result.add(new Point(startingVertexCenterX,start.getCoordY()));
+                result.add(new Point(endingVertexCenterX,end.getCoordY()));
+                return result;
+            }
 
-        result.add(new Point((int)(startingVertexCenterX + ((startRadius)*normalizedVectorX)),//Starting point first (index 0)
-                            (int)(startingVertexCenterY + (startRadius*normalizedVectorY))));
-        result.add(new Point((int)(endingVertexCenterX - ((endRadius)*normalizedVectorX)),//Ending point (index 1)
-                             (int)(endingVertexCenterY - ((endRadius)*normalizedVectorY))));
+            result.add(new Point((int)(startingVertexCenterX + ((startRadius)*normalizedVectorX)),//Starting point first (index 0)
+                                (int)(startingVertexCenterY + (startRadius*normalizedVectorY))));
+            result.add(new Point((int)(endingVertexCenterX - ((endRadius)*normalizedVectorX)),//Ending point (index 1)
+                                (int)(endingVertexCenterY - ((endRadius)*normalizedVectorY))));
+        }
+        // === END POINTS TO DRAW A STRAIGHT LINE ===
+
+        //If the graph is oriented, we want to get 2 others points : points that are not starting and ending the vertexs's centers
+        // === POINTS NOT STARTING AND ENDING TO THE CENTER ===
+        {
+
+            double angle = Math.PI/6;
+
+            double newX = result.get(0).getX() - startingVertexCenterX;
+            double newY = result.get(0).getY() - startingVertexCenterY;
+            int X = (int)(newX * Math.cos (angle) + newY * Math.sin (angle) + startingVertexCenterX);
+            int Y = (int)(- newX * Math.sin (angle) + newY * Math.cos (angle) + startingVertexCenterY);
+            result.add(new Point(X,Y));
+
+            newX = result.get(1).getX() - endingVertexCenterX;
+            newY = result.get(1).getY() - endingVertexCenterY;
+            X = (int)(newX * Math.cos (Math.PI*2 - angle) + newY * Math.sin (Math.PI*2 - angle) + endingVertexCenterX);
+            Y = (int)(- newX * Math.sin (Math.PI*2 - angle) + newY * Math.cos (Math.PI*2 - angle) + endingVertexCenterY);
+            result.add(new Point(X,Y));
+        }
+        // === END POINTS NOT STARTING AND ENDING TO THE CENTER ===
 
         //We can now return the result
         return result;
     }
 
     //Allow to get points to draw the arrow
-    public ArrayList<Point> getArrow(Edge edge, int size)
+    public ArrayList<Point> getArrow(Edge edge, int index, int size)
     {
         //Tip of the arrow
         ArrayList<Point> edgePoint = getEdgePoints(edge);
-        int arrowTipX = (int)edgePoint.get(1).getX(),
-            arrowTipY = (int)edgePoint.get(1).getY();
+        int arrowTipX = (int)edgePoint.get(index).getX(),
+            arrowTipY = (int)edgePoint.get(index).getY();
         
 
         //Now we need 2 more points to draw the arrow
@@ -156,6 +227,7 @@ public class Edge {
         return result;
     }
 
+    
     public Vertex getStart() {
         return start;
     }
