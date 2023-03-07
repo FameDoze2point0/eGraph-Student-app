@@ -3,6 +3,7 @@ import java.awt.event.*;
 import javax.swing.JPanel;
 import gui.Gui;
 import gui.draw.rightclickmenu.RightClick;
+import gui.popups.newElement.AskWeight;
 import util.Edge;
 import util.Graph;
 import util.Vertex;
@@ -172,7 +173,8 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                 case(1): {
                     //In state 1, when the mouse is clicked, we create a new vertex/state
                     //We retrieve the actual graph/automaton
-                    graph.addVertex(new Vertex(e.getX() - radius, e.getY() - radius, diameter, graph.getVertexStrokeWidth(), graph.getVertexInsideColor(), graph.getVertexOutsideColor(), ""+(graph.getVertices().size()), graph.getVertexNameColor())); //We add the new vertex to the graph
+                    int cpt = graph.getCpt();
+                    graph.addVertex(new Vertex(cpt,e.getX() - radius, e.getY() - radius, graph.getVertexDiameter(), graph.getVertexStrokeWidth(), graph.getVertexInsideColor(), graph.getVertexOutsideColor(), ""+(cpt), graph.getVertexNameColor())); //We add the new vertex to the graph
                     break;
                 }
 
@@ -190,7 +192,12 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                         else
                         {
                             //Adding the edge to the graph
-                            graph.addEdge(new Edge(start, vertex, null, graph.getEdgeStrokeWidth(), graph.getEdgeStrokeColor(), graph.getEdgeHighlightColor(), graph.getEdgeArrowTipColor()));
+                            Integer weight = null;
+                            if (graph.getWeighted()){
+                                AskWeight askingWeightPage = new AskWeight(gui, drawArea);
+                                weight = askingWeightPage.getWeight();
+                            }
+                            graph.addEdge(new Edge(start, vertex, weight, graph.getEdgeStrokeWidth(), graph.getEdgeStrokeColor(), graph.getEdgeHighlightColor(), graph.getEdgeArrowTipColor()));
                             start = null;
                         }
                     }

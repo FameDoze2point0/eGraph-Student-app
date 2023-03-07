@@ -23,7 +23,7 @@ public class Main
 
         //TEMP
         int defaultWidth = 5; //For edges
-        int defaultRadius = 30; //For vertexs
+        int defaultRadius = 50; //For vertexs
         Color defaultBorder = Color.BLACK;
         Color defaultInside = Color.WHITE;
         Color defaultEdgeColor = Color.BLACK;
@@ -33,13 +33,13 @@ public class Main
         gui.getDraw().addTab("temp_graph", null, pp, "temporary graph");
         Graph g = new Graph("Test", true, true, pp);
 
-        Vertex v0 = new Vertex(200 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "0", defaultNameColor);
-        Vertex v1 = new Vertex(400 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "1", defaultNameColor);
-        Vertex v2 = new Vertex(400 - defaultRadius/2, 300 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "2",defaultNameColor);
-        Vertex v3 = new Vertex(200 - defaultRadius/2, 300 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "3",defaultNameColor);
-        Vertex v4 = new Vertex(600 - defaultRadius/2, 300 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "4",defaultNameColor);
-        Vertex v5 = new Vertex(400 - defaultRadius/2, 500 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "5",defaultNameColor);
-        Vertex v6 = new Vertex(600 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "6",defaultNameColor);
+        Vertex v0 = new Vertex(0,200 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "0", defaultNameColor);
+        Vertex v1 = new Vertex(1,400 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "1", defaultNameColor);
+        Vertex v2 = new Vertex(2,400 - defaultRadius/2, 300 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "2",defaultNameColor);
+        Vertex v3 = new Vertex(3,200 - defaultRadius/2, 300 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "3",defaultNameColor);
+        Vertex v4 = new Vertex(4,600 - defaultRadius/2, 300 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "4",defaultNameColor);
+        Vertex v5 = new Vertex(5,400 - defaultRadius/2, 500 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "5",defaultNameColor);
+        Vertex v6 = new Vertex(6,600 - defaultRadius/2, 100 - defaultRadius/2, defaultRadius, defaultWidth, defaultInside, defaultBorder, "6",defaultNameColor);
 
         
         g.addVertex(v0);

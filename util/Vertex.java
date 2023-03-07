@@ -25,8 +25,8 @@ public class Vertex
      * @param borderColor Color of the vertex's outside
      * @param name Name of the vertex that will be displayed
      */
-    public Vertex(int coordX, int coordY, int diameter, int strokeWidth, Color insideColor, Color borderColor, String name, Color nameColor){
-        this.id = cpt++;
+    public Vertex(int cpt, int coordX, int coordY, int diameter, int strokeWidth, Color insideColor, Color borderColor, String name, Color nameColor){
+        this.id = cpt;
         this.coordX = coordX;
         this.coordY = coordY;
         this.diameter = diameter;
@@ -42,7 +42,7 @@ public class Vertex
         //Borders
         
         if (collision == this) {
-            ((Graphics2D)graphics).setStroke(new BasicStroke((int)(strokeWidth*2)));    
+            ((Graphics2D)graphics).setStroke(new BasicStroke((int)(strokeWidth*1.5)));    
         }else{
             ((Graphics2D)graphics).setStroke(new BasicStroke(strokeWidth));
         }

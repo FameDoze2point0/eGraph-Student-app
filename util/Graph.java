@@ -10,6 +10,7 @@ import java.awt.*;
 
 public class Graph {
     
+    private int cpt = 0;
     private String name;
     private ArrayList<Vertex> vertices;
     private ArrayList<Edge> edges;
@@ -22,7 +23,8 @@ public class Graph {
                   edgeArrowTipColor = Color.red,
                   vertexNameColor = Color.black;
     private int edgeStrokeWidth = 5, arrowLength = 15; //For edges
-    private int vertexDiameter = 30, vertexStrokeWidth = 5; //For vertexs
+    private int vertexDiameter = 50, vertexStrokeWidth = 5; //For vertexs
+    private ArrayList<ArrayList<Boolean>> existingEdge;
 
 
 
@@ -34,11 +36,13 @@ public class Graph {
         this.weighted = weighted;
         this.edges = new ArrayList<Edge>();
         this.panelPaint = panelPaint;
+        this.existingEdge = new ArrayList<>();
     }
 
     public void paint(Graphics graphics, Object collision){
+
         for (Edge edge : edges) {
-            edge.paint(graphics, oriented, weighted, collision);
+            edge.paint(graphics, oriented, weighted, collision, this, bothDirections(edge));
         }
         for (Vertex vertex : vertices) {
             vertex.paint(graphics, collision);
@@ -78,6 +82,20 @@ public class Graph {
         return null;
     }
 
+     //Return true if there is two edges going from start to finish in the edge in parameter and finish to start in an other edge
+     public Boolean bothDirections(Edge edge)
+     {
+         //The edge in parameter (start to finish) exist, we just check here if end to start also exist
+        if(existingEdge.get(edge.getEnd().getId()).get(edge.getStart().getId()) == true)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public ArrayList<Edge> getEdges() {
         return edges;
     }
@@ -114,16 +132,24 @@ public class Graph {
         this.weighted = weighted;
     }
 
-    public void addVertex(Vertex v){
+    public void addVertex(Vertex v)
+    {
         vertices.add(v);
-    }        
+        existingEdge.add(new ArrayList<Boolean>());
+
+        for(Vertex vertex : vertices)
+        {
+            existingEdge.get(v.getId()).add(false);
+            existingEdge.get(vertex.getId()).add(false);
+        }
+    }       
     public void removeVertex(Vertex v){
         if (vertices.contains(v))
             vertices.remove(v);
     }
 
-    public void addEdge(Edge e){
-        
+    public void addEdge(Edge e)
+    {    
         Boolean existed = false;
 
         for (Edge edge : edges) 
@@ -146,10 +172,22 @@ public class Graph {
                 break;
             }
             
-        if (!existed) {
+        if (!existed)
+        {
             edges.add(e);
-            if (!oriented && !e.getStart().equals(e.getEnd()))
-                edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor));
+            if (!e.getStart().equals(e.getEnd()))
+            {
+                if(!oriented)
+                {
+                    edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor));
+                }
+                else
+                {
+                    //We add the new ending point
+                    existingEdge.get(e.getStart().getId()).set(e.getEnd().getId(), true);
+                }
+            }
+
         }
     }
 
@@ -278,6 +316,9 @@ public class Graph {
         this.edgeArrowTipColor = edgeArrowTipColor;
     }
 
+    public int getCpt() {
+        return cpt++;
+    }
     
     
 }
