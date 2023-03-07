@@ -20,7 +20,7 @@ public class Graph {
                   vertexOutsideColor = Color.black, 
                   edgeStrokeColor = Color.black, 
                   edgeHighlightColor = Color.white,
-                  edgeArrowTipColor = Color.red,
+                  edgeArrowTipColor = Color.black,
                   vertexNameColor = Color.black;
     private int edgeStrokeWidth = 5, arrowLength = 15; //For edges
     private int vertexDiameter = 50, vertexStrokeWidth = 5; //For vertexs
@@ -179,7 +179,7 @@ public class Graph {
             {
                 if(!oriented)
                 {
-                    edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor));
+                    edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor, this));
                 }
                 else
                 {
@@ -193,9 +193,9 @@ public class Graph {
 
     public void addEdge(Vertex v1, Vertex v2, Object weight){
         if (!oriented) 
-            edges.add(new Edge(v2, v1, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor));    
+            edges.add(new Edge(v2, v1, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor, this));    
         
-        edges.add(new Edge(v1, v2, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor));
+        edges.add(new Edge(v1, v2, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor, this));
     }
     public void removeEdge(Edge e){
         if(edges.contains(e))

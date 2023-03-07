@@ -8,12 +8,12 @@ import java.util.ArrayList;
 public class Edge {
     private Vertex start, end;
     private Object weight;
-    private int strokeWidth, arrowTipWidth = 20, edgeCurveRatio = 50;
+    private int strokeWidth, arrowTipWidth = 20;
     private Color strokeColor, highlightColor, edgeArrowTipColor;
     private Path2D.Float collisionArea;
 
 
-    public Edge(Vertex start, Vertex end, Object weight, int strokeWidth, Color strokeColor, Color highlightColor, Color edgeArrowTipColor) {
+    public Edge(Vertex start, Vertex end, Object weight, int strokeWidth, Color strokeColor, Color highlightColor, Color edgeArrowTipColor, Graph graph) {
         this.start = start;
         this.end = end;
         this.weight = weight;
@@ -21,43 +21,56 @@ public class Edge {
         this.strokeColor = strokeColor;
         this.highlightColor = highlightColor;
         this.edgeArrowTipColor = edgeArrowTipColor;
-        collisionArea = refreshCollisionArea();
+        collisionArea = refreshCollisionArea(graph.getOriented(), graph.bothDirections(this));
     }
 
-    public Path2D.Float refreshCollisionArea(){ 
-
+    public Path2D.Float refreshCollisionArea(Boolean isOriented, Boolean bothDirections)
+    { 
         Path2D.Float path = new Path2D.Float();
 
-        ArrayList<Point> edgePoint = getEdgePoints(this);
+        //If the edge have the same starting and ending vertexs
+        if(start == end)
+        {
+            ArrayList<Point> edgePoint = getEdgePoints(this);
 
-        int startX = (int)edgePoint.get(0).getX(),
-            startY = (int)edgePoint.get(0).getY(), 
-            endX = (int)edgePoint.get(1).getX(), 
-            endY = (int)edgePoint.get(1).getY(),
-            width = getStrokeWidth() * 2;
+            double startX = edgePoint.get(0).getX(),
+                startY = edgePoint.get(0).getY(),
+                endX = edgePoint.get(1).getX(),
+                endY = edgePoint.get(1).getY();
 
-        path.moveTo(startX-width, startY-width); //Starting point
-        path.lineTo(startX+width, startY+width);
-        path.lineTo(endX+width, endY+width); 
-        path.lineTo(endX-width, endY-width); //End point
-        path.closePath();
+            //It's a loop
+            path.moveTo(startX, startY);
+            path.curveTo(startX,  startY,  startX+strokeWidth*10,  startY-strokeWidth*9, endX, endY-strokeWidth*10);
+            path.curveTo(endX, endY-strokeWidth*10,  startX-strokeWidth*10,  startY-strokeWidth*9, startX,  startY);
+            path.closePath();
+        }
+
+        //If this is an edge that don't have the same starting and ending vertex
+        else
+        {
+            ArrayList<Point> edgePoint = getEdgePoints(this);
+
+            int index = 0;
+            if(isOriented && bothDirections)
+            {
+                index = index + 2;
+            }
+
+            int startX = (int)edgePoint.get(index).getX(),
+                startY = (int)edgePoint.get(index).getY(), 
+                endX = (int)edgePoint.get(index + 1).getX(), 
+                endY = (int)edgePoint.get(index + 1).getY(),
+                width = getStrokeWidth() * 2;
+
+            path.moveTo(startX-width, startY-width); //Starting point
+            path.lineTo(startX+width, startY+width);
+            path.lineTo(endX+width, endY+width); 
+            path.lineTo(endX-width, endY-width); //End point
+            path.closePath();
+        }
 
         return path;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void paint(Graphics graphics, Boolean isOriented, Boolean isWeighted, Object collision, Graph graph, Boolean bothDirections)
     {
@@ -115,9 +128,16 @@ public class Edge {
         }
         
         //If the graph is weighted, we then draw every weight (after we have drawn every edge)
-        if(isWeighted && weight != null)
+        if(isWeighted)
         {
-            graphics.drawString(weight.toString(), (int)((start.getCoordX()+end.getCoordX())/2), (int)((start.getCoordY()+end.getCoordY())/2));
+            if(weight == null)
+            {
+                graphics.drawString("0", (int)((start.getCoordX()+end.getCoordX())/2), (int)((start.getCoordY()+end.getCoordY())/2));
+            }
+            else
+            {
+                graphics.drawString(weight.toString(), (int)((start.getCoordX()+end.getCoordX())/2), (int)((start.getCoordY()+end.getCoordY())/2));
+            }
         }
     }
 

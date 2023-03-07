@@ -197,7 +197,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                                 AskWeight askingWeightPage = new AskWeight(gui, drawArea);
                                 weight = askingWeightPage.getWeight();
                             }
-                            graph.addEdge(new Edge(start, vertex, weight, graph.getEdgeStrokeWidth(), graph.getEdgeStrokeColor(), graph.getEdgeHighlightColor(), graph.getEdgeArrowTipColor()));
+                            graph.addEdge(new Edge(start, vertex, weight, graph.getEdgeStrokeWidth(), graph.getEdgeStrokeColor(), graph.getEdgeHighlightColor(), graph.getEdgeArrowTipColor(), graph));
                             start = null;
                         }
                     }
@@ -255,7 +255,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                 
                 for(Edge edge : graph.getEdges())
                 {
-                    edge.setCollisionArea(edge.refreshCollisionArea());
+                    edge.setCollisionArea(edge.refreshCollisionArea(graph.getOriented(), graph.bothDirections(edge)));
                 }
 
                 repaint();
