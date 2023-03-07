@@ -21,6 +21,8 @@ public class Graph {
                   edgeStrokeColor = Color.black, 
                   edgeHighlightColor = Color.white,
                   edgeArrowTipColor = Color.black,
+                  edgeWeightColor = Color.white,
+                  edgeWeightBorderColor = Color.black,
                   vertexNameColor = Color.black;
     private int edgeStrokeWidth = 5, arrowLength = 15; //For edges
     private int vertexDiameter = 50, vertexStrokeWidth = 5; //For vertexs
@@ -179,7 +181,7 @@ public class Graph {
             {
                 if(!oriented)
                 {
-                    edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor, this));
+                    edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor, edgeWeightColor, edgeWeightBorderColor, this));
                 }
                 else
                 {
@@ -193,9 +195,9 @@ public class Graph {
 
     public void addEdge(Vertex v1, Vertex v2, Object weight){
         if (!oriented) 
-            edges.add(new Edge(v2, v1, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor, this));    
+            edges.add(new Edge(v2, v1, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor, edgeWeightColor,edgeWeightBorderColor,this));    
         
-        edges.add(new Edge(v1, v2, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor, this));
+        edges.add(new Edge(v1, v2, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor, edgeWeightColor,edgeWeightBorderColor,this));
     }
     public void removeEdge(Edge e){
         if(edges.contains(e))
@@ -318,6 +320,34 @@ public class Graph {
 
     public int getCpt() {
         return cpt++;
+    }
+
+    public void setCpt(int cpt) {
+        this.cpt = cpt;
+    }
+
+    public Color getEdgeWeightColor() {
+        return edgeWeightColor;
+    }
+
+    public void setEdgeWeightColor(Color edgeWeightColor) {
+        this.edgeWeightColor = edgeWeightColor;
+    }
+
+    public Color getEdgeWeightBorderColor() {
+        return edgeWeightBorderColor;
+    }
+
+    public void setEdgeWeightBorderColor(Color edgeWeightBorderColor) {
+        this.edgeWeightBorderColor = edgeWeightBorderColor;
+    }
+
+    public ArrayList<ArrayList<Boolean>> getExistingEdge() {
+        return existingEdge;
+    }
+
+    public void setExistingEdge(ArrayList<ArrayList<Boolean>> existingEdge) {
+        this.existingEdge = existingEdge;
     }
     
     

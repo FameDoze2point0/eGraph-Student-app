@@ -8,7 +8,6 @@ import util.Edge;
 import util.Graph;
 import util.Vertex;
 import java.awt.*;
-import java.util.*;
 
 public class PanelPaint extends JPanel implements MouseListener, MouseMotionListener
 {
@@ -164,7 +163,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
         Vertex vertex;
         Edge edge;
-        int radius = graph.getVertexDiameter()/2, diameter = graph.getVertexDiameter();
+        int radius = graph.getVertexDiameter()/2;
         //=== LEFT CLICK DETECTION === to create new elements and interact
         if(e.getButton() == MouseEvent.BUTTON1)
         {
@@ -197,7 +196,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                                 AskWeight askingWeightPage = new AskWeight(gui, drawArea);
                                 weight = askingWeightPage.getWeight();
                             }
-                            graph.addEdge(new Edge(start, vertex, weight, graph.getEdgeStrokeWidth(), graph.getEdgeStrokeColor(), graph.getEdgeHighlightColor(), graph.getEdgeArrowTipColor(), graph));
+                            graph.addEdge(new Edge(start, vertex, weight, graph.getEdgeStrokeWidth(), graph.getEdgeStrokeColor(), graph.getEdgeHighlightColor(), graph.getEdgeArrowTipColor(), graph.getEdgeWeightColor(), graph.getEdgeWeightBorderColor(), graph));
                             start = null;
                         }
                     }

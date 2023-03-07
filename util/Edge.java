@@ -9,11 +9,11 @@ public class Edge {
     private Vertex start, end;
     private Object weight;
     private int strokeWidth, arrowTipWidth = 20;
-    private Color strokeColor, highlightColor, edgeArrowTipColor;
+    private Color strokeColor, highlightColor, edgeArrowTipColor, weightColor, weightBorderColor;
     private Path2D.Float collisionArea;
 
 
-    public Edge(Vertex start, Vertex end, Object weight, int strokeWidth, Color strokeColor, Color highlightColor, Color edgeArrowTipColor, Graph graph) {
+    public Edge(Vertex start, Vertex end, Object weight, int strokeWidth, Color strokeColor, Color highlightColor, Color edgeArrowTipColor, Color weightColor, Color weightBorderColor, Graph graph) {
         this.start = start;
         this.end = end;
         this.weight = weight;
@@ -21,6 +21,8 @@ public class Edge {
         this.strokeColor = strokeColor;
         this.highlightColor = highlightColor;
         this.edgeArrowTipColor = edgeArrowTipColor;
+        this.weightColor = weightColor;
+        this.weightBorderColor = weightBorderColor;
         collisionArea = refreshCollisionArea(graph.getOriented(), graph.bothDirections(this));
     }
 
@@ -130,14 +132,48 @@ public class Edge {
         //If the graph is weighted, we then draw every weight (after we have drawn every edge)
         if(isWeighted)
         {
+            //We first retreive the string to draw
+            String toDraw;
             if(weight == null)
             {
-                graphics.drawString("0", (int)((start.getCoordX()+end.getCoordX())/2), (int)((start.getCoordY()+end.getCoordY())/2));
+                toDraw = "0";
+                //graphics.drawString("0", (int)((start.getCoordX()+end.getCoordX())/2), (int)((start.getCoordY()+end.getCoordY())/2));
             }
             else
             {
-                graphics.drawString(weight.toString(), (int)((start.getCoordX()+end.getCoordX())/2), (int)((start.getCoordY()+end.getCoordY())/2));
+                toDraw = weight.toString();
+                //graphics.drawString(weight.toString(), (int)((start.getCoordX()+end.getCoordX())/2), (int)((start.getCoordY()+end.getCoordY())/2));
             }
+
+            //Style of the weight text
+            graphics.setFont(new Font("Arial", 0, getIdealFontSize(weight.toString())));
+
+            //Once we retreive the weight, we want to draw it in the middle of the edge a highlight of the same color as the edge
+            int offsetX = (int)(startX + endX)/2 - graphics.getFontMetrics().stringWidth(weight.toString())/2;
+            int offsetY = (int)(startY + endY)/2 + graphics.getFontMetrics().getHeight()/4;
+
+            graphics.setColor(weightBorderColor); //Color of the edge
+            //We draw the highlight (border of the text)
+            graphics.drawString(toDraw, offsetX + 1, offsetY + 1);
+            graphics.drawString(toDraw, offsetX - 1, offsetY + 1);
+            graphics.drawString(toDraw, offsetX + 1, offsetY - 1);
+            graphics.drawString(toDraw, offsetX - 1, offsetY - 1);
+
+            //We draw the real string
+            graphics.setColor(weightColor);
+            graphics.drawString(toDraw, offsetX, offsetY);
+        }
+    }
+
+    public int getIdealFontSize(String text)
+    {
+        switch(text.length())
+        {
+            case(1):return 28;
+            case(2):return 22;
+            case(3):return 16;
+            case(4):return 10;
+            default:return 8;
         }
     }
 

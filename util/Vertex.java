@@ -54,8 +54,27 @@ public class Vertex
 
         //We draw vertex name on top of the vertex (color of border)
         graphics.setColor(nameColor);
-        graphics.drawString(name, (int)(coordX+diameter/2.7), (int)(coordY+diameter/1.5));
-        
+
+
+        graphics.setFont(new Font("Arial", 0, getIdealFontSize(name)));
+
+
+        //We retreive the good text offset
+        int offsetX = diameter/2 - graphics.getFontMetrics().stringWidth(name)/2;
+        int offsetY = diameter/2 + graphics.getFontMetrics().getHeight()/4;
+        graphics.drawString(name, (int)(coordX+offsetX), (int)(coordY+offsetY));
+    }
+
+    public int getIdealFontSize(String text)
+    {
+        switch(text.length())
+        {
+            case(1):return 28;
+            case(2):return 22;
+            case(3):return 16;
+            case(4):return 10;
+            default:return 8;
+        }
     }
 
     /**

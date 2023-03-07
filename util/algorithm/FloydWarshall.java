@@ -61,7 +61,7 @@ public class FloydWarshall extends Thread{
             Color c = new Color((int)((Math.sin(i*Math.PI*2/n)+1)*127), (int)((Math.sin((i+shift)*Math.PI*2/n)+1)*127), (int)((Math.sin((i+2*shift)*Math.PI*2/n)+1)*127));
             for (int j = 0; j < M.length; j++) {
                 if (mem[i][j]) {
-                    Edge edgeTemp = new Edge(vertices.get(i),vertices.get(j) , M[i][j], width,c ,c, c, graph);
+                    Edge edgeTemp = new Edge(vertices.get(i),vertices.get(j) , M[i][j], width,c ,c, c, c, Color.BLACK, graph);
                     toDelete.add(edgeTemp);
                     graph.addEdge(edgeTemp);
                 }
