@@ -19,6 +19,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
     private int X;
     private int Y;
+    private Vertex isDragged = null; //Vertex that is being mouse dragged
 
     // //Menu when we right click
     RightClick rightClickMenu;
@@ -39,20 +40,6 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         this.add(rightClickMenu);   
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public void paint(Graphics graphics)
     {
         super.paint(graphics); //Refresh the JPanel with blank space
@@ -64,49 +51,6 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             }
             graph.paint(graphics, itemCollision);    
         }
-
-        //save
-        {
-            // // === IF THE CURSOR IS ON TOP OF A VERTEX/EGDE, WE HIGHLIGHT THE EDGE/VERTEX ===
-        // Vertex vertex;
-        // if((vertex = this.vertexCollision(graph,X,Y)) != null)
-        // {
-        //     //We highlight this vertex
-        //     //Borders
-        //     graphics.setColor(vertex.getBorderColor());
-        //     graphics.fillOval(vertex.getCoordX(), vertex.getCoordY(), vertex.getDiameter(), vertex.getDiameter());
-
-        //     //Inside
-        //     graphics.setColor(vertex.getInsideColor());
-        //     graphics.fillOval(vertex.getCoordX()+((int)(vertex.getDiameter()*0.4)/2), vertex.getCoordY()+((int)(vertex.getDiameter()*0.4)/2), (int)(vertex.getDiameter()*0.6), (int)(vertex.getDiameter()*0.6));
-
-        //     //We draw vertex name on top of the vertex (color of border)
-        //     graphics.setColor(vertex.getBorderColor());
-        //     graphics.drawString(vertex.getName(), (int)(vertex.getCoordX()+vertex.getDiameter()/2.7), (int)(vertex.getCoordY()+vertex.getDiameter()/1.5));
-        // }
-
-        // //We then search for every edges
-        // Edge edge;
-        // //We look in a rectangular pattern
-        // if((edge = this.edgeCollision(graph,X,Y)) != null && vertex == null)   //Y Coord
-        // {
-        //     graphics.setColor(edge.getStart().getInsideColor());
-        //     ((Graphics2D)graphics).setStroke(new BasicStroke(edge.getStrokeWidth()/edge.getStart().getStrokeWidth())); //Change stroke
-
-        //     //Case where the starting and ending point is the same
-        //     if(edge.getStart().equals(edge.getEnd()) == false)
-        //     {
-        //         graphics.drawLine((int)(edge.getEdgePoints(edge).get(0).getX()), (int)(edge.getEdgePoints(edge).get(0).getY()), (int)(edge.getEdgePoints(edge).get(1).getX()), (int)(edge.getEdgePoints(edge).get(1).getY()));
-        //         if(graph.getOriented()) //If the graph is oriented, we also have to draw an arrow displaying the arrival vertex
-        //         {
-        //             graphics.drawLine((int)(edge.getArrow(edge, 15).get(0).getX()),(int)(edge.getArrow(edge, 15).get(0).getY()), (int)(edge.getArrow(edge, 15).get(1).getX()), (int)(edge.getArrow(edge, 15).get(1).getY()));
-        //             graphics.drawLine((int)(edge.getArrow(edge, 15).get(0).getX()),(int)(edge.getArrow(edge, 15).get(0).getY()), (int)(edge.getArrow(edge, 15).get(2).getX()), (int)(edge.getArrow(edge, 15).get(2).getY()));
-        //         }
-        //     }
-        // }
-        }
-        
-
 
         /// === FINALLY, IF WE ARE IN STATE 1 OR 2, SHOW A PREVIEW OF THE NEW EDGE/VERTEX ===
         //If we are in state 1, we previzualize the new vertex
@@ -137,25 +81,6 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             graphics.drawLine(start.getCoordX()+graph.getVertexDiameter()/2, start.getCoordY()+graph.getVertexDiameter()/2, X, Y);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     public void mouseClicked(MouseEvent e)
@@ -234,55 +159,52 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         }
     }
 
-    
-
-
-
     @Override
-    public void mouseDragged(MouseEvent e) {
-        //If we are on top of a vertex, we move it to the new mouse coordinates
-        Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
-        for(Vertex vertex : graph.getVertices())
+    public void mouseDragged(MouseEvent e)
+    {
+        if(isDragged != null)
         {
-            if(((e.getX() - (vertex.getCoordX()+vertex.getDiameter()/2))*(e.getX() - (vertex.getCoordX()+vertex.getDiameter()/2)) + (e.getY() - (vertex.getCoordY()+vertex.getDiameter()/2))*(e.getY() - (vertex.getCoordY()+vertex.getDiameter()/2))) <= (vertex.getDiameter()/2)*(vertex.getDiameter()/2))
+            isDragged.setCoordX(e.getX()-isDragged.getDiameter()/2);
+            isDragged.setCoordY(e.getY()-isDragged.getDiameter()/2);   
+            //We must reset every path
+            Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
+            for(Edge edge : graph.getEdges())
             {
-                X = e.getX();
-                Y = e.getY();
-                vertex.setCoordX(e.getX()-vertex.getDiameter()/2);
-                vertex.setCoordY(e.getY()-vertex.getDiameter()/2);
-                //We must reset every path
-                
-                for(Edge edge : graph.getEdges())
-                {
-                    edge.setCollisionArea(edge.refreshCollisionArea(graph.getOriented(), graph.bothDirections(edge)));
-                }
-
-                repaint();
-                break;
+                edge.setCollisionArea(edge.refreshCollisionArea(graph.getOriented(), graph.bothDirections(edge)));
             }
+
+            repaint();
         }
     }
 
-
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
+    @Override //Is used to register the vertex we click on (to drag it)
+    public void mousePressed(MouseEvent e)
+    {
+        //If we are on top of a vertex, we drag it
+        Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
+        Vertex vertex;
+        if((vertex = graph.vertexCollision(X,Y)) != null)
+        {
+            isDragged = vertex;
+        }
     }
 
-    @Override
+    @Override //We release the dragged vertex
     public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
+        isDragged = null;
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-        repaint();
+    public void mouseExited(MouseEvent e)
+    {
+        //We don't want to be able to drag vertex outside the draw area
+        isDragged = null; //We remove it, so it cannot be dragged anymore
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {
-        repaint();
+    public void mouseEntered(MouseEvent e)
+    {
+
     }
 
     @Override
@@ -293,8 +215,4 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         Y = e.getY();
         repaint();
     }
-
-
-
-    
 }
