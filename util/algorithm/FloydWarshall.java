@@ -20,6 +20,7 @@ public class FloydWarshall extends Thread{
 
     @Override
     public void run() {
+        graph.switchDisplay();
         ArrayList<Vertex> vertices = graph.getVertices();
         ArrayList<Edge> edges = graph.getEdges();
         int n = vertices.size();
@@ -74,11 +75,13 @@ public class FloydWarshall extends Thread{
         try {
             Thread.sleep(5000);
             for (Edge edge : toDelete) {
+                graph.removeEdge(edge);
                 edges.remove(edge);
             }
         } catch (Exception e) {
             // TODO: handle exception
         }
         animAlgo.refresh();
+        graph.switchDisplay();
     }
 }

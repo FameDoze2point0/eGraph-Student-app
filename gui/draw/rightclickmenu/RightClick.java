@@ -9,6 +9,7 @@ import javax.swing.JPopupMenu;
 import gui.Gui;
 import gui.draw.Draw;
 import gui.draw.PanelPaint;
+import gui.popups.newElement.NewElement;
 import gui.popups.textInput.TextInput;
 import util.Edge;
 import util.Graph;
@@ -91,9 +92,6 @@ public class RightClick extends JPopupMenu
                     graph.removeEdge(edgeTemp);
                 }
 
-                //No more "right click element"
-                rightClickedOnElement = null;
-
                 //We the element is deleted, we redraw the area
                 panel.repaint();
             }
@@ -120,42 +118,76 @@ public class RightClick extends JPopupMenu
         });
         this.add(changeWeight);
 
-        this.add(new Separator()); // === NEW CATEGORY ===
+        // this.add(new Separator()); // === NEW CATEGORY ===
 
-        //We then add elements that are always there
-        undo = new JMenuItem("Undo");
-        this.add(undo);
-        redo = new JMenuItem("Redo");
-        this.add(redo);
+        //NOT IMPLEMENTED YET
+        // //We then add elements that are always there
+        // undo = new JMenuItem("Undo");
+        // this.add(undo);
+        // redo = new JMenuItem("Redo");
+        // this.add(redo);
 
-        this.add(new Separator()); // === NEW CATEGORY ===
+        // === NEW CATEGORY ===
+        this.add(new Separator());
 
         mode = new JMenu("Mode");
             cursorMode = new JMenuItem("Cursor Mode");
+            cursorMode.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    gui.setState(0);
+                }
+            });
             mode.add(cursorMode);
+
             newVertexMode = new JMenuItem("New Vertex Mode");
+            newVertexMode.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    gui.setState(1);
+                }
+            });
             mode.add(newVertexMode);
+
             newEdgeMode = new JMenuItem("New Edge Mode");
+            newEdgeMode.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    gui.setState(2);
+                }
+            });
             mode.add(newEdgeMode);
         this.add(mode);
 
         this.add(new Separator()); // === NEW CATEGORY ===
 
         newElement = new JMenuItem("New...");
+        newElement.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                new NewElement(gui, drawArea);
+            }
+        });
         this.add(newElement);
-        openElement = new JMenuItem("Open...");
-        this.add(openElement);
-        saveElement = new JMenuItem("Save...");
-        this.add(saveElement);
 
-        this.add(new Separator()); // === NEW CATEGORY ===
+        //NOT IMPLEMENTED YET
+        // openElement = new JMenuItem("Open...");
+        // this.add(openElement);
+        // saveElement = new JMenuItem("Save...");
+        // this.add(saveElement);
 
-        export = new JMenu("Export");
-            exportPDF = new JMenuItem("PDF...");
-            export.add(exportPDF);
-            exportSVG = new JMenuItem("SVG...");
-            export.add(exportSVG);
-        this.add(export);
+        // this.add(new Separator()); // === NEW CATEGORY ===
+
+        // export = new JMenu("Export");
+        //     exportPDF = new JMenuItem("PDF...");
+        //     export.add(exportPDF);
+        //     exportSVG = new JMenuItem("SVG...");
+        //     export.add(exportSVG);
+        // this.add(export);
 
         this.add(new Separator()); // === NEW CATEGORY ===
 

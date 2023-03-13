@@ -27,6 +27,7 @@ public class Graph {
     private int edgeStrokeWidth = 5, arrowLength = 15; //For edges
     private int vertexDiameter = 50, vertexStrokeWidth = 5; //For vertexs
     private ArrayList<ArrayList<Boolean>> existingEdge;
+    private Boolean alertDisplay;
 
 
 
@@ -39,6 +40,7 @@ public class Graph {
         this.edges = new ArrayList<Edge>();
         this.panelPaint = panelPaint;
         this.existingEdge = new ArrayList<>();
+        this.alertDisplay = true;
     }
 
     public void paint(Graphics graphics, Object collision){
@@ -146,35 +148,39 @@ public class Graph {
         }
     }       
     public void removeVertex(Vertex v){
-        if (vertices.contains(v))
+        if (vertices.contains(v)){
             vertices.remove(v);
+        }
+            
     }
 
     public void addEdge(Edge e)
     {    
         Boolean existed = false;
 
-        for (Edge edge : edges) 
-            if (edge.getStart().equals(e.getStart()) && edge.getEnd().equals(e.getEnd())) {
-                existed = true;
-                JDialog jdg = new JDialog();
-                JLabel jl = new JLabel("The edge that you've tried to add already exists");
-                jl.setHorizontalAlignment(SwingConstants.CENTER);
-                jl.setVerticalAlignment(SwingConstants.CENTER);
-                jl.setForeground(Color.red);
-                jl.setFont(new Font("Arial",Font.BOLD,20));
-
-
-                jdg.add(jl);
-                jdg.setSize(500,100);
-                jdg.setModal(true);
-                jdg.setLocationRelativeTo(null);
-                jdg.setVisible(true);
-
-                break;
+        if (alertDisplay) {
+            for (Edge edge : edges){
+                if (edge.getStart().equals(e.getStart()) && edge.getEnd().equals(e.getEnd())) {
+                    existed = true;
+                    JDialog jdg = new JDialog();
+                    JLabel jl = new JLabel("The edge that you've tried to add already exists");
+                    jl.setHorizontalAlignment(SwingConstants.CENTER);
+                    jl.setVerticalAlignment(SwingConstants.CENTER);
+                    jl.setForeground(Color.red);
+                    jl.setFont(new Font("Arial",Font.BOLD,20));
+    
+    
+                    jdg.add(jl);
+                    jdg.setSize(500,100);
+                    jdg.setModal(true);
+                    jdg.setLocationRelativeTo(null);
+                    jdg.setVisible(true);
+    
+                    break;
+                }
             }
-            
-        if (!existed)
+        }     
+        if (!existed )
         {
             edges.add(e);
             if (!e.getStart().equals(e.getEnd()))
@@ -200,8 +206,11 @@ public class Graph {
         edges.add(new Edge(v1, v2, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor, edgeWeightColor,edgeWeightBorderColor,this));
     }
     public void removeEdge(Edge e){
-        if(edges.contains(e))
+        if(edges.contains(e)){
             edges.remove(e);
+            existingEdge.get(e.getStart().getId()).set(e.getEnd().getId(), false);
+        }
+           
     }
 
     public PanelPaint getPanelPaint() {
@@ -350,5 +359,11 @@ public class Graph {
         this.existingEdge = existingEdge;
     }
     
-    
+    public void switchDisplay(){
+        if (alertDisplay) {
+            alertDisplay = false;
+        }else{
+            alertDisplay = true;
+        }
+    }
 }
