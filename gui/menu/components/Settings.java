@@ -24,6 +24,7 @@ public class Settings extends JMenu
                 System.out.println("shortcut page");
             }
         });
+        shortcuts.setEnabled(false);
         this.add(shortcuts);
 
         //Default Graph
@@ -35,6 +36,7 @@ public class Settings extends JMenu
                 System.out.println("default graph");
             }
         });
+        defaultGraph.setEnabled(false);
         this.add(defaultGraph);
 
         //Default automaton
@@ -46,6 +48,7 @@ public class Settings extends JMenu
                 System.out.println("default automaton");
             }
         });
+        defaultAutomaton.setEnabled(false);
         this.add(defaultAutomaton);
     }
 

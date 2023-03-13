@@ -1,11 +1,13 @@
 package util;
 import java.util.*;
 import java.awt.geom.*;
+import java.io.Serializable;
 import java.lang.module.ResolutionException;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Edge {
+public class Edge implements Serializable
+{
     private Vertex start, end;
     private Object weight;
     private int strokeWidth, arrowTipWidth = 20;

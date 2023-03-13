@@ -7,12 +7,11 @@ import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import gui.Gui;
 import gui.draw.Draw;
@@ -35,15 +34,9 @@ public class NewElement extends JDialog
             private JCheckBox isOriented;
             private JCheckBox isWeighted;
 
-        private JPanel weightTypeArea;
-            //Type of weight
-            private JLabel weightLabel;
-            private String[] weightType = {"Integer", "Boolean", "String", "Float"};
-            private JComboBox weightList;
-
         private JPanel setNameArea;
             private JLabel nameLabel;
-            private JTextArea nameTextArea;
+            private JTextField nameTextField;
             
         private JPanel validButtonArea;
             private JButton validation;
@@ -52,7 +45,7 @@ public class NewElement extends JDialog
     {
         //General settings
         super(gui, "New element", true);
-        this.setSize(200,220);
+        this.setSize(200,180);
         this.setLocationRelativeTo(null); //Centering the frame
         this.setResizable(false);
         this.setAlwaysOnTop(true);
@@ -81,7 +74,6 @@ public class NewElement extends JDialog
                 //When Graph is selected, we enable the checkbox to create a weigthed/oriented graph
                 isOriented.setEnabled(true);
                 isWeighted.setEnabled(true);
-                weightList.setEnabled(true);
             }
         });
         radioButtonArea.add(graphButton);
@@ -93,7 +85,6 @@ public class NewElement extends JDialog
             public void actionPerformed(ActionEvent e) {
                 isOriented.setEnabled(false);
                 isWeighted.setEnabled(false);
-                weightList.setEnabled(false);
             }
         });
         radioButtonArea.add(automatonButton);
@@ -118,29 +109,15 @@ public class NewElement extends JDialog
         //Adding the checkbox area to the JDialog
         global.add(checkBoxArea);
 
-
-
-        //Type of the weight
-        //Label
-        weightTypeArea = new JPanel();
-        weightLabel = new JLabel("Weight type :");
-        weightTypeArea.add(weightLabel);
-        //JComboBox
-        weightList = new JComboBox(weightType);
-        weightTypeArea.add(weightList);
-        global.add(weightTypeArea);
-
-
-
         //Name
         setNameArea = new JPanel();
         //Label
         nameLabel = new JLabel("Name :");
         setNameArea.add(nameLabel);
-        //JTextArea
-        nameTextArea = new JTextArea();
-        nameTextArea.setPreferredSize(new Dimension(116, 14));
-        setNameArea.add(nameTextArea);
+        //JTextField
+        nameTextField = new JTextField();
+        nameTextField.setPreferredSize(new Dimension(116, 20));
+        setNameArea.add(nameTextField);
         global.add(setNameArea);
 
 
@@ -179,17 +156,16 @@ public class NewElement extends JDialog
             
             //Creating the tabulation
             PanelPaint panelPaint = new PanelPaint(gui, drawArea);
-            drawArea.addTab(nameTextArea.getText(), null, panelPaint, nameTextArea.getText()); //We create the new tab and retrieve it
+            drawArea.addTab(nameTextField.getText(), null, panelPaint, nameTextField.getText()); //We create the new tab and retrieve it
             //Creating a new Graph
             //Each graph is associated with a tabulation
-            Graph graph = new Graph(nameTextArea.getText(), isOriented.isSelected(), isWeighted.isSelected(), panelPaint);
+            Graph graph = new Graph(nameTextField.getText(), isOriented.isSelected(), isWeighted.isSelected(), panelPaint);
             //We then add these two components to the list of opened tabulations
             gui.getTabulations().put(panelPaint,graph);
 
             //We go to the new tabulation and draw the panel
             drawArea.setSelectedComponent(panelPaint);
             panelPaint.repaint();
-              
         }
         else if(automatonButton.isSelected())
         {

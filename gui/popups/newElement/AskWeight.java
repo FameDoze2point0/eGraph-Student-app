@@ -13,7 +13,7 @@ import gui.draw.PanelPaint;
 public class AskWeight extends JDialog{
     
     private JPanel global;
-        private JTextArea jta;
+        private JTextField jtf;
         private JButton submit;
         private JLabel errorLabel;
         private Integer weight;
@@ -33,16 +33,17 @@ public class AskWeight extends JDialog{
 
         global.add(new JLabel("Enter the weight of the edge as an integer : "));
         
-        jta = new JTextArea(1,10);
+        jtf = new JTextField();
+        jtf.setPreferredSize(new Dimension(90, 20));
 
-        global.add(jta);
+        global.add(jtf);
 
         submit = new JButton("Valid your choice");
         submit.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String text = jta.getText();
+                String text = jtf.getText();
 
                 try {
                     weight = Integer.parseInt(text);

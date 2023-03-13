@@ -51,11 +51,22 @@ public class algorithmsPage extends JDialog{
         algoChoiceLabel = new JLabel("Algorithms :");
         algoChoiceArea.add(algoChoiceLabel);
         algoList = new JComboBox(algoType);
-        addAlgoListener();
+
+        Graph graph = gui.getTabulations().get(draw.getSelectedComponent());
+        DefaultListSelectionModel model = new DefaultListSelectionModel();
+        model.addSelectionInterval(0, 2);
+        if (graph.getOriented() && graph.getWeighted()) {
+            model.addSelectionInterval(3, 5);
+        }else if(graph.getWeighted()){
+            model.addSelectionInterval(6, 7);
+        }
+        EnabledJComboBoxRenderer enableRenderer = new EnabledJComboBoxRenderer(model); 
+        algoList.setRenderer(enableRenderer);
+
+        addAlgoListener(gui,draw);
         algoChoiceArea.add(algoList);
         global.add(algoChoiceArea);
 
-        Graph graph = gui.getTabulations().get(draw.getSelectedComponent());
         String[] vName = new String[graph.getVertices().size()];
 
         for (int i = 0; i < vName.length; i++) 
@@ -90,12 +101,13 @@ public class algorithmsPage extends JDialog{
 
     }
 
-    public void addAlgoListener(){
+    public void addAlgoListener(Gui gui, Draw draw){
 
         ActionListener algorithmListener = new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 String s = (String)algoList.getSelectedItem();
                 System.out.println(algoList.getSelectedItem()+"");
+
                 switch (s) {
                     case "BFS": //BFS
                         startingVertexList.setEnabled(true);
@@ -227,6 +239,4 @@ public class algorithmsPage extends JDialog{
 
         submit.addActionListener(submitListener);
     }
-
-    
 }

@@ -21,7 +21,7 @@ public class File extends JMenu
 
     private JMenuItem exit;
 
-    public File(Gui gui, Draw drawArea)
+    public File(Gui gui, Draw draw)
     {
         super("File");
         // - File (New, Open, Save, Export (PDF, SVG), Exit)
@@ -32,7 +32,7 @@ public class File extends JMenu
         {
             public void actionPerformed(ActionEvent e)
             {
-                new NewElement(gui, drawArea);
+                new NewElement(gui, draw);
             }
         });
         this.add(newFile);
@@ -43,7 +43,7 @@ public class File extends JMenu
         {
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("open file popup");
+                draw.loadTabulation(gui);
             }
         });
         this.add(openFile);
@@ -54,7 +54,7 @@ public class File extends JMenu
         {
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("save as popup");
+                draw.saveTabulation(gui);
             }
         });
         this.add(saveAs);
@@ -82,6 +82,7 @@ public class File extends JMenu
                 }
             });
             exportFile.add(exportSVG);
+            exportFile.setEnabled(false);
         this.add(exportFile);
 
         exit = new JMenuItem("Exit");
@@ -89,7 +90,7 @@ public class File extends JMenu
         {
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("exit popup");
+                System.exit(0);
             }
         });
         this.add(exit);

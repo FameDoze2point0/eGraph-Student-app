@@ -7,8 +7,12 @@ import javax.swing.*;
 import gui.draw.PanelPaint;
 
 import java.awt.*;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-public class Graph {
+public class Graph implements Serializable
+{
     
     private int cpt = 0;
     private String name;

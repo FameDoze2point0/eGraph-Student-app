@@ -42,6 +42,7 @@ public class Algorithms extends JMenu
                 System.out.println("add algo");
             }
         });
+        add.setEnabled(false);
         this.add(add);
     }
 

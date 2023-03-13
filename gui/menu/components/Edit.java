@@ -25,6 +25,7 @@ public class Edit extends JMenu
                 System.out.println("undo");
             }
         });
+        undo.setEnabled(false);
         this.add(undo);
 
         //Redo
@@ -36,6 +37,7 @@ public class Edit extends JMenu
                 System.out.println("redo");
             }
         });
+        redo.setEnabled(false);
         this.add(redo);
 
         //Cut
@@ -47,6 +49,7 @@ public class Edit extends JMenu
                 System.out.println("cut");
             }
         });
+        cut.setEnabled(false);
         this.add(cut);
 
         //Copy
@@ -58,6 +61,7 @@ public class Edit extends JMenu
                 System.out.println("copy");
             }
         });
+        copy.setEnabled(false);
         this.add(copy);
 
         //Paste
@@ -69,6 +73,7 @@ public class Edit extends JMenu
                 System.out.println("paste");
             }
         });
+        paste.setEnabled(false);
         this.add(paste);
     }
 

@@ -11,8 +11,8 @@ import java.awt.*;
 
 public class PanelPaint extends JPanel implements MouseListener, MouseMotionListener
 {
-    private Gui gui;
-    private Draw drawArea;
+    private transient Gui gui;
+    private transient Draw drawArea;
 
     //When we add an edge, if the starting point is already selected
     private Vertex start = null; //If not selected = null
@@ -22,7 +22,15 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     private Vertex isDragged = null; //Vertex that is being mouse dragged
 
     // //Menu when we right click
-    RightClick rightClickMenu;
+    private RightClick rightClickMenu;
+
+    public RightClick getRightClickMenu() {
+        return rightClickMenu;
+    }
+
+    public void setRightClickMenu(RightClick rightClickMenu) {
+        this.rightClickMenu = rightClickMenu;
+    }
 
     public PanelPaint(Gui gui, Draw drawArea)
     {
@@ -214,5 +222,21 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         X = e.getX();
         Y = e.getY();
         repaint();
+    }
+
+    public Draw getDrawArea() {
+        return drawArea;
+    }
+
+    public void setDrawArea(Draw drawArea) {
+        this.drawArea = drawArea;
+    }
+
+    public Gui getGui() {
+        return gui;
+    }
+
+    public void setGui(Gui gui) {
+        this.gui = gui;
     }
 }

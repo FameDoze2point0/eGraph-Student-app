@@ -24,6 +24,7 @@ public class Other extends JMenu
                 System.out.println("open doc");
             }
         });
+        documentation.setEnabled(false);
         this.add(documentation);
 
         //Licence
@@ -35,6 +36,7 @@ public class Other extends JMenu
                 System.out.println("open licence");
             }
         });
+        licence.setEnabled(false);
         this.add(licence);
 
         //Contacts
@@ -46,6 +48,7 @@ public class Other extends JMenu
                 System.out.println("open contatcs");
             }
         });
+        contacts.setEnabled(false);
         this.add(contacts);
 
         //About...
@@ -57,6 +60,7 @@ public class Other extends JMenu
                 System.out.println("about");
             }
         });
+        about.setEnabled(false);
         this.add(about);
     }
 }

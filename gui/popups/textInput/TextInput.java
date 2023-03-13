@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import gui.Gui;
 import util.Edge;
 import util.Vertex;
@@ -16,7 +16,7 @@ import util.Vertex;
 public class TextInput extends JDialog
 {
     JPanel general;
-        JTextArea input;
+        JTextField input;
         JButton validationButton;
 
     public TextInput(Gui gui, Object obj)
@@ -31,8 +31,8 @@ public class TextInput extends JDialog
 
         general = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-            input = new JTextArea();
-            input.setPreferredSize(new Dimension(90, 15));
+            input = new JTextField();
+            input.setPreferredSize(new Dimension(90, 20));
             general.add(input);
 
             validationButton = new JButton("Confirmation");
@@ -42,7 +42,15 @@ public class TextInput extends JDialog
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    sendInput(obj);
+                    if (input.getText().length() > 5)
+                    {
+                        input.setText(input.getText().substring(0,5));   
+                    }
+
+                    if(input.getText().length() > 0)
+                    {
+                        sendInput(obj);
+                    }
                 }
             });
             general.add(validationButton);
@@ -58,13 +66,20 @@ public class TextInput extends JDialog
         if(obj instanceof Vertex)
         {
             ((Vertex)obj).setName(input.getText());
+            this.dispose();
         }
 
         else if(obj instanceof Edge)
         {
-            ((Edge)obj).setWeight(input.getText());
+            try
+            {
+                ((Edge)obj).setWeight(Integer.parseInt(input.getText()));
+                this.dispose();
+            }
+            catch (Exception e)
+            {
+                System.out.println("invalid input");
+            }
         }
-        
-        this.dispose();
     }
 }

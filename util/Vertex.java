@@ -6,9 +6,10 @@
 
 package util;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.*;
 
-public class Vertex
+public class Vertex implements Serializable
 {
     private static int cpt = 0;
     private int id, coordX, coordY, diameter, strokeWidth;
@@ -70,10 +71,10 @@ public class Vertex
         switch(text.length())
         {
             case(1):return 28;
-            case(2):return 22;
-            case(3):return 16;
-            case(4):return 10;
-            default:return 8;
+            case(2):return 24;
+            case(3):return 20;
+            case(4):return 16;
+            default:return 10;
         }
     }
 

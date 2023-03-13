@@ -118,14 +118,16 @@ public class RightClick extends JPopupMenu
         });
         this.add(changeWeight);
 
-        // this.add(new Separator()); // === NEW CATEGORY ===
+        this.add(new Separator()); // === NEW CATEGORY ===
 
-        //NOT IMPLEMENTED YET
-        // //We then add elements that are always there
-        // undo = new JMenuItem("Undo");
-        // this.add(undo);
-        // redo = new JMenuItem("Redo");
-        // this.add(redo);
+        //We then add elements that are always there
+        undo = new JMenuItem("Undo");
+        undo.setEnabled(false);
+        this.add(undo);
+
+        redo = new JMenuItem("Redo");
+        redo.setEnabled(false);
+        this.add(redo);
 
         // === NEW CATEGORY ===
         this.add(new Separator());
@@ -174,20 +176,23 @@ public class RightClick extends JPopupMenu
         });
         this.add(newElement);
 
-        //NOT IMPLEMENTED YET
-        // openElement = new JMenuItem("Open...");
-        // this.add(openElement);
-        // saveElement = new JMenuItem("Save...");
-        // this.add(saveElement);
+        openElement = new JMenuItem("Open...");
+        openElement.setEnabled(false);
+        this.add(openElement);
 
-        // this.add(new Separator()); // === NEW CATEGORY ===
+        saveElement = new JMenuItem("Save...");
+        saveElement.setEnabled(false);
+        this.add(saveElement);
 
-        // export = new JMenu("Export");
-        //     exportPDF = new JMenuItem("PDF...");
-        //     export.add(exportPDF);
-        //     exportSVG = new JMenuItem("SVG...");
-        //     export.add(exportSVG);
-        // this.add(export);
+        this.add(new Separator()); // === NEW CATEGORY ===
+
+        export = new JMenu("Export");
+            exportPDF = new JMenuItem("PDF...");
+            export.add(exportPDF);
+            exportSVG = new JMenuItem("SVG...");
+            export.add(exportSVG);
+        export.setEnabled(false);
+        this.add(export);
 
         this.add(new Separator()); // === NEW CATEGORY ===
 
