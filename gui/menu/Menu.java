@@ -7,7 +7,7 @@ import gui.menu.components.Algorithms;
 import gui.menu.components.Edit;
 import gui.menu.components.File;
 import gui.menu.components.Other;
-import gui.menu.components.Settings;
+import gui.menu.components.SettingsMenu;
 
 public class Menu extends JMenuBar
 {
@@ -25,7 +25,7 @@ public class Menu extends JMenuBar
         this.add(new File(gui, drawArea));
         this.add(new Edit());
         this.add(new Algorithms(gui, drawArea));
-        this.add(new Settings());
+        this.add(new SettingsMenu(gui));
         this.add(new Other());
     }
 }

@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import gui.Gui;
 import gui.draw.rightclickmenu.RightClick;
 import gui.popups.newElement.AskWeight;
+import settings.Settings;
 import util.Edge;
 import util.Graph;
 import util.Vertex;
@@ -64,17 +65,17 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         //If we are in state 1, we previzualize the new vertex
         if(gui.getState() == 1)
         {
-            int radius = graph.getVertexDiameter()/2;
-            int diameter = graph.getVertexDiameter();
+            int radius = Gui.getSettings().getVertexDiameter()/2;
+            int diameter = Gui.getSettings().getVertexDiameter();
             //We draw a vertex on top of the mouse with 50% opacity
             //Setting 50% opacity
             ((Graphics2D)graphics).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f));
             //Borders
-            graphics.setColor(graph.getVertexOutsideColor());
+            graphics.setColor(Gui.getSettings().getVertexOutsideColor());
             graphics.fillOval(X-radius, Y-radius, diameter, diameter);
 
             //Inside
-            graphics.setColor(graph.getVertexInsideColor());
+            graphics.setColor(Gui.getSettings().getVertexInsideColor());
             graphics.fillOval((X+((int)(radius*0.2)))-(radius), (Y+((int)(radius*0.2)))-(radius), (int)(diameter*0.8), (int)(diameter*0.8));
         }
 
@@ -84,9 +85,9 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             //Setting 50% opacity
             ((Graphics2D)graphics).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f));
             //Drawing the line
-            graphics.setColor(graph.getEdgeStrokeColor());
-            ((Graphics2D)graphics).setStroke(new BasicStroke(graph.getEdgeStrokeWidth())); //Change stroke
-            graphics.drawLine(start.getCoordX()+graph.getVertexDiameter()/2, start.getCoordY()+graph.getVertexDiameter()/2, X, Y);
+            graphics.setColor(Gui.getSettings().getEdgeStrokeColor());
+            ((Graphics2D)graphics).setStroke(new BasicStroke(Gui.getSettings().getEdgeStrokeWidth())); //Change stroke
+            graphics.drawLine(start.getCoordX()+Gui.getSettings().getVertexDiameter()/2, start.getCoordY()+Gui.getSettings().getVertexDiameter()/2, X, Y);
         }
     }
 
@@ -96,7 +97,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
         Vertex vertex;
         Edge edge;
-        int radius = graph.getVertexDiameter()/2;
+        int radius = Gui.getSettings().getVertexDiameter()/2;
         //=== LEFT CLICK DETECTION === to create new elements and interact
         if(e.getButton() == MouseEvent.BUTTON1)
         {
@@ -106,7 +107,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                     //In state 1, when the mouse is clicked, we create a new vertex/state
                     //We retrieve the actual graph/automaton
                     int cpt = graph.getCpt();
-                    graph.addVertex(new Vertex(cpt,e.getX() - radius, e.getY() - radius, graph.getVertexDiameter(), graph.getVertexStrokeWidth(), graph.getVertexInsideColor(), graph.getVertexOutsideColor(), ""+(cpt), graph.getVertexNameColor())); //We add the new vertex to the graph
+                    graph.addVertex(new Vertex(cpt,e.getX() - radius, e.getY() - radius, Gui.getSettings().getVertexDiameter(), Gui.getSettings().getVertexStrokeWidth(), Gui.getSettings().getVertexInsideColor(), Gui.getSettings().getVertexOutsideColor(), ""+(cpt), Gui.getSettings().getVertexNameColor())); //We add the new vertex to the graph
                     break;
                 }
 
@@ -129,7 +130,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                                 AskWeight askingWeightPage = new AskWeight(gui, drawArea);
                                 weight = askingWeightPage.getWeight();
                             }
-                            graph.addEdge(new Edge(start, vertex, weight, graph.getEdgeStrokeWidth(), graph.getEdgeStrokeColor(), graph.getEdgeHighlightColor(), graph.getEdgeArrowTipColor(), graph.getEdgeWeightColor(), graph.getEdgeWeightBorderColor(), graph));
+                            graph.addEdge(new Edge(start, vertex, weight, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(), Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), graph));
                             start = null;
                         }
                     }

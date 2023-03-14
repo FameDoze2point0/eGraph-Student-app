@@ -5,8 +5,11 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import gui.draw.Draw;
+import gui.draw.PanelPaint;
 import gui.menu.Menu;
 import gui.tools.Tools;
+import settings.Settings;
+import settings.SettingsDialog;
 import util.Edge;
 import util.Graph;
 
@@ -14,6 +17,8 @@ import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import java.util.HashMap;
 import java.awt.geom.*;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 
 public class Gui extends JFrame
 {
@@ -27,6 +32,7 @@ public class Gui extends JFrame
     private Menu menu;
     private Tools tools;
     private Draw draw;
+    private static Settings settings;
 
     /* State of the program :
      * - 0 : Mouse is selected
@@ -51,6 +57,27 @@ public class Gui extends JFrame
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+        //We load saved settings
+        try
+        {
+            FileInputStream fis = new FileInputStream(System.getProperty("user.dir")+"/settings/settings");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            //Reading the settings
+            settings = (Settings)ois.readObject();
+            ois.close();
+            fis.close();
+        }
+
+        catch(Exception e)
+        {
+            System.out.println("No existing settings save, creating one.");
+            settings = new Settings();
+        }
+
+        //We create the settings JDialog
+        settings.setWindow(new SettingsDialog(this));
 
         //Init the elements then adding them in correct order
         draw = new Draw();
@@ -123,5 +150,13 @@ public class Gui extends JFrame
 
     public void setDraw(Draw draw) {
         this.draw = draw;
+    }
+
+    public static Settings getSettings() {
+        return settings;
+    }
+
+    public static void setSettings(Settings settings) {
+        Gui.settings = settings;
     }
 }

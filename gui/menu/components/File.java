@@ -5,8 +5,12 @@ import javax.swing.JMenuItem;
 import gui.Gui;
 import gui.draw.Draw;
 import gui.popups.newElement.NewElement;
+import settings.Settings;
 
 import java.awt.event.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class File extends JMenu
 {

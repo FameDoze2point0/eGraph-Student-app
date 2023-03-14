@@ -1,12 +1,15 @@
 package gui.tools;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JToolBar;
 
 import gui.Gui;
 import gui.draw.Draw;
 import gui.popups.newElement.NewElement;
+import util.Graph;
 
 public class Tools extends JToolBar
 {
@@ -18,7 +21,6 @@ public class Tools extends JToolBar
     JButton newVertex;
     JButton newEdge;
     JButton addWeight;
-
 
     public Tools(Gui gui, Draw drawArea)
     {

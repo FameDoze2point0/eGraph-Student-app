@@ -1,10 +1,13 @@
 package gui.menu.components;
+import java.awt.Event;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
+import javax.swing.JColorChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-
-import java.awt.Event;
-import java.awt.event.*;
 
 import gui.Gui;
 import gui.draw.Draw;
@@ -24,8 +27,8 @@ public class Algorithms extends JMenu
         launch = new JMenuItem("Launch...");
         launch.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent e)
-            {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 new algorithmsPage(gui, drawArea);
             }
         });
@@ -37,8 +40,8 @@ public class Algorithms extends JMenu
         add = new JMenuItem("Add...");
         add.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent e)
-            {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 System.out.println("add algo");
             }
         });

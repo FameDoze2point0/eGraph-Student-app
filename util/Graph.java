@@ -4,7 +4,9 @@ import java.util.*;
 
 import javax.swing.*;
 
+import gui.Gui;
 import gui.draw.PanelPaint;
+import settings.Settings;
 
 import java.awt.*;
 import java.io.FileOutputStream;
@@ -12,29 +14,15 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Graph implements Serializable
-{
-    
+{    
     private int cpt = 0;
     private String name;
     private ArrayList<Vertex> vertices;
     private ArrayList<Edge> edges;
     private Boolean oriented, weighted;
     private PanelPaint panelPaint;
-    private Color vertexInsideColor = Color.white, 
-                  vertexOutsideColor = Color.black, 
-                  edgeStrokeColor = Color.black, 
-                  edgeHighlightColor = Color.white,
-                  edgeArrowTipColor = Color.black,
-                  edgeWeightColor = Color.white,
-                  edgeWeightBorderColor = Color.black,
-                  vertexNameColor = Color.black;
-    private int edgeStrokeWidth = 5, arrowLength = 15; //For edges
-    private int vertexDiameter = 50, vertexStrokeWidth = 5; //For vertexs
     private ArrayList<ArrayList<Boolean>> existingEdge;
     private Boolean alertDisplay;
-
-
-
 
     public Graph(String name, Boolean oriented, Boolean weighted, PanelPaint panelPaint) {
         this.name = name;
@@ -191,7 +179,7 @@ public class Graph implements Serializable
             {
                 if(!oriented)
                 {
-                    edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor, edgeWeightColor, edgeWeightBorderColor, this));
+                    edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(),Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), this));
                 }
                 else
                 {
@@ -205,9 +193,9 @@ public class Graph implements Serializable
 
     public void addEdge(Vertex v1, Vertex v2, Object weight){
         if (!oriented) 
-            edges.add(new Edge(v2, v1, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor, edgeWeightColor,edgeWeightBorderColor,this));    
+            edges.add(new Edge(v2, v1, weight, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(),Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(),Gui.getSettings().getEdgeWeightBorderColor(),this));    
         
-        edges.add(new Edge(v1, v2, weight, edgeStrokeWidth, edgeStrokeColor,edgeHighlightColor, edgeArrowTipColor, edgeWeightColor,edgeWeightBorderColor,this));
+        edges.add(new Edge(v1, v2, weight, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(),Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(),Gui.getSettings().getEdgeWeightBorderColor(),this));
     }
     public void removeEdge(Edge e){
         if(edges.contains(e)){
@@ -228,71 +216,6 @@ public class Graph implements Serializable
     public void setVertices(ArrayList<Vertex> vertices) {
         this.vertices = vertices;
     }
-
-    public Color getVertexInsideColor() {
-        return vertexInsideColor;
-    }
-
-    public void setVertexInsideColor(Color vertexInsideColor) {
-        this.vertexInsideColor = vertexInsideColor;
-    }
-
-    public Color getVertexOutsideColor() {
-        return vertexOutsideColor;
-    }
-
-    public void setVertexOutsideColor(Color vertexOutsideColor) {
-        this.vertexOutsideColor = vertexOutsideColor;
-    }
-
-    public Color getEdgeStrokeColor() {
-        return edgeStrokeColor;
-    }
-
-    public void setEdgeStrokeColor(Color edgeStrokeColor) {
-        this.edgeStrokeColor = edgeStrokeColor;
-    }
-
-    public Color getEdgeHighlightColor() {
-        return edgeHighlightColor;
-    }
-
-    public void setEdgeHighlightColor(Color edgeHighlightColor) {
-        this.edgeHighlightColor = edgeHighlightColor;
-    }
-
-    public int getEdgeStrokeWidth() {
-        return edgeStrokeWidth;
-    }
-
-    public void setEdgeStrokeWidth(int edgeStrokeWidth) {
-        this.edgeStrokeWidth = edgeStrokeWidth;
-    }
-
-    public int getVertexDiameter() {
-        return vertexDiameter;
-    }
-
-    public void setVertexDiameter(int vertexDiameter) {
-        this.vertexDiameter = vertexDiameter;
-    }
-
-    public Color getVertexNameColor() {
-        return vertexNameColor;
-    }
-
-    public void setVertexNameColor(Color vertexNameColor) {
-        this.vertexNameColor = vertexNameColor;
-    }
-
-    public int getVertexStrokeWidth() {
-        return vertexStrokeWidth;
-    }
-
-    public void setVertexStrokeWidth(int vertexStrokeWidth) {
-        this.vertexStrokeWidth = vertexStrokeWidth;
-    }
-    
 
     @Override
     public String toString() {
@@ -315,44 +238,12 @@ public class Graph implements Serializable
         return rep;
     }
 
-    public int getArrowLength() {
-        return arrowLength;
-    }
-
-    public void setArrowLength(int arrowLength) {
-        this.arrowLength = arrowLength;
-    }
-
-    public Color getEdgeArrowTipColor() {
-        return edgeArrowTipColor;
-    }
-
-    public void setEdgeArrowTipColor(Color edgeArrowTipColor) {
-        this.edgeArrowTipColor = edgeArrowTipColor;
-    }
-
     public int getCpt() {
         return cpt++;
     }
 
     public void setCpt(int cpt) {
         this.cpt = cpt;
-    }
-
-    public Color getEdgeWeightColor() {
-        return edgeWeightColor;
-    }
-
-    public void setEdgeWeightColor(Color edgeWeightColor) {
-        this.edgeWeightColor = edgeWeightColor;
-    }
-
-    public Color getEdgeWeightBorderColor() {
-        return edgeWeightBorderColor;
-    }
-
-    public void setEdgeWeightBorderColor(Color edgeWeightBorderColor) {
-        this.edgeWeightBorderColor = edgeWeightBorderColor;
     }
 
     public ArrayList<ArrayList<Boolean>> getExistingEdge() {

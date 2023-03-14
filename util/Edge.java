@@ -81,10 +81,12 @@ public class Edge implements Serializable
         graphics.setColor(strokeColor);
         if (collision == this)
         {
+            graphics.setColor(highlightColor);
             ((Graphics2D)graphics).setStroke(new BasicStroke(strokeWidth*1.5f)); //Change stroke
         }
         else
         {
+            graphics.setColor(strokeColor);
             ((Graphics2D)graphics).setStroke(new BasicStroke(strokeWidth)); //Change stroke
         }
 
@@ -118,7 +120,6 @@ public class Edge implements Serializable
         else
         {
             //We draw the edge
-            graphics.setColor(strokeColor);
             graphics.drawLine((int)startX, (int)startY, (int)endX, (int)endY);
         }
 
