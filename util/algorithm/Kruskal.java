@@ -79,10 +79,15 @@ public class Kruskal extends Thread {
             System.out.println(tri);
         }
 
+        String text = "<html><body><blockquote><h1>Kruskal</h1><p><h2>Step 0 </h2><br>"+animAlgo.matrixString()+"<br><br>visited (vertex) : "+visited.toString()+"<br>edgeBrowsed (start,end[,weight]): "+browsed.toString()+"<br>";
+        int n = 1;
 
         while (!L.isEmpty()) {
+
             Triplet temp = L.get(0);
             L.remove(0);
+            text += "<br><h2>Step "+n+"</h2><br>visited (vertex) : "+visited.toString()+"<br>edgeBrowsed (start,end[,weight]): "+browsed.toString()+"<br>edge select (start,end[,weight]): "+temp.getEdge().toString()+"<br>";
+            n++;
             if (!isInCc(temp.getEdge().getStart(), ACPM, temp.getEdge().getEnd())) {
                 ACPM.addEdge(temp.getEdge());
                 browsed.add(temp.getEdge());
@@ -99,9 +104,12 @@ public class Kruskal extends Thread {
                     visited.add(temp.getEdge().getEnd());
                 }
                 animAlgo.changeColor(visited, null, browsed);
+            }else{
+                text += temp.getEdge().toString() + "isn't selectionned because "+temp.getEdge().getStart().toString()+" and "+temp.getEdge().getEnd().toString()+" are already in the same connected component <br>";
             }
         }
-
+        text += "<br><h2>Step "+n+"</h2><br>visited (vertex) : "+visited.toString()+"<br>edgeBrowsed (start,end[,weight]): "+browsed.toString()+"<br>";
+        animAlgo.displayLog(text);
         animAlgo.reset();
     }
 }

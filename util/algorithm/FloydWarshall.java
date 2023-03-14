@@ -18,6 +18,30 @@ public class FloydWarshall extends Thread{
         this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor);
     }
 
+    public String printArray(int [][] M){
+        String result = "";
+
+        for (int i = 0; i < M.length; i++) {
+            result += i + " :  [ ";
+            for (int j = 0; j < M.length - 1; j++) {
+                if (M[i][j] == Integer.MAX_VALUE/2) {
+                    result +=  "-, "; 
+                }else{
+                    result += M[i][j] + ", ";
+                }
+                
+            }
+            if (M[i][M.length-1] == Integer.MAX_VALUE/2) {
+                result += "- ]<br>";
+            }else{
+                result += M[i][M.length-1] + " ]<br>";
+            }
+            
+        }
+        result += "<br>";
+        return result;
+    }
+
     @Override
     public void run() {
         graph.switchDisplay();
@@ -26,8 +50,6 @@ public class FloydWarshall extends Thread{
         int n = vertices.size();
         int [][] M = new int [n][n];
         Boolean [][] mem = new Boolean [n][n];
-
-        
         
         for (int i = 0; i < M.length; i++) {
             for (int j = 0; j < M.length; j++) {
@@ -45,14 +67,21 @@ public class FloydWarshall extends Thread{
             M[idS][idE] = (int)edge.getWeight();
             mem[idS][idE] = false;
         }
-
+        String text = "<html><body><blockquote><h1>Floyd-Warshall</h1><br>"+animAlgo.matrixString()+"<br><p>";
         for (int k = 0; k < M.length; k++) {
+            text += "<h2>Step "+k+" </h2><br>"+printArray(M)+"<br>";
             for (int i = 0; i < M.length; i++) {
                 for (int j = 0; j < M.length; j++) {
+                    if(M[i][j] > M[i][k] + M[k][j])
+                        text += "There are a shorter way between "+i+" and "+j+"<br>";
                     M[i][j] = Integer.min(M[i][j], M[i][k] + M[k][j]);
                 }
             }
+            text+= "<br>";
         }
+        text += "<h2>Step "+M.length+" </h2><br>"+printArray(M)+"<br>";
+        text += "</p></blockquote></body></html>";
+
         int width = edges.get(0).getStrokeWidth();
         PanelPaint pp = graph.getPanelPaint();
         int shift = n /3;
@@ -71,7 +100,7 @@ public class FloydWarshall extends Thread{
         }
 
 
-
+        animAlgo.displayLog(text);
         try {
             Thread.sleep(5000);
             for (Edge edge : toDelete) {

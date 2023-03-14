@@ -39,6 +39,8 @@ public class Prim extends Thread{
         ArrayList<Edge> edges = graph.getEdges();
         
         visited.add(start);
+        String text = "<html><body><blockquote><h1>Prim</h1><p><h2>Step 0 </h2><br>"+animAlgo.matrixString()+"<br><br>visited (vertex) : "+visited.toString()+"<br>edgeBrowsed (start,end[,weight]): "+browsed.toString()+"<br>";
+        int n = 1;
         for (Edge edge : getNeighbours(start, edges)) 
             inter.add(new Triplet(edge.getEnd(), edge, (int)edge.getWeight()));
         
@@ -53,7 +55,8 @@ public class Prim extends Thread{
             
             Triplet temp = inter.get(id);
             inter.remove(temp);
-
+            text += "<br><h2>Step "+n+"</h2><br>visited (vertex) : "+visited.toString()+"<br>edgeBrowsed (start,end[,weight]): "+browsed.toString()+"<br>edge select (start,end[,weight]): "+temp.getEdge().toString()+"<br>";
+            n++;
             if (!visited.contains(temp.getVertex())) {
                 visited.add(temp.getVertex());
                 browsed.add(temp.getEdge());
@@ -69,6 +72,8 @@ public class Prim extends Thread{
                         inter.add(new Triplet(edge.getEnd(), edge, (int)edge.getWeight()));
             }
         }
+        text += "<br><h2>Step "+n+"</h2><br>visited (vertex) : "+visited.toString()+"<br>edgeBrowsed (start,end[,weight]): "+browsed.toString()+"<br>";
+        animAlgo.displayLog(text);
         animAlgo.reset();
     }
 }

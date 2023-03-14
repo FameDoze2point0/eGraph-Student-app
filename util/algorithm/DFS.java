@@ -27,8 +27,13 @@ public class DFS extends Thread{
         String rep = "answer";
 
         list.add(start);
+        String text = "<html><body><blockquote><h1>Depth First Search</h1><p><h2>Step 0 </h2><br>"+animAlgo.matrixString()+"<br><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br>";
+        int i = 1;
+        
 
         while (!list.isEmpty()) {
+            text += "<h2>Step "+i+"</h2><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br>";
+            i++;
             vertex = list.get(0);
             list.remove(0);
             if (!visited.contains(vertex)) {
@@ -37,6 +42,7 @@ public class DFS extends Thread{
                     if (vertex.equals(edge.getStart())) {
                         if (!list.contains(edge.getEnd()) && !visited.contains(edge.getEnd())) {
                             list.add(0,edge.getEnd()); 
+                            text += edge.toString()+" isn't in neither list nor visited so we add it in list"+"<br>";
                         }
                         edgeBrowsed.add(edge);
                     }
@@ -45,9 +51,12 @@ public class DFS extends Thread{
                     }   
                 }
                 visited.add(vertex);
+                text += vertex.toString()+" is now visited !<br><br>";
                 animAlgo.changeColor(visited, list, edgeBrowsed);    
             }
         }
+        text += "<h2>Step "+i+"</h2><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br><br></p></body></blockquote></html>";
+        animAlgo.displayLog(text);
         System.out.println(rep);
         animAlgo.reset();  
     }

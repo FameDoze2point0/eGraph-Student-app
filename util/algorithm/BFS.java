@@ -17,6 +17,9 @@ public class BFS extends Thread{
         this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start);
     }
 
+    
+
+
     @Override
     public void run() {
 
@@ -27,8 +30,12 @@ public class BFS extends Thread{
         String rep = "answer";
 
         list.add(start);
-
+        String text = "<html><body><blockquote><h1>Breadth First Search</h1><p><h2>Step 0 </h2><br>"+animAlgo.matrixString()+"<br><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br>";
+        int i = 1;
         while (!list.isEmpty()) {
+            text += "<h2>Step "+i+"</h2><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br>";
+            
+            i++;
             vertex = list.get(0);
             list.remove(0);
             rep += " > " + vertex.getName();
@@ -36,18 +43,24 @@ public class BFS extends Thread{
                 if (vertex.equals(edge.getStart())){
                     edgeBrowsed.add(edge);
                     if (!list.contains(edge.getEnd()) && !visited.contains(edge.getEnd())) {
+                        text += edge.toString()+" isn't in neither list nor visited so we add it in list"+"<br>";
                         list.add(edge.getEnd());
                     }
                 }
                 if (!graph.getOriented() && vertex.equals(edge.getEnd())) {
-                    edgeBrowsed.add(edge);
+                    edgeBrowsed.add(edge);   
                 }
                     
             }
             visited.add(vertex);
+            text += vertex.toString()+" is now visited !<br><br>";
             animAlgo.changeColor(visited, list, edgeBrowsed);
         }
+
+       text += "<h2>Step "+i+"</h2><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br><br></p></body></blockquote></html>";
+
         System.out.println(rep);
+        animAlgo.displayLog(text);
         animAlgo.reset();  
     }
 }

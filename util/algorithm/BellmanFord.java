@@ -77,6 +77,7 @@ public class BellmanFord extends Thread{
     public void run() {
         // if (!weighted)
         //     throw new Exception("The graph has to be weighted to launch Bellman-Ford's Algorithm !");
+        ArrayList<Vertex> vertices = graph.getVertices();
         int size = graph.getVertices().size();
         int graphArr[][] = graphToArray(size);
         int dist[] = new int[size];
@@ -91,16 +92,36 @@ public class BellmanFord extends Thread{
         }
         dist[start.getId()] = 0;
         visited.add(start);
-
+        String text = "<html><body><blockquote><h1>Bellman-Ford</h1><br>"+animAlgo.matrixString()+"<br><p><h2>Step 0 </h2><br>visited (vertex) : "+visited.toString()+"<br>edgeBrowsed (start,end[,weight]): "+browsed.toString()+"<br>";
         for (int k = 0; k < size; k++) {
-            
+
+            text +="<h2>Step "+(k+1)+"</h2><br>visited (vertex) : "+visited.toString()+"<br>edgeBrowsed (start,end[,weight]): "+browsed.toString()+"<br><br>";
+            text += "distance from "+start.getId()+" :<br>";
+            for (int i = 0; i < pred.length; i++) {
+                if (dist[i] == Integer.MAX_VALUE/2) {
+                    text += vertices.get(i).getName() + " : unknown<br>";
+                }else{
+                    text += vertices.get(i).getName() + " : "+ dist[i] + "<br>";
+                }
+            }
+            text += "<br>";
+
             for (int i = 0; i < graphArr.length; i++) {
                 for (int j = 0; j < graphArr.length; j++) {
                     if (graphArr[i][j] != 0 && dist[i] + graphArr[i][j] < dist[j]) {
                         dist[j] = dist[i] + graphArr[i][j];
+                        text += "There are a shorter way between "+i+" and "+j+"<br>";
                         if(pred[j] != -1)
                             clearEdge(pred[j], j, browsed);
-                        pred[j] = i;   
+                        pred[j] = i;  
+                        for (int n = 0; n < pred.length; n++) {
+                            if (dist[n] == Integer.MAX_VALUE/2) {
+                                text += vertices.get(n).getName() + " : unknown<br>";
+                            }else{
+                                text += vertices.get(n).getName() + " : "+ dist[n] + "<br>";
+                            }
+                        }
+                        text += "<br>"; 
                     }
                 }
                 if (search(pred, visited, browsed)) { 
@@ -108,47 +129,11 @@ public class BellmanFord extends Thread{
                 }
             }
         }
+        text += "</p></body></blockquote></html>";
         animAlgo.changeColor(visited, null, browsed);
+        animAlgo.displayLog(text);
         animAlgo.reset();
+        
         //printArray(dist); 
     }
 }
-
-
-    // @Override
-    // public void run() {
-    //     // if (!graph.getWeighted())
-    //     //     throw new Exception("The graph has to be weighted to launch Dijkstra's Algorithm !");
-    //     ArrayList<Vertex> vertices = graph.getVertices();
-    //     int size = vertices.size();
-    //     int graphArr[][] = graphToArray(size);
-
-    //     ArrayList<Vertex> vertexVisited = new ArrayList<Vertex>();
-    //     ArrayList<Edge> edgeBrowsed = new ArrayList<Edge>();
-
-    //     int dist[] = new int[size];
-    //     Boolean sptSet[] = new Boolean[size];
-
-    //     for (int i = 0; i < size; i++) {
-    //         dist[i] = Integer.MAX_VALUE;
-    //         sptSet[i] = false;
-    //     }
-    //     dist[start.getId()] = 0;
-
-    //     for (int count = 0; count < size ; count++) {
-    //         int u = minDistance(dist,sptSet, size);
-    //         searchVertex(u, vertexVisited);
-    //         sptSet[u] = true;
-
-    //         for (int i = 0; i < size; i++) 
-    //             if (!sptSet[i] && graphArr[u][i] != 0 && dist[u] != Integer.MAX_VALUE && dist[u] + graphArr[u][i] < dist[i]){
-    //                 dist[i] = dist[u] + graphArr[u][i];
-    //                 searchEdge(u, i, edgeBrowsed);
-    //                 System.out.println("u = " + u + "i = " + i);
-    //             } 
-    //         animAlgo.changeColor(vertexVisited, null, edgeBrowsed);   
-    //     }
-
-    //     printArray(dist, vertices);
-    //     animAlgo.reset();
-    // }

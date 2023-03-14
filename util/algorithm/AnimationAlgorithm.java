@@ -2,6 +2,10 @@ package util.algorithm;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import gui.draw.PanelPaint;
@@ -76,8 +80,6 @@ public class AnimationAlgorithm {
         }
     }
 
-
-
     public void refresh(){
         graph.getPanelPaint().repaint();
         try {
@@ -85,5 +87,62 @@ public class AnimationAlgorithm {
         } catch (Exception e) {
             // TODO: handle exception
         }
+    }
+
+    private JDialog jd;
+        private JScrollPane global;
+        private JLabel content;
+
+    public void displayLog(String log){
+        jd = new JDialog();
+        jd.setSize(850,600);
+        jd.setLocationRelativeTo(null); //Centering the frame
+        jd.setResizable(false);
+        jd.setAlwaysOnTop(true);
+        jd.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        global = new JScrollPane();
+        global.setViewportView(new JLabel(log));      
+        jd.add(global);
+        jd.setVisible(true);
+    }
+
+
+    public String matrixString(){
+
+        ArrayList<Vertex> vertices = graph.getVertices();
+        ArrayList<Edge> edges = graph.getEdges();
+        Object[][] matrice = new Object[vertices.size()][vertices.size()];
+
+        if (graph.getWeighted()) {
+            for (int i = 0; i < matrice.length; i++) {
+                for (int j = 0; j < matrice.length; j++) {
+                    matrice[i][j] = 0; 
+                }
+            }    
+            for (Edge edge : edges) {
+                matrice[edge.getStart().getId()][edge.getEnd().getId()] = edge.getWeight();
+            }
+        }else{
+            for (int i = 0; i < matrice.length; i++) {
+                for (int j = 0; j < matrice.length; j++) {
+                    matrice[i][j] = "N"; 
+                }
+            } 
+            for (Edge edge : edges) {
+                matrice[edge.getStart().getId()][edge.getEnd().getId()] = "Y";
+            }
+        }
+
+        String text = "";
+        for (int i = 0; i < matrice.length; i++) {
+            text += vertices.get(i).toString() + " :  [ ";
+            for (int j = 0; j < matrice.length - 1; j++) {
+                text += matrice[i][j] + ", ";
+            }
+            text += matrice[i][matrice.length - 1] + " ]<br>";
+        }
+
+        return text;
     }
 }

@@ -86,25 +86,33 @@ public class Dijkstra extends Thread{
         Boolean sptSet[] = new Boolean[size];
 
         for (int i = 0; i < size; i++) {
-            dist[i] = Integer.MAX_VALUE;
+            dist[i] = Integer.MAX_VALUE/2;
             sptSet[i] = false;
         }
         dist[start.getId()] = 0;
 
+        String text = "<html><body><blockquote><h1>Dijkstra</h1><p><h2>Step 0 </h2><br><center>"+animAlgo.matrixString()+"</center><br><br>visited (vertex) : "+vertexVisited.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br>";
+
+
         for (int count = 0; count < size ; count++) {
+            text += "<h2>Step "+(count+1)+"</h2><br><br>visited (vertex) : "+vertexVisited.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br><br>";
             int u = minDistance(dist,sptSet, size);
             searchVertex(u, vertexVisited);
             sptSet[u] = true;
 
             for (int i = 0; i < size; i++) 
-                if (!sptSet[i] && graphArr[u][i] != 0 && dist[u] != Integer.MAX_VALUE && dist[u] + graphArr[u][i] < dist[i]){
+                if (!sptSet[i] && graphArr[u][i] != 0 && dist[u] != Integer.MAX_VALUE/2 && dist[u] + graphArr[u][i] < dist[i]){
                     dist[i] = dist[u] + graphArr[u][i];
+                    text += "The shorter way from the visited vertices is the edge between "+u+" and "+i+" with the weight : "+dist[i]+"<br>";
                     searchEdge(u, i, edgeBrowsed);
                     System.out.println("u = " + u + "i = " + i);
                 } 
             animAlgo.changeColor(vertexVisited, null, edgeBrowsed);   
         }
 
+        text += "</p></body></blockquote></html>";
+
+        animAlgo.displayLog(text);
         printArray(dist, vertices);
         animAlgo.reset();
     }

@@ -338,6 +338,14 @@ public class Edge implements Serializable
     public void setEdgeArrowTipColor(Color edgeArrowTipColor) {
         this.edgeArrowTipColor = edgeArrowTipColor;
     }
-    
+    @Override
+    public String toString() {
+        if (weight != null) {
+            return "("+start +","+end+"," + weight + ")";
+        }else{
+            return "("+start +","+end+")";
+        }
+        
+    }
     
 }
