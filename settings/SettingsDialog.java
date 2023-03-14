@@ -24,7 +24,7 @@ public class SettingsDialog extends JDialog
      // ===== VARIABLES USED TO CREATE THE SETTINGS WINDOW =====
         int nbrParameters = 5;
         JTabbedPane tabbedPane;
-        // === vertexs ===
+        // === vertices ===
             JPanel vertexPanel;
             // == LABELS ==    
             private JLabel vertex_label_insideColor,
@@ -79,6 +79,17 @@ public class SettingsDialog extends JDialog
             // == EDIT CURRENT VALUES ==
             private JTextField edge_textField_strokeWidth,
                                edge_textField_arrowLenght;
+        // === shortcuts ===
+        JPanel shortcutPanel;
+            // == LABELS ==
+            private JLabel new_label_shortcut,
+                            open_label_shortcut,
+                            save_label_shortcut,
+                            exit_label_shortcut,
+                            algorithms_label_shortcut,
+                            documentation_label_shortcut,
+                            licence_label_shortcut,
+                            contact_label_shortcut;
 
 
     // ===== END VARIABLES USED TO CREATE THE SETTINGS WINDOW =====
@@ -90,8 +101,8 @@ public class SettingsDialog extends JDialog
          
         //this.setLayout(new GridLayout(0, 3,0,10));
         this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.setMinimumSize(new Dimension(400,40*nbrParameters));
-        this.setMaximumSize(new Dimension(400,40*nbrParameters));
+        this.setMinimumSize(new Dimension(500,50*nbrParameters));
+        this.setMaximumSize(new Dimension(500,50*nbrParameters));
         this.setLocationRelativeTo(null); //Centering the frame
         this.setResizable(false);
         this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -160,7 +171,7 @@ public class SettingsDialog extends JDialog
 
 
 
-        // ===== VERTEXS SETTINGS =====
+        // ===== VERTICES SETTINGS =====
         //VertexPanel
         vertexPanel = new JPanel();
         vertexPanel.setLayout(new GridLayout(0, 3,0,10));
@@ -482,6 +493,55 @@ public class SettingsDialog extends JDialog
         //We add edgePanel as a tabulation 
         tabbedPane.addTab("Edges", edgePanel);
         // ===== END EDGES SETTINGS =====
+
+
+        // ===== SHORTCUTS SETTINGS =====
+        
+        //ShortcutPanel
+        shortcutPanel = new JPanel();
+        shortcutPanel.setLayout(new GridLayout(0, 2,0,2));
+        //shortcuts settings area
+        //New shortcut
+        new_label_shortcut = new JLabel("New graph/automaton : ");
+        shortcutPanel.add(new_label_shortcut);
+        shortcutPanel.add(new JLabel("CTRL + N"));
+
+        //Open shortcut
+        open_label_shortcut = new JLabel("Open graph/automaton : ");
+        shortcutPanel.add(open_label_shortcut);
+        shortcutPanel.add(new JLabel("CTRL + O"));
+
+        //Save shortcut
+        save_label_shortcut = new JLabel("Save graph/automaton : ");
+        shortcutPanel.add(save_label_shortcut);
+        shortcutPanel.add(new JLabel("CTRL + S"));
+
+        //Exit shortcut
+        exit_label_shortcut = new JLabel("Exit the application : ");
+        shortcutPanel.add(exit_label_shortcut);
+        shortcutPanel.add(new JLabel("ESCAPE"));
+
+        //Exit shortcut
+        documentation_label_shortcut = new JLabel("Open the documentation page : ");
+        shortcutPanel.add(documentation_label_shortcut);
+        shortcutPanel.add(new JLabel("CTRL + D"));
+
+        //Exit shortcut
+        licence_label_shortcut = new JLabel("Open the licence page : ");
+        shortcutPanel.add(licence_label_shortcut);
+        shortcutPanel.add(new JLabel("CTRL + L"));
+
+        //Exit shortcut
+        contact_label_shortcut = new JLabel("Open the contact page : ");
+        shortcutPanel.add(contact_label_shortcut);
+        shortcutPanel.add(new JLabel("CTRL + C"));
+
+        //We add vertexPanel as a tabulation 
+        tabbedPane.addTab("Shortcuts", shortcutPanel);
+        // ===== END SHORTCUTS SETTINGS =====
+
+
+
     }
 
     public JLabel getVertex_label_insideColor() {
@@ -802,5 +862,77 @@ public class SettingsDialog extends JDialog
 
     public void setEdge_textField_arrowLenght(JTextField edge_textField_arrowLenght) {
         this.edge_textField_arrowLenght = edge_textField_arrowLenght;
+    }
+
+    public JPanel getShortcutPanel() {
+        return shortcutPanel;
+    }
+
+    public void setShortcutPanel(JPanel shortcutPanel) {
+        this.shortcutPanel = shortcutPanel;
+    }
+
+    public JLabel getNew_label_shortcut() {
+        return new_label_shortcut;
+    }
+
+    public void setNew_label_shortcut(JLabel new_label_shortcut) {
+        this.new_label_shortcut = new_label_shortcut;
+    }
+
+    public JLabel getOpen_label_shortcut() {
+        return open_label_shortcut;
+    }
+
+    public void setOpen_label_shortcut(JLabel open_label_shortcut) {
+        this.open_label_shortcut = open_label_shortcut;
+    }
+
+    public JLabel getSave_label_shortcut() {
+        return save_label_shortcut;
+    }
+
+    public void setSave_label_shortcut(JLabel save_label_shortcut) {
+        this.save_label_shortcut = save_label_shortcut;
+    }
+
+    public JLabel getExit_label_shortcut() {
+        return exit_label_shortcut;
+    }
+
+    public void setExit_label_shortcut(JLabel exit_label_shortcut) {
+        this.exit_label_shortcut = exit_label_shortcut;
+    }
+
+    public JLabel getAlgorithms_label_shortcut() {
+        return algorithms_label_shortcut;
+    }
+
+    public void setAlgorithms_label_shortcut(JLabel algorithms_label_shortcut) {
+        this.algorithms_label_shortcut = algorithms_label_shortcut;
+    }
+
+    public JLabel getDocumentation_label_shortcut() {
+        return documentation_label_shortcut;
+    }
+
+    public void setDocumentation_label_shortcut(JLabel documentation_label_shortcut) {
+        this.documentation_label_shortcut = documentation_label_shortcut;
+    }
+
+    public JLabel getLicence_label_shortcut() {
+        return licence_label_shortcut;
+    }
+
+    public void setLicence_label_shortcut(JLabel licence_label_shortcut) {
+        this.licence_label_shortcut = licence_label_shortcut;
+    }
+
+    public JLabel getContact_label_shortcut() {
+        return contact_label_shortcut;
+    }
+
+    public void setContact_label_shortcut(JLabel contact_label_shortcut) {
+        this.contact_label_shortcut = contact_label_shortcut;
     }
 }

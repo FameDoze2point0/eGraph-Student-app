@@ -2,6 +2,9 @@ package gui.menu.components;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.*;
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.Event;
 
 public class Other extends JMenu
 {
@@ -24,7 +27,9 @@ public class Other extends JMenu
                 System.out.println("open doc");
             }
         });
-        documentation.setEnabled(false);
+        documentation.setMnemonic(KeyEvent.VK_D);
+        documentation.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, Event.CTRL_MASK));
+
         this.add(documentation);
 
         //Licence
@@ -36,7 +41,9 @@ public class Other extends JMenu
                 System.out.println("open licence");
             }
         });
-        licence.setEnabled(false);
+        licence.setMnemonic(KeyEvent.VK_L);
+        licence.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+
         this.add(licence);
 
         //Contacts
@@ -48,7 +55,8 @@ public class Other extends JMenu
                 System.out.println("open contatcs");
             }
         });
-        contacts.setEnabled(false);
+        contacts.setMnemonic(KeyEvent.VK_C);
+        contacts.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK));
         this.add(contacts);
 
         //About...
@@ -60,7 +68,6 @@ public class Other extends JMenu
                 System.out.println("about");
             }
         });
-        about.setEnabled(false);
         this.add(about);
     }
 }

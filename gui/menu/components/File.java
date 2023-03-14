@@ -1,16 +1,16 @@
 package gui.menu.components;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.Event;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import gui.Gui;
 import gui.draw.Draw;
 import gui.popups.newElement.NewElement;
-import settings.Settings;
-
-import java.awt.event.*;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 public class File extends JMenu
 {
@@ -39,6 +39,8 @@ public class File extends JMenu
                 new NewElement(gui, draw);
             }
         });
+        newFile.setMnemonic(KeyEvent.VK_N);
+        newFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK)); 
         this.add(newFile);
 
         //Open file
@@ -50,6 +52,8 @@ public class File extends JMenu
                 draw.loadTabulation(gui);
             }
         });
+        openFile.setMnemonic(KeyEvent.VK_O);
+        openFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
         this.add(openFile);
 
         //Save file
@@ -61,6 +65,8 @@ public class File extends JMenu
                 draw.saveTabulation(gui);
             }
         });
+        saveAs.setMnemonic(KeyEvent.VK_S);
+        saveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
         this.add(saveAs);
 
         //Export menu
@@ -97,6 +103,8 @@ public class File extends JMenu
                 System.exit(0);
             }
         });
+        exit.setMnemonic(KeyEvent.VK_ESCAPE);
+        exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
         this.add(exit);
     }
 
