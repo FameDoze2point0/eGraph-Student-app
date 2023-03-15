@@ -1,17 +1,10 @@
 package gui.popups.newElement;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
 
 import gui.Gui;
 import gui.draw.Draw;
@@ -20,32 +13,32 @@ import gui.draw.PanelPaint;
 
 public class NewElement extends JDialog
 {
+    
     //JPanel that have every other JPanel (required since we can only have 1 JPanel per JFrame)
     private JPanel global;
-        private JPanel radioButtonArea;
             //Radio button group
             private ButtonGroup elementsButton;
                 //The radio buttons and the items inside
                 private JRadioButton graphButton;
                 private JRadioButton automatonButton;
 
-        private JPanel checkBoxArea;
             //One checkbox
             private JCheckBox isOriented;
             private JCheckBox isWeighted;
 
-        private JPanel setNameArea;
             private JLabel nameLabel;
             private JTextField nameTextField;
             
-        private JPanel validButtonArea;
             private JButton validation;
+            private JButton cancel;
+
+        private static int nbrElementCreated = 0;
 
     public NewElement(Gui gui, Draw drawArea)
     {
         //General settings
         super(gui, "New element", true);
-        this.setSize(200,180);
+        this.setSize(200,120);
         this.setLocationRelativeTo(null); //Centering the frame
         this.setResizable(false);
         this.setAlwaysOnTop(true);
@@ -59,14 +52,14 @@ public class NewElement extends JDialog
          */
 
         //Global JPanel
-        global = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
-        //Area of the radio buttons
-        radioButtonArea = new JPanel();       
+        global = new JPanel();
+        global.setLayout(new GridLayout(0,2));
+      
         //Creating the radio buttons
         //Graph button
         graphButton = new JRadioButton("Graph  ");
         graphButton.setSelected(true); //Graph is selected by default
+        graphButton.setHorizontalAlignment(JRadioButton.CENTER);
         graphButton.addActionListener(new ActionListener()
         {
             @Override
@@ -76,9 +69,10 @@ public class NewElement extends JDialog
                 isWeighted.setEnabled(true);
             }
         });
-        radioButtonArea.add(graphButton);
+        global.add(graphButton);
         //Automaton button
         automatonButton = new JRadioButton("Automaton");
+        automatonButton.setHorizontalAlignment(JRadioButton.CENTER);
         automatonButton.addActionListener(new ActionListener()
         {
             @Override
@@ -87,43 +81,49 @@ public class NewElement extends JDialog
                 isWeighted.setEnabled(false);
             }
         });
-        radioButtonArea.add(automatonButton);
+        global.add(automatonButton);
         //Adding the radio buttons to the same group
         elementsButton = new ButtonGroup();
         elementsButton.add(graphButton);
         elementsButton.add(automatonButton);
-        //Adding the radio area to the JDialog
-        global.add(radioButtonArea);
 
 
 
-        //To choose if a graph is oriented and weighted (an automaton is always oritend and weighted)
-        checkBoxArea = new JPanel();
         //Creating the checkboxes
         //Oriented
         isOriented = new JCheckBox("Oriented");
-        checkBoxArea.add(isOriented);
+        isOriented.setHorizontalAlignment(JCheckBox.CENTER);
+        global.add(isOriented);
         //Weighted
         isWeighted = new JCheckBox("Weighted");
-        checkBoxArea.add(isWeighted);
-        //Adding the checkbox area to the JDialog
-        global.add(checkBoxArea);
+        isWeighted.setHorizontalAlignment(JCheckBox.CENTER);
+        global.add(isWeighted);
 
-        //Name
-        setNameArea = new JPanel();
         //Label
-        nameLabel = new JLabel("Name :");
-        setNameArea.add(nameLabel);
+        nameLabel = new JLabel("Name :",SwingConstants.CENTER);        
+        global.add(nameLabel);
         //JTextField
-        nameTextField = new JTextField();
+        nameTextField = new JTextField("Graph "+(nbrElementCreated++));
+        nameTextField.setHorizontalAlignment(JTextField.CENTER);
         nameTextField.setPreferredSize(new Dimension(116, 20));
-        setNameArea.add(nameTextField);
-        global.add(setNameArea);
+        global.add(nameTextField);
 
 
 
-        //Create button
-        validButtonArea = new JPanel();
+        Action cancelAction = new AbstractAction("Cancel") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        };
+        cancelAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+        cancel = new JButton(cancelAction);
+        cancel.getActionMap().put("cancelNew", cancelAction);
+        cancel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke)cancelAction.getValue(Action.ACCELERATOR_KEY), "cancelNew");
+
+        global.add(cancel);
+        cancel.setPreferredSize(new Dimension(180,30));
+
         validation = new JButton("Create");
         validation.addActionListener(new ActionListener()
         {
@@ -133,17 +133,17 @@ public class NewElement extends JDialog
                 createElement(gui, drawArea);
             }
         });
-        validButtonArea.add(validation);
+        global.add(validation);
         validation.setPreferredSize(new Dimension(180,30));
-        global.add(validButtonArea);
 
+        
+
+        this.add(global);
 
         //TEMPORARY
         automatonButton.setEnabled(false);
         //END TEMPORARY
-
-
-        this.add(global);
+        
         this.setVisible(true);
     }
 

@@ -177,11 +177,27 @@ public class RightClick extends JPopupMenu
         this.add(newElement);
 
         openElement = new JMenuItem("Open...");
-        openElement.setEnabled(false);
+        openElement.addActionListener(new ActionListener()
+        {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				drawArea.loadTabulation(gui);
+			}
+            
+        });
         this.add(openElement);
 
         saveElement = new JMenuItem("Save...");
-        saveElement.setEnabled(false);
+        saveElement.addActionListener(new ActionListener()
+        {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				drawArea.saveTabulation(gui);
+			}
+            
+        });
         this.add(saveElement);
 
         this.add(new Separator()); // === NEW CATEGORY ===

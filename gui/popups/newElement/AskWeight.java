@@ -10,13 +10,16 @@ import gui.draw.Draw;
 import util.Graph;
 import gui.draw.PanelPaint;
 
-public class AskWeight extends JDialog{
+public class AskWeight extends JDialog
+{
     
     private JPanel global;
         private JTextField jtf;
         private JButton submit;
         private JLabel errorLabel;
         private Integer weight;
+
+    private GridBagConstraints constraints; //Constraints of the element that is gonna be added to the panel
 
     
 
@@ -29,14 +32,34 @@ public class AskWeight extends JDialog{
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         //Global JPanel
-        global = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        global = new JPanel();
+        global.setLayout(new GridBagLayout());
+        constraints = new GridBagConstraints();
 
-        global.add(new JLabel("Enter the weight of the edge as an integer : "));
+
+
+        //Label
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+
+        global.add(new JLabel("Enter the weight of the edge as an integer : "), constraints);
         
+
+
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+
         jtf = new JTextField();
         jtf.setPreferredSize(new Dimension(90, 20));
+        global.add(jtf, constraints);
 
-        global.add(jtf);
+
+
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
 
         submit = new JButton("Valid your choice");
         submit.addActionListener(new ActionListener()
@@ -55,7 +78,13 @@ public class AskWeight extends JDialog{
                 }
             }
         });
-        global.add(submit);
+        global.add(submit, constraints);
+
+
+
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
 
         errorLabel = new JLabel("The weight has to be not null and an integer !");
         errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -63,7 +92,7 @@ public class AskWeight extends JDialog{
         errorLabel.setForeground(Color.red);
         errorLabel.setFont(new Font("Arial",Font.BOLD,20));
         errorLabel.setVisible(false);
-        global.add(errorLabel);
+        global.add(errorLabel, constraints);
 
         this.add(global);
         this.setVisible(true);

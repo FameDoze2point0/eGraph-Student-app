@@ -154,6 +154,12 @@ public class Edge implements Serializable
             //Once we retreive the weight, we want to draw it in the middle of the edge a highlight of the same color as the edge
             int offsetX = (int)(startX + endX)/2 - graphics.getFontMetrics().stringWidth(weight.toString())/2;
             int offsetY = (int)(startY + endY)/2 + graphics.getFontMetrics().getHeight()/4;
+        
+            if(start == end)
+            {
+                //We move up the number a bit
+                offsetY = offsetY - strokeWidth*10;
+            }
 
             graphics.setColor(weightBorderColor); //Color of the edge
             //We draw the highlight (border of the text)

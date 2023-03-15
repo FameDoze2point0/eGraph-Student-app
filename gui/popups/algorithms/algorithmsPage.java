@@ -26,7 +26,7 @@ public class algorithmsPage extends JDialog{
         private JPanel algoChoiceArea;
             private JLabel algoChoiceLabel;
             private JComboBox algoList;
-            private String[] algoType = {"BFS", "DFS","RS","Dijkstra","Bellman-Ford","Floyd-Warshall","Prim","Kruskal"};
+            private String[] algoType = {"Breadth First Search", "Depth First Search","Random Search","Dijkstra","Bellman-Ford","Floyd-Warshall","Prim","Kruskal"};
         private JPanel startingVertexArea;
             private JLabel startingVertexLabel;
             private JComboBox<String> startingVertexList;
@@ -70,7 +70,7 @@ public class algorithmsPage extends JDialog{
         String[] vName = new String[graph.getVertices().size()];
 
         for (int i = 0; i < vName.length; i++) 
-            vName[i] = "" + graph.getVertices().get(i).getId();
+            vName[i] = "" + graph.getVertices().get(i).getName();
 
         //starting vertex part
         startingVertexArea = new JPanel();
@@ -160,17 +160,20 @@ public class algorithmsPage extends JDialog{
     public void addSubmitListener(Gui gui, Draw draw){
         ActionListener submitListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                
+                String name1 = (String)startingVertexList.getSelectedItem();
+                String name2 = (String)endingVertexList.getSelectedItem();
 
-                int id1 = Integer.parseInt((String)startingVertexList.getSelectedItem());
-                int id2 = Integer.parseInt((String)endingVertexList.getSelectedItem());
+                // int name1 = Integer.parseInt((String)startingVertexList.getSelectedItem());
+                // int name2 = Integer.parseInt((String)endingVertexList.getSelectedItem());
                 Graph graph = gui.getTabulations().get(draw.getSelectedComponent());
 
                 Vertex v1 = graph.getVertices().get(0), v2 = null;
 
                 for (Vertex vertex : graph.getVertices()) {
-                    if (vertex.getId() == id1) 
+                    if (vertex.getName() == name1) 
                         v1 = vertex;
-                    if (vertex.getId() == id2) 
+                    if (vertex.getName() == name2) 
                         v2 = vertex;
                     
                 }
@@ -178,18 +181,18 @@ public class algorithmsPage extends JDialog{
                 dispose();
                 String s = (String)algoList.getSelectedItem();
                 switch (s) {
-                    case "BFS": //BFS
+                    case "Breadth First Search": //BFS
                         BFS algoBFS = new BFS(graph, v1);
                         algoBFS.start();
                         //graph.algo_BFS(v1);
                         break;
 
-                    case "DFS": //DFS
+                    case "Depth First Search": //DFS
                         DFS algoDFS = new DFS(graph, v1);
                         algoDFS.start();;
                         break;
                 
-                    case "RS": //RS
+                    case "Random Search": //RS
                         RS algoRS = new RS(graph, v1);
                         algoRS.start();
                         break;

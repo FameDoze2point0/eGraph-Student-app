@@ -23,6 +23,7 @@ public class File extends JMenu
         private JMenuItem exportPDF;
         private JMenuItem exportSVG;
 
+    private JMenuItem closeTabulation;
     private JMenuItem exit;
 
     public File(Gui gui, Draw draw)
@@ -94,6 +95,27 @@ public class File extends JMenu
             exportFile.add(exportSVG);
             exportFile.setEnabled(false);
         this.add(exportFile);
+
+
+        closeTabulation = new JMenuItem("Close Tabulation");
+        closeTabulation.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+
+                if (draw.getTabCount() > 1) {
+                    
+                    
+                    gui.getTabulations().remove(draw.getSelectedComponent());
+                    draw.remove(draw.getSelectedIndex());
+                    draw.setSelectedIndex(0); 
+                }
+                
+            }
+        });
+        closeTabulation.setMnemonic(KeyEvent.VK_W);
+        closeTabulation.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
+        this.add(closeTabulation);
+
+
 
         exit = new JMenuItem("Exit");
         exit.addActionListener(new ActionListener()

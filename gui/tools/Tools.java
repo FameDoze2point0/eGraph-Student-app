@@ -52,6 +52,19 @@ public class Tools extends JToolBar
         });
         this.add(cursor);
 
+        // Action cancelAction = new AbstractAction("Cancel") {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         dispose();
+        //     }
+        // };
+        // cancelAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+        // cancel = new JButton(cancelAction);
+        // cancel.getActionMap().put("cancelNew", cancelAction);
+        // cancel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke)cancelAction.getValue(Action.ACCELERATOR_KEY), "cancelNew");
+
+
+
         //New Vertex/State
         newVertex = new JButton("Vertex +");
         newVertex.addActionListener(new ActionListener()

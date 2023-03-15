@@ -13,6 +13,9 @@ import gui.Gui;
 import util.Edge;
 import util.Vertex;
 
+import java.awt.*;
+import javax.swing.*;
+
 public class TextInput extends JDialog
 {
     JPanel general;
@@ -22,14 +25,14 @@ public class TextInput extends JDialog
     public TextInput(Gui gui, Object obj)
     {
         super(gui, "Enter text", true);
-        this.setMinimumSize(new Dimension(300,57));
-        this.setMaximumSize(new Dimension(300,250));
+        this.setMinimumSize(new Dimension(300,60));
         this.setLocationRelativeTo(null); //Centering the frame
         this.setResizable(false);
         this.setAlwaysOnTop(true);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         general = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        general.setLayout(new GridLayout(0,2));
 
             input = new JTextField();
             input.setPreferredSize(new Dimension(90, 20));

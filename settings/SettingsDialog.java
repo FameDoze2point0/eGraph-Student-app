@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
 import gui.Gui;
 
 public class SettingsDialog extends JDialog
@@ -85,6 +84,7 @@ public class SettingsDialog extends JDialog
             private JLabel new_label_shortcut,
                             open_label_shortcut,
                             save_label_shortcut,
+                            closeTab_label_shortcut,
                             exit_label_shortcut,
                             algorithms_label_shortcut,
                             documentation_label_shortcut,
@@ -99,7 +99,7 @@ public class SettingsDialog extends JDialog
         //We create the settings page
         super(gui, "Settings", true);
          
-        //this.setLayout(new GridLayout(0, 3,0,10));
+        this.setLayout(new GridLayout(0, 3,0,10));
         this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.setMinimumSize(new Dimension(500,50*nbrParameters));
         this.setMaximumSize(new Dimension(500,50*nbrParameters));
@@ -516,10 +516,10 @@ public class SettingsDialog extends JDialog
         shortcutPanel.add(save_label_shortcut);
         shortcutPanel.add(new JLabel("CTRL + S"));
 
-        //Exit shortcut
-        exit_label_shortcut = new JLabel("Exit the application : ");
-        shortcutPanel.add(exit_label_shortcut);
-        shortcutPanel.add(new JLabel("ESCAPE"));
+        //Close tabulation shortcut
+        closeTab_label_shortcut = new JLabel("Close a tabulation : ");
+        shortcutPanel.add(closeTab_label_shortcut);
+        shortcutPanel.add(new JLabel("CTRL + W"));
 
         //Exit shortcut
         documentation_label_shortcut = new JLabel("Open the documentation page : ");
@@ -535,6 +535,11 @@ public class SettingsDialog extends JDialog
         contact_label_shortcut = new JLabel("Open the contact page : ");
         shortcutPanel.add(contact_label_shortcut);
         shortcutPanel.add(new JLabel("CTRL + C"));
+
+        //Exit shortcut
+        exit_label_shortcut = new JLabel("Exit the application : ");
+        shortcutPanel.add(exit_label_shortcut);
+        shortcutPanel.add(new JLabel("ESCAPE"));
 
         //We add vertexPanel as a tabulation 
         tabbedPane.addTab("Shortcuts", shortcutPanel);
