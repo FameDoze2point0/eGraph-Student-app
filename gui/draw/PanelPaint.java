@@ -153,15 +153,15 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                             //Adding the edge to the graph
                             Integer weight = null;
                             int nbrOfEdges = graph.getEdges().size();
-                            graph.addEdge(new Edge(start, vertex, null, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(), Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), graph,Gui.getSettings().getArrowLength()));
-                            if (graph.getWeighted() && nbrOfEdges+1 == graph.getEdges().size()){
+                            graph.addEdge(new Edge(start, vertex, 0, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(), Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), graph,Gui.getSettings().getArrowLength()));
+                            if(graph.getWeighted() && nbrOfEdges+1 == graph.getEdges().size())
+                            {
                                 AskWeight askingWeightPage = new AskWeight(gui, drawArea);
                                 weight = askingWeightPage.getWeight();
-                                if(weight == null)
+                                if(weight != null)
                                 {
-                                    weight = 0;
+                                    graph.getEdges().get(nbrOfEdges).setWeight(weight);
                                 }
-                                graph.getEdges().get(nbrOfEdges).setWeight(weight);
                             }
                             start = null;
                         }
@@ -263,6 +263,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
     public void updateUndo()
     {
+        
         Graph graphCopy = gui.getTabulations().get(this).clone();
         undo.add(graphCopy); //Adding a copy
 
@@ -274,26 +275,29 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         if(!redo.isEmpty())
         {
             redo.clear();
+            getRightClickMenu().getRedo().setEnabled(false);
+            gui.getTools().getRedo().setEnabled(false);
+            gui.getMenu().getEdit().getRedo().setEnabled(false);
         }
     }
 
     public void undo()
     {
+
         Graph currentGraph = null;
         if(redo.isEmpty())
         {
             currentGraph = gui.getTabulations().get(this).clone();
             redo.add(currentGraph);
         }
-        else
-        {
-            redo.add(undo.pop());
-            gui.getTabulations().replace(this,redo.peek());
-        }
+        redo.add(undo.pop());
+        gui.getTabulations().replace(this,redo.peek());
+        
 
 
         if(undo.empty())
         {
+            redo.pop();
             getRightClickMenu().getUndo().setEnabled(false);
             gui.getTools().getUndo().setEnabled(false);
             gui.getMenu().getEdit().getUndo().setEnabled(false);
@@ -305,17 +309,25 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             gui.getTools().getRedo().setEnabled(true);
             gui.getMenu().getEdit().getRedo().setEnabled(true);
         }
-
         repaint();
     }
 
     public void redo()
     {
+
+        Graph currentGraph = null;
+        if(undo.isEmpty())
+        {
+            currentGraph = gui.getTabulations().get(this).clone();
+            undo.add(currentGraph);
+        }
+
         undo.add(redo.pop());
         gui.getTabulations().replace(this,undo.peek());
 
         if(redo.empty())
         {
+            undo.pop();
             getRightClickMenu().getRedo().setEnabled(false);
             gui.getTools().getRedo().setEnabled(false);
             gui.getMenu().getEdit().getRedo().setEnabled(false);
@@ -327,7 +339,6 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             gui.getTools().getUndo().setEnabled(true);
             gui.getMenu().getEdit().getUndo().setEnabled(true);
         }
-
         repaint();
     }
 
