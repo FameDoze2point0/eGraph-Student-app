@@ -1,4 +1,5 @@
 package gui.menu.components;
+import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import gui.Gui;
@@ -7,7 +8,7 @@ import settings.Settings;
 import java.awt.event.*;
 import java.awt.*;
 
-public class SettingsMenu extends JMenuItem
+public class SettingsMenu extends JMenu
 {
     public SettingsMenu(Gui gui)
     {
@@ -15,8 +16,8 @@ public class SettingsMenu extends JMenuItem
         // - Settings (Shortcuts, style(Default,...), Default automaton, Default graph)
 
         //Settings
-        //settings = new JMenuItem("Settings...");
-        this.addActionListener(new ActionListener()
+        JMenuItem settings = new JMenuItem("Settings...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_choosemacro.png"));
+        settings.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
@@ -25,8 +26,7 @@ public class SettingsMenu extends JMenuItem
             }
         });
 
-        this.setMaximumSize(new Dimension(65,20));
-        //this.add(settings);
+        this.add(settings);
 
         // //Shortcuts
         // shortcuts = new JMenuItem("Shortcuts...");

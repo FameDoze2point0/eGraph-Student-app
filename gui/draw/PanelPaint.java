@@ -1,5 +1,7 @@
 package gui.draw;
 import java.awt.event.*;
+import java.util.Stack;
+
 import javax.swing.JPanel;
 import gui.Gui;
 import gui.draw.rightclickmenu.RightClick;
@@ -25,6 +27,11 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
     // //Menu when we right click
     private RightClick rightClickMenu;
+
+    //Stack to do the undo/redo
+    Stack<Graph> undo;
+    Stack<Graph> redo;
+
 
     public RightClick getRightClickMenu() {
         return rightClickMenu;
@@ -115,6 +122,8 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             {
                 case(1): {
                     //In state 1, when the mouse is clicked, we create a new vertex/state
+                    //We save for undo
+                    updateUndo();
                     //We retrieve the actual graph/automaton
                     int cpt = graph.getCpt();
                     graph.addVertex(new Vertex(cpt,e.getX() - radius, e.getY() - radius, Gui.getSettings().getVertexDiameter(), Gui.getSettings().getVertexStrokeWidth(), Gui.getSettings().getVertexInsideColor(), Gui.getSettings().getVertexOutsideColor(), ""+(cpt), Gui.getSettings().getVertexNameColor())); //We add the new vertex to the graph
@@ -134,13 +143,21 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                         }
                         else
                         {
+                            //Saving the graph before we add the edge
+                            updateUndo();
                             //Adding the edge to the graph
                             Integer weight = null;
-                            if (graph.getWeighted()){
+                            int nbrOfEdges = graph.getEdges().size();
+                            graph.addEdge(new Edge(start, vertex, null, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(), Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), graph,Gui.getSettings().getArrowLength()));
+                            if (graph.getWeighted() && nbrOfEdges+1 == graph.getEdges().size()){
                                 AskWeight askingWeightPage = new AskWeight(gui, drawArea);
                                 weight = askingWeightPage.getWeight();
+                                if(weight == null)
+                                {
+                                    weight = 0;
+                                }
+                                graph.getEdges().get(nbrOfEdges).setWeight(weight);
                             }
-                            graph.addEdge(new Edge(start, vertex, weight, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(), Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), graph));
                             start = null;
                         }
                     }
@@ -233,6 +250,25 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         X = e.getX();
         Y = e.getY();
         repaint();
+    }
+
+    public void updateUndo()
+    {
+        
+        Graph currentGraph = gui.getTabulations().get(this);
+        Graph toAdd = ((((Object)currentGraph).clone());
+    }
+
+    public void undo()
+    {
+        redo.add(undo.pop());
+        
+    }
+
+    public void redo()
+    {
+        undo.add(redo.pop());
+
     }
 
     public Draw getDrawArea() {

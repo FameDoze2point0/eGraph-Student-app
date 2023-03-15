@@ -179,7 +179,7 @@ public class Graph implements Serializable
             {
                 if(!oriented)
                 {
-                    edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(),Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), this));
+                    edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(),Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), this, Gui.getSettings().getArrowLength()));
                 }
                 else
                 {
@@ -193,9 +193,9 @@ public class Graph implements Serializable
 
     public void addEdge(Vertex v1, Vertex v2, Object weight){
         if (!oriented) 
-            edges.add(new Edge(v2, v1, weight, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(),Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(),Gui.getSettings().getEdgeWeightBorderColor(),this));    
+            edges.add(new Edge(v2, v1, weight, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(),Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(),Gui.getSettings().getEdgeWeightBorderColor(),this,Gui.getSettings().getArrowLength()));    
         
-        edges.add(new Edge(v1, v2, weight, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(),Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(),Gui.getSettings().getEdgeWeightBorderColor(),this));
+        edges.add(new Edge(v1, v2, weight, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(),Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(),Gui.getSettings().getEdgeWeightBorderColor(),this,Gui.getSettings().getArrowLength()));
     }
     public void removeEdge(Edge e){
         if(edges.contains(e)){

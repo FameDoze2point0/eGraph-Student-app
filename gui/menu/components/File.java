@@ -1,4 +1,5 @@
 package gui.menu.components;
+import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
@@ -32,7 +33,7 @@ public class File extends JMenu
         // - File (New, Open, Save, Export (PDF, SVG), Exit)
 
         //New file
-        newFile = new JMenuItem("New...");
+        newFile = new JMenuItem("New...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_bezierinsert.png"));
         newFile.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -45,7 +46,7 @@ public class File extends JMenu
         this.add(newFile);
 
         //Open file
-        openFile = new JMenuItem("Open...");
+        openFile = new JMenuItem("Open...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_insertmasterpage.png"));
         openFile.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -58,7 +59,7 @@ public class File extends JMenu
         this.add(openFile);
 
         //Save file
-        saveAs = new JMenuItem("Save as...");
+        saveAs = new JMenuItem("Save as...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_recsave.png"));
         saveAs.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -97,7 +98,7 @@ public class File extends JMenu
         this.add(exportFile);
 
 
-        closeTabulation = new JMenuItem("Close Tabulation");
+        closeTabulation = new JMenuItem("Close Tabulation", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_dbformdelete.png"));
         closeTabulation.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
 
@@ -117,7 +118,7 @@ public class File extends JMenu
 
 
 
-        exit = new JMenuItem("Exit");
+        exit = new JMenuItem("Exit", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_quit.png"));
         exit.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)

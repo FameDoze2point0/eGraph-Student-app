@@ -277,7 +277,6 @@ public class NewElement extends JDialog
         //We first read if its an automaton or a graph
         if(graphButton.isSelected())
         {
-            
             //Creating the tabulation
             PanelPaint panelPaint = new PanelPaint(gui, drawArea);
             drawArea.addTab(nameTextField.getText(), null, panelPaint, nameTextField.getText()); //We create the new tab and retrieve it

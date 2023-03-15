@@ -1,80 +1,46 @@
 package gui.menu.components;
+import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
+import gui.Gui;
+import gui.draw.PanelPaint;
+
 import java.awt.event.*;
 
 public class Edit extends JMenu
 {
     private JMenuItem undo;
     private JMenuItem redo;
-    private JMenuItem cut;
-    private JMenuItem copy;
-    private JMenuItem paste;
 
-    public Edit()
+    public Edit(Gui gui)
     {
         super("Edit");
         // - Edit (Undo, Redo, Cut, Copy, Paste)
 
         //Undo
-        undo = new JMenuItem("Undo");
+        undo = new JMenuItem("Undo", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_undo.png"));
         undo.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("undo");
+                PanelPaint pp = (PanelPaint)gui.getDraw().getSelectedComponent();
+                pp.undo();
             }
         });
-        undo.setEnabled(false);
         this.add(undo);
 
         //Redo
-        redo = new JMenuItem("Redo");
+        redo = new JMenuItem("Redo", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_redo.png"));
         redo.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("redo");
+                PanelPaint pp = (PanelPaint)gui.getDraw().getSelectedComponent();
+                pp.redo();
             }
         });
-        redo.setEnabled(false);
         this.add(redo);
-
-        //Cut
-        cut = new JMenuItem("Cut");
-        cut.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                System.out.println("cut");
-            }
-        });
-        cut.setEnabled(false);
-        this.add(cut);
-
-        //Copy
-        copy = new JMenuItem("Copy");
-        copy.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                System.out.println("copy");
-            }
-        });
-        copy.setEnabled(false);
-        this.add(copy);
-
-        //Paste
-        paste = new JMenuItem("Paste");
-        cut.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                System.out.println("paste");
-            }
-        });
-        paste.setEnabled(false);
-        this.add(paste);
     }
 
     public JMenuItem getUndo() {
@@ -91,29 +57,5 @@ public class Edit extends JMenu
 
     public void setRedo(JMenuItem redo) {
         this.redo = redo;
-    }
-
-    public JMenuItem getCut() {
-        return cut;
-    }
-
-    public void setCut(JMenuItem cut) {
-        this.cut = cut;
-    }
-
-    public JMenuItem getCopy() {
-        return copy;
-    }
-
-    public void setCopy(JMenuItem copy) {
-        this.copy = copy;
-    }
-
-    public JMenuItem getPaste() {
-        return paste;
-    }
-
-    public void setPaste(JMenuItem paste) {
-        this.paste = paste;
     }
 }

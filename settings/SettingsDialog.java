@@ -96,7 +96,7 @@ public class SettingsDialog extends JDialog
                             contact_label_shortcut;
 
         // == DRAW AREA ===
-        private static PanelPaint vertex_panel_drawArea;
+        private static PanelPaint panel_drawArea;
         private static Graph example_graph;
 
 
@@ -211,6 +211,7 @@ public class SettingsDialog extends JDialog
                     //Changing the graph elements
                     example_graph.getVertices().get(0).setInsideColor(tempColor);
                     example_graph.getVertices().get(1).setInsideColor(tempColor);
+                    panel_drawArea.repaint();
                 }
             }   
         });
@@ -238,6 +239,7 @@ public class SettingsDialog extends JDialog
                     vertex_panel_outsideColor.setBackground(Gui.getSettings().getVertexOutsideColor());
                     example_graph.getVertices().get(0).setBorderColor(tempColor);
                     example_graph.getVertices().get(1).setBorderColor(tempColor);
+                    panel_drawArea.repaint();
                 }
             }   
         });
@@ -265,6 +267,7 @@ public class SettingsDialog extends JDialog
                     vertex_panel_nameColor.setBackground(Gui.getSettings().getVertexNameColor());
                     example_graph.getVertices().get(0).setNameColor(tempColor);
                     example_graph.getVertices().get(1).setNameColor(tempColor);
+                    panel_drawArea.repaint();
                 }
             }   
         });
@@ -286,6 +289,7 @@ public class SettingsDialog extends JDialog
                     vertex_label_diameter.setText("Diameter : ["+Gui.getSettings().getVertexDiameter()+"]");
                     example_graph.getVertices().get(0).setDiameter(Integer.parseInt(vertex_textField_diameter.getText()));
                     example_graph.getVertices().get(1).setDiameter(Integer.parseInt(vertex_textField_diameter.getText()));
+                    panel_drawArea.repaint();
                 }
 
                 catch(Exception error)
@@ -310,8 +314,9 @@ public class SettingsDialog extends JDialog
                 {
                     Gui.getSettings().setVertexStrokeWidth(Integer.parseInt(vertex_textField_strokeWidth.getText()));
                     vertex_label_StrokeWidth.setText("Stroke : ["+Gui.getSettings().getVertexStrokeWidth()+"]");
-                    example_graph.getVertices().get(0).setDiameter(Integer.parseInt(vertex_textField_strokeWidth.getText()));
-                    example_graph.getVertices().get(1).setDiameter(Integer.parseInt(vertex_textField_strokeWidth.getText()));
+                    example_graph.getVertices().get(0).setStrokeWidth(Integer.parseInt(vertex_textField_strokeWidth.getText()));
+                    example_graph.getVertices().get(1).setStrokeWidth(Integer.parseInt(vertex_textField_strokeWidth.getText()));
+                    panel_drawArea.repaint();
                 }
 
                 catch(Exception error)
@@ -327,251 +332,270 @@ public class SettingsDialog extends JDialog
         // ===== END VERTEXS SETTINGS =====
 
 
-        // // ===== EDGES SETTINGS =====
-        // //EdgePanel
-        // edgePanel = new JPanel();
-        // edgePanel.setLayout(new GridLayout(0, 3,0,2));
-        // //Edges settings area
-        // //INSIDE COLOR
-        // edge_label_strokeColor = new JLabel("Stroke color : ");
-        // edgePanel.add(edge_label_strokeColor);
+        // ===== EDGES SETTINGS =====
+        //EdgePanel
+        edgePanel = new JPanel();
+        edgePanel.setLayout(new GridLayout(0, 3,0,2));
+        //Edges settings area
+        //INSIDE COLOR
+        edge_label_strokeColor = new JLabel("Stroke color : ");
+        edgePanel.add(edge_label_strokeColor);
 
-        // edge_panel_strokeColor = new JPanel();
-        // edge_panel_strokeColor.setMaximumSize(new Dimension(16,16));
-        // edge_panel_strokeColor.setBackground(Gui.getSettings().getEdgeStrokeColor());
-        // edge_panel_strokeColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        // edgePanel.add(edge_panel_strokeColor);
+        edge_panel_strokeColor = new JPanel();
+        edge_panel_strokeColor.setMaximumSize(new Dimension(16,16));
+        edge_panel_strokeColor.setBackground(Gui.getSettings().getEdgeStrokeColor());
+        edge_panel_strokeColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        edgePanel.add(edge_panel_strokeColor);
 
-        // edge_button_strokeColor = new JButton("Change...");
-        // edge_button_strokeColor.addActionListener(new ActionListener()
-        // {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         Color tempColor;
-        //         if((tempColor = JColorChooser.showDialog(gui, "Select a new color", Gui.getSettings().getEdgeStrokeColor())) != null)
-        //         {
-        //             Gui.getSettings().setEdgeStrokeColor(tempColor);
-        //             edge_panel_strokeColor.setBackground(Gui.getSettings().getEdgeStrokeColor());
-        //         }
-        //     }   
-        // });
-        // edgePanel.add(edge_button_strokeColor);
+        edge_button_strokeColor = new JButton("Change...");
+        edge_button_strokeColor.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color tempColor;
+                if((tempColor = JColorChooser.showDialog(gui, "Select a new color", Gui.getSettings().getEdgeStrokeColor())) != null)
+                {
+                    Gui.getSettings().setEdgeStrokeColor(tempColor);
+                    edge_panel_strokeColor.setBackground(Gui.getSettings().getEdgeStrokeColor());
+                    //Changing the graph elements
+                    example_graph.getEdges().get(0).setStrokeColor(tempColor);
+                    panel_drawArea.repaint();
+                }
+            }   
+        });
+        edgePanel.add(edge_button_strokeColor);
 
-        // //HIGHTLIGHT COLOR
-        // edge_label_highlightColor = new JLabel("Highlight color : ");
-        // edgePanel.add(edge_label_highlightColor);
+        //HIGHTLIGHT COLOR
+        edge_label_highlightColor = new JLabel("Highlight color : ");
+        edgePanel.add(edge_label_highlightColor);
 
-        // edge_panel_highlightColor = new JPanel();
-        // edge_panel_highlightColor.setMaximumSize(new Dimension(16,16));
-        // edge_panel_highlightColor.setBackground(Gui.getSettings().getEdgeHighlightColor());
-        // edge_panel_highlightColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        // edgePanel.add(edge_panel_highlightColor);
+        edge_panel_highlightColor = new JPanel();
+        edge_panel_highlightColor.setMaximumSize(new Dimension(16,16));
+        edge_panel_highlightColor.setBackground(Gui.getSettings().getEdgeHighlightColor());
+        edge_panel_highlightColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        edgePanel.add(edge_panel_highlightColor);
 
-        // edge_button_highlightColor = new JButton("Change...");
-        // edge_button_highlightColor.addActionListener(new ActionListener()
-        // {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         Color tempColor;
-        //         if((tempColor = JColorChooser.showDialog(gui, "Select a new color", Gui.getSettings().getEdgeHighlightColor())) != null)
-        //         {
-        //             Gui.getSettings().setEdgeHighlightColor(tempColor);
-        //             edge_panel_highlightColor.setBackground(Gui.getSettings().getEdgeHighlightColor());
+        edge_button_highlightColor = new JButton("Change...");
+        edge_button_highlightColor.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color tempColor;
+                if((tempColor = JColorChooser.showDialog(gui, "Select a new color", Gui.getSettings().getEdgeHighlightColor())) != null)
+                {
+                    Gui.getSettings().setEdgeHighlightColor(tempColor);
+                    edge_panel_highlightColor.setBackground(Gui.getSettings().getEdgeHighlightColor());
+                    //Changing the graph elements
+                    example_graph.getEdges().get(0).setHighlightColor(tempColor);
+                    panel_drawArea.repaint();
 
-        //         }
-        //     }   
-        // });
-        // edgePanel.add(edge_button_highlightColor);
+                }
+            }   
+        });
+        edgePanel.add(edge_button_highlightColor);
 
-        // //ARROW TIP COLOR
-        // edge_label_arrowTipColor = new JLabel("Arrow Tip color : ");
-        // edgePanel.add(edge_label_arrowTipColor);
+        //ARROW TIP COLOR
+        edge_label_arrowTipColor = new JLabel("Arrow Tip color : ");
+        edgePanel.add(edge_label_arrowTipColor);
 
-        // edge_panel_arrowTipColor = new JPanel();
-        // edge_panel_arrowTipColor.setMaximumSize(new Dimension(16,16));
-        // edge_panel_arrowTipColor.setBackground(Gui.getSettings().getEdgeArrowTipColor());
-        // edge_panel_arrowTipColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        // edgePanel.add(edge_panel_arrowTipColor);
+        edge_panel_arrowTipColor = new JPanel();
+        edge_panel_arrowTipColor.setMaximumSize(new Dimension(16,16));
+        edge_panel_arrowTipColor.setBackground(Gui.getSettings().getEdgeArrowTipColor());
+        edge_panel_arrowTipColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        edgePanel.add(edge_panel_arrowTipColor);
 
-        // edge_button_arrowTipColor = new JButton("Change...");
-        // edge_button_arrowTipColor.addActionListener(new ActionListener()
-        // {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         Color tempColor;
-        //         if((tempColor = JColorChooser.showDialog(gui, "Select a new color", Gui.getSettings().getEdgeArrowTipColor())) != null)
-        //         {
-        //             Gui.getSettings().setEdgeArrowTipColor(tempColor);
-        //             edge_panel_arrowTipColor.setBackground(Gui.getSettings().getEdgeArrowTipColor());
+        edge_button_arrowTipColor = new JButton("Change...");
+        edge_button_arrowTipColor.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color tempColor;
+                if((tempColor = JColorChooser.showDialog(gui, "Select a new color", Gui.getSettings().getEdgeArrowTipColor())) != null)
+                {
+                    Gui.getSettings().setEdgeArrowTipColor(tempColor);
+                    edge_panel_arrowTipColor.setBackground(Gui.getSettings().getEdgeArrowTipColor());
+                    //Changing the graph elements
+                    example_graph.getEdges().get(0).setEdgeArrowTipColor(tempColor);
+                    panel_drawArea.repaint();
+                }
+            }   
+        });
+        edgePanel.add(edge_button_arrowTipColor);
 
-        //         }
-        //     }   
-        // });
-        // edgePanel.add(edge_button_arrowTipColor);
+        //WEIGHT COLOR
+        edge_label_weightColor = new JLabel("Weight color : ");
+        edgePanel.add(edge_label_weightColor);
 
-        // //WEIGHT COLOR
-        // edge_label_weightColor = new JLabel("Weight color : ");
-        // edgePanel.add(edge_label_weightColor);
+        edge_panel_weightColor = new JPanel();
+        edge_panel_weightColor.setMaximumSize(new Dimension(16,16));
+        edge_panel_weightColor.setBackground(Gui.getSettings().getEdgeWeightColor());
+        edge_panel_weightColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        edgePanel.add(edge_panel_weightColor);
 
-        // edge_panel_weightColor = new JPanel();
-        // edge_panel_weightColor.setMaximumSize(new Dimension(16,16));
-        // edge_panel_weightColor.setBackground(Gui.getSettings().getEdgeWeightColor());
-        // edge_panel_weightColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        // edgePanel.add(edge_panel_weightColor);
+        edge_button_weightColor = new JButton("Change...");
+        edge_button_weightColor.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color tempColor;
+                if((tempColor = JColorChooser.showDialog(gui, "Select a new color", Gui.getSettings().getEdgeWeightColor())) != null)
+                {
+                    Gui.getSettings().setEdgeWeightColor(tempColor);
+                    edge_panel_weightColor.setBackground(Gui.getSettings().getEdgeWeightColor());
+                    //Changing the graph elements
+                    example_graph.getEdges().get(0).setWeightColor(tempColor);
+                    panel_drawArea.repaint();
 
-        // edge_button_weightColor = new JButton("Change...");
-        // edge_button_weightColor.addActionListener(new ActionListener()
-        // {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         Color tempColor;
-        //         if((tempColor = JColorChooser.showDialog(gui, "Select a new color", Gui.getSettings().getEdgeWeightColor())) != null)
-        //         {
-        //             Gui.getSettings().setEdgeWeightColor(tempColor);
-        //             edge_panel_weightColor.setBackground(Gui.getSettings().getEdgeWeightColor());
+                }
+            }   
+        });
+        edgePanel.add(edge_button_weightColor);
 
-        //         }
-        //     }   
-        // });
-        // edgePanel.add(edge_button_weightColor);
+        //WEIGHT BORDER COLOR
+        edge_label_weightBorderColor = new JLabel("Weight border color : ");
+        edgePanel.add(edge_label_weightBorderColor);
 
-        // //WEIGHT BORDER COLOR
-        // edge_label_weightBorderColor = new JLabel("Weight border color : ");
-        // edgePanel.add(edge_label_weightBorderColor);
+        edge_panel_weightBorderColor = new JPanel();
+        edge_panel_weightBorderColor.setMaximumSize(new Dimension(16,16));
+        edge_panel_weightBorderColor.setBackground(Gui.getSettings().getEdgeWeightBorderColor());
+        edge_panel_weightBorderColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        edgePanel.add(edge_panel_weightBorderColor);
 
-        // edge_panel_weightBorderColor = new JPanel();
-        // edge_panel_weightBorderColor.setMaximumSize(new Dimension(16,16));
-        // edge_panel_weightBorderColor.setBackground(Gui.getSettings().getEdgeWeightBorderColor());
-        // edge_panel_weightBorderColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        // edgePanel.add(edge_panel_weightBorderColor);
+        edge_button_weightBorderColor = new JButton("Change...");
+        edge_button_weightBorderColor.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color tempColor;
+                if((tempColor = JColorChooser.showDialog(gui, "Select a new color", Gui.getSettings().getEdgeWeightBorderColor())) != null)
+                {
+                    Gui.getSettings().setEdgeWeightBorderColor(tempColor);
+                    edge_panel_weightBorderColor.setBackground(Gui.getSettings().getEdgeWeightBorderColor());
+                    //Changing the graph elements
+                    example_graph.getEdges().get(0).setWeightBorderColor(tempColor);
+                    panel_drawArea.repaint();
+                }
+            }   
+        });
+        edgePanel.add(edge_button_weightBorderColor);
 
-        // edge_button_weightBorderColor = new JButton("Change...");
-        // edge_button_weightBorderColor.addActionListener(new ActionListener()
-        // {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         Color tempColor;
-        //         if((tempColor = JColorChooser.showDialog(gui, "Select a new color", Gui.getSettings().getEdgeWeightBorderColor())) != null)
-        //         {
-        //             Gui.getSettings().setEdgeWeightBorderColor(tempColor);
-        //             edge_panel_weightBorderColor.setBackground(Gui.getSettings().getEdgeWeightBorderColor());
+        //Stroke width
+        edge_label_strokeWidth = new JLabel("Stroke width : ["+Gui.getSettings().getEdgeStrokeWidth()+"]");
+        edgePanel.add(edge_label_strokeWidth);
+        edge_textField_strokeWidth = new JTextField();
+        edgePanel.add(edge_textField_strokeWidth);
+        edge_button_strokeWidth = new JButton("Change");
+        edge_button_strokeWidth.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try
+                {
+                    Gui.getSettings().setEdgeStrokeWidth(Integer.parseInt(edge_textField_strokeWidth.getText()));
+                    edge_label_strokeWidth.setText("Stroke width : ["+Gui.getSettings().getEdgeStrokeWidth()+"]");
+                    //Changing the graph elements
+                    example_graph.getEdges().get(0).setStrokeWidth(Integer.parseInt(edge_textField_strokeWidth.getText()));
+                    panel_drawArea.repaint();
+                }
 
-        //         }
-        //     }   
-        // });
-        // edgePanel.add(edge_button_weightBorderColor);
+                catch(Exception error)
+                {
+                    System.out.println(error.getMessage());
+                }
+            }   
+        });
+        edgePanel.add(edge_button_strokeWidth);
 
-        // //Stroke width
-        // edge_label_strokeWidth = new JLabel("Stroke width : ["+Gui.getSettings().getEdgeStrokeWidth()+"]");
-        // edgePanel.add(edge_label_strokeWidth);
-        // edge_textField_strokeWidth = new JTextField();
-        // edgePanel.add(edge_textField_strokeWidth);
-        // edge_button_strokeWidth = new JButton("Change");
-        // edge_button_strokeWidth.addActionListener(new ActionListener()
-        // {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         try
-        //         {
-        //             Gui.getSettings().setEdgeStrokeWidth(Integer.parseInt(edge_textField_strokeWidth.getText()));
-        //             edge_label_strokeWidth.setText("Stroke width : ["+Gui.getSettings().getEdgeStrokeWidth()+"]");
-        //         }
+        //Arrow Lenght
+        edge_label_arrowLenght = new JLabel("Arrow lenght : ["+Gui.getSettings().getArrowLength()+"]");
+        edgePanel.add(edge_label_arrowLenght);
+        edge_textField_arrowLenght = new JTextField();
+        edgePanel.add(edge_textField_arrowLenght);
+        edge_button_arrowLenght = new JButton("Change");
+        edge_button_arrowLenght.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try
+                {
+                    Gui.getSettings().setArrowLength(Integer.parseInt(edge_textField_arrowLenght.getText()));
+                    edge_label_arrowLenght.setText("Arrow lenght : ["+Gui.getSettings().getArrowLength()+"]");
+                    //Changing the graph elements
+                    example_graph.getEdges().get(0).setArrowTipWidth(Integer.parseInt(edge_textField_arrowLenght.getText()));
+                    panel_drawArea.repaint();
+                }
 
-        //         catch(Exception error)
-        //         {
-        //             System.out.println(error.getMessage());
-        //         }
-        //     }   
-        // });
-        // edgePanel.add(edge_button_strokeWidth);
-
-        // //Arrow Lenght
-        // edge_label_arrowLenght = new JLabel("Arrow lenght : ["+Gui.getSettings().getArrowLength()+"]");
-        // edgePanel.add(edge_label_arrowLenght);
-        // edge_textField_arrowLenght = new JTextField();
-        // edgePanel.add(edge_textField_arrowLenght);
-        // edge_button_arrowLenght = new JButton("Change");
-        // edge_button_arrowLenght.addActionListener(new ActionListener()
-        // {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         try
-        //         {
-        //             Gui.getSettings().setArrowLength(Integer.parseInt(edge_textField_arrowLenght.getText()));
-        //             edge_label_arrowLenght.setText("Arrow lenght : ["+Gui.getSettings().getArrowLength()+"]");
-        //         }
-
-        //         catch(Exception error)
-        //         {
-        //             System.out.println(error.getMessage());
-        //         }
-        //     }   
-        // });
-        // edgePanel.add(edge_button_arrowLenght);
+                catch(Exception error)
+                {
+                    System.out.println(error.getMessage());
+                }
+            }   
+        });
+        edgePanel.add(edge_button_arrowLenght);
                 
-        // //We add edgePanel as a tabulation 
-        // tabbedPane.addTab("Edges", edgePanel);
-        // // ===== END EDGES SETTINGS =====
+        //We add edgePanel as a tabulation 
+        tabbedPane.addTab("Edges", edgePanel);
+        // ===== END EDGES SETTINGS =====
 
 
-        // // ===== SHORTCUTS SETTINGS =====
+        // ===== SHORTCUTS SETTINGS =====
         
-        // //ShortcutPanel
-        // shortcutPanel = new JPanel();
-        // shortcutPanel.setLayout(new GridLayout(0, 2,0,2));
-        // //shortcuts settings area
-        // //New shortcut
-        // new_label_shortcut = new JLabel("New graph/automaton : ");
-        // shortcutPanel.add(new_label_shortcut);
-        // shortcutPanel.add(new JLabel("CTRL + N"));
+        //ShortcutPanel
+        shortcutPanel = new JPanel();
+        shortcutPanel.setLayout(new GridLayout(0, 2,0,2));
+        //shortcuts settings area
+        //New shortcut
+        new_label_shortcut = new JLabel("New graph/automaton : ");
+        shortcutPanel.add(new_label_shortcut);
+        shortcutPanel.add(new JLabel("CTRL + N"));
 
-        // //Open shortcut
-        // open_label_shortcut = new JLabel("Open graph/automaton : ");
-        // shortcutPanel.add(open_label_shortcut);
-        // shortcutPanel.add(new JLabel("CTRL + O"));
+        //Open shortcut
+        open_label_shortcut = new JLabel("Open graph/automaton : ");
+        shortcutPanel.add(open_label_shortcut);
+        shortcutPanel.add(new JLabel("CTRL + O"));
 
-        // //Save shortcut
-        // save_label_shortcut = new JLabel("Save graph/automaton : ");
-        // shortcutPanel.add(save_label_shortcut);
-        // shortcutPanel.add(new JLabel("CTRL + S"));
+        //Save shortcut
+        save_label_shortcut = new JLabel("Save graph/automaton : ");
+        shortcutPanel.add(save_label_shortcut);
+        shortcutPanel.add(new JLabel("CTRL + S"));
 
-        // //Close tabulation shortcut
-        // closeTab_label_shortcut = new JLabel("Close a tabulation : ");
-        // shortcutPanel.add(closeTab_label_shortcut);
-        // shortcutPanel.add(new JLabel("CTRL + W"));
+        //Close tabulation shortcut
+        closeTab_label_shortcut = new JLabel("Close a tabulation : ");
+        shortcutPanel.add(closeTab_label_shortcut);
+        shortcutPanel.add(new JLabel("CTRL + W"));
 
-        // //Exit shortcut
-        // documentation_label_shortcut = new JLabel("Open the documentation page : ");
-        // shortcutPanel.add(documentation_label_shortcut);
-        // shortcutPanel.add(new JLabel("CTRL + D"));
+        //Exit shortcut
+        documentation_label_shortcut = new JLabel("Open the documentation page : ");
+        shortcutPanel.add(documentation_label_shortcut);
+        shortcutPanel.add(new JLabel("CTRL + D"));
 
-        // //Exit shortcut
-        // licence_label_shortcut = new JLabel("Open the licence page : ");
-        // shortcutPanel.add(licence_label_shortcut);
-        // shortcutPanel.add(new JLabel("CTRL + L"));
+        //Exit shortcut
+        licence_label_shortcut = new JLabel("Open the licence page : ");
+        shortcutPanel.add(licence_label_shortcut);
+        shortcutPanel.add(new JLabel("CTRL + L"));
 
-        // //Exit shortcut
-        // contact_label_shortcut = new JLabel("Open the contact page : ");
-        // shortcutPanel.add(contact_label_shortcut);
-        // shortcutPanel.add(new JLabel("CTRL + C"));
+        //Exit shortcut
+        contact_label_shortcut = new JLabel("Open the contact page : ");
+        shortcutPanel.add(contact_label_shortcut);
+        shortcutPanel.add(new JLabel("CTRL + C"));
 
-        // //Exit shortcut
-        // exit_label_shortcut = new JLabel("Exit the application : ");
-        // shortcutPanel.add(exit_label_shortcut);
-        // shortcutPanel.add(new JLabel("ESCAPE"));
+        //Exit shortcut
+        exit_label_shortcut = new JLabel("Exit the application : ");
+        shortcutPanel.add(exit_label_shortcut);
+        shortcutPanel.add(new JLabel("ESCAPE"));
 
-        // //We add vertex_panel_settings as a tabulation 
-        // tabbedPane.addTab("Shortcuts", shortcutPanel);
-        // // ===== END SHORTCUTS SETTINGS =====
+        //We add vertex_panel_settings as a tabulation 
+        tabbedPane.addTab("Shortcuts", shortcutPanel);
+        // ===== END SHORTCUTS SETTINGS =====
 
         this.add(tabbedPane);
 
         // ===== EXAMPLE DRAW =====
         //We create the PanelPaint
-        vertex_panel_drawArea = new PanelPaint(gui, drawArea);
+        panel_drawArea = new PanelPaint(gui, drawArea);
 
         //We create an example graph
-        example_graph = new Graph("example", true, true, vertex_panel_drawArea);
+        example_graph = new Graph("example", true, true, panel_drawArea);
         example_graph.addVertex(new Vertex(0, 50, 50, settings.getVertexDiameter(), settings.getVertexStrokeWidth(), settings.getVertexInsideColor(), settings.getVertexOutsideColor(), "A", settings.getVertexNameColor()));
 
         example_graph.addVertex(new Vertex(0, 400, 130, settings.getVertexDiameter(), settings.getVertexStrokeWidth(), settings.getVertexInsideColor(), settings.getVertexOutsideColor(), "B", settings.getVertexNameColor()));
@@ -580,8 +604,8 @@ public class SettingsDialog extends JDialog
         //gui.getTabulations().put(vertex_panel_drawArea,example_graph);
 
         //We draw the graph
-        vertex_panel_drawArea.repaint();
-        this.add(vertex_panel_drawArea);
+        panel_drawArea.repaint();
+        this.add(panel_drawArea);
         // ===== END DRAW =====
     }
 
@@ -975,14 +999,6 @@ public class SettingsDialog extends JDialog
 
 	public void setVertex_panel_settings(JPanel vertex_panel_settings) {
 		this.vertex_panel_settings = vertex_panel_settings;
-	}
-
-	public static PanelPaint getVertex_panel_drawArea() {
-		return vertex_panel_drawArea;
-	}
-
-	public static void setVertex_panel_drawArea(PanelPaint vertex_panel_drawArea) {
-		SettingsDialog.vertex_panel_drawArea = vertex_panel_drawArea;
 	}
 
 	public static Graph getExample_graph() {

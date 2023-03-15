@@ -1,4 +1,5 @@
 package gui.menu.components;
+import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.*;
@@ -19,7 +20,7 @@ public class Other extends JMenu
         // - Other (Documentation, Licence, Contacts, About)
 
         //Documentation
-        documentation = new JMenuItem("Documentation...");
+        documentation = new JMenuItem("Documentation...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_comparedocuments.png"));
         documentation.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -33,7 +34,7 @@ public class Other extends JMenu
         this.add(documentation);
 
         //Licence
-        licence = new JMenuItem("Licence...");
+        licence = new JMenuItem("Licence...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_editheaderandfooter.png"));
         licence.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -47,7 +48,7 @@ public class Other extends JMenu
         this.add(licence);
 
         //Contacts
-        contacts = new JMenuItem("Contacts...");
+        contacts = new JMenuItem("Contacts...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_drawcaption.png"));
         contacts.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -60,7 +61,7 @@ public class Other extends JMenu
         this.add(contacts);
 
         //About...
-        about = new JMenuItem("About...");
+        about = new JMenuItem("About...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_extendedhelp.png"));
         about.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)

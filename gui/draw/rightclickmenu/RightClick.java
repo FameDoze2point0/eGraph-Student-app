@@ -122,11 +122,25 @@ public class RightClick extends JPopupMenu
 
         //We then add elements that are always there
         undo = new JMenuItem("Undo");
-        undo.setEnabled(false);
+        undo.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PanelPaint pp = (PanelPaint)gui.getDraw().getSelectedComponent();
+                pp.undo();
+            }
+        });
         this.add(undo);
 
         redo = new JMenuItem("Redo");
-        redo.setEnabled(false);
+        redo.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PanelPaint pp = (PanelPaint)gui.getDraw().getSelectedComponent();
+                pp.redo();
+            }
+        });
         this.add(redo);
 
         // === NEW CATEGORY ===

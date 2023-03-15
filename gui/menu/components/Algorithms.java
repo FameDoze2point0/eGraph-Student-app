@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -16,7 +17,6 @@ import gui.popups.algorithms.algorithmsPage;;
 public class Algorithms extends JMenu
 {
     private JMenuItem launch;
-    private JMenuItem add;
 
     public Algorithms(Gui gui, Draw drawArea)
     {
@@ -24,7 +24,7 @@ public class Algorithms extends JMenu
         // - Algorithms (Launch, Add)
 
         //Launch
-        launch = new JMenuItem("Launch...");
+        launch = new JMenuItem("Launch...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_usewizards.png"));
         launch.addActionListener(new ActionListener()
         {
             @Override
@@ -35,18 +35,6 @@ public class Algorithms extends JMenu
         launch.setMnemonic(KeyEvent.VK_A);
         launch.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK));
         this.add(launch);
-
-        //Add
-        add = new JMenuItem("Add...");
-        add.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("add algo");
-            }
-        });
-        add.setEnabled(false);
-        this.add(add);
     }
 
     public JMenuItem getLaunch() {
@@ -55,13 +43,5 @@ public class Algorithms extends JMenu
 
     public void setLaunch(JMenuItem launch) {
         this.launch = launch;
-    }
-
-    public JMenuItem getAdd() {
-        return add;
-    }
-
-    public void setAdd(JMenuItem add) {
-        this.add = add;
     }
 }

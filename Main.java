@@ -78,7 +78,7 @@ public class Main
 
         //On ajoute le graph g temporairement
         
-        gui.getTabulations().put((JPanel) gui.getDraw().getSelectedComponent(),g);
+        gui.getTabulations().put((PanelPaint) gui.getDraw().getSelectedComponent(),g);
 
         try {
             //System.out.println("\nDijkstra :");

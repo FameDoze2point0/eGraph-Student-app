@@ -10,12 +10,12 @@ public class Edge implements Serializable
 {
     private Vertex start, end;
     private Object weight;
-    private int strokeWidth, arrowTipWidth = 20;
+    private int strokeWidth, arrowTipWidth;
     private Color strokeColor, highlightColor, edgeArrowTipColor, weightColor, weightBorderColor;
     private Path2D.Float collisionArea;
 
 
-    public Edge(Vertex start, Vertex end, Object weight, int strokeWidth, Color strokeColor, Color highlightColor, Color edgeArrowTipColor, Color weightColor, Color weightBorderColor, Graph graph) {
+    public Edge(Vertex start, Vertex end, Object weight, int strokeWidth, Color strokeColor, Color highlightColor, Color edgeArrowTipColor, Color weightColor, Color weightBorderColor, Graph graph, int arrowTipWidth) {
         this.start = start;
         this.end = end;
         this.weight = weight;
@@ -25,6 +25,7 @@ public class Edge implements Serializable
         this.edgeArrowTipColor = edgeArrowTipColor;
         this.weightColor = weightColor;
         this.weightBorderColor = weightBorderColor;
+        this.arrowTipWidth = arrowTipWidth;
         collisionArea = refreshCollisionArea(graph.getOriented(), graph.bothDirections(this));
     }
 
@@ -352,6 +353,22 @@ public class Edge implements Serializable
             return "("+start +","+end+")";
         }
         
+    }
+
+    public Color getWeightColor() {
+        return weightColor;
+    }
+
+    public void setWeightColor(Color weightColor) {
+        this.weightColor = weightColor;
+    }
+
+    public Color getWeightBorderColor() {
+        return weightBorderColor;
+    }
+
+    public void setWeightBorderColor(Color weightBorderColor) {
+        this.weightBorderColor = weightBorderColor;
     }
     
 }

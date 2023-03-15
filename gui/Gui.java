@@ -16,6 +16,7 @@ import util.Graph;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import java.util.HashMap;
+import java.util.Stack;
 import java.awt.geom.*;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
@@ -26,7 +27,7 @@ public class Gui extends JFrame
     private int height = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
     //Each tabulation is associated with an object
-    private HashMap<JPanel,Graph> tabulations;
+    private HashMap<PanelPaint,Graph> tabulations;
 
     //Components of the gui
     private Menu menu;
@@ -93,8 +94,7 @@ public class Gui extends JFrame
         this.setVisible(true);
 
         //Initiating the list of tabulations
-        tabulations = new HashMap<JPanel,Graph>();
-
+        tabulations = new HashMap<PanelPaint,Graph>();
     }
 
     public int getWidth() {
@@ -113,11 +113,11 @@ public class Gui extends JFrame
         this.height = height;
     }
 
-    public HashMap<JPanel, Graph> getTabulations() {
+    public HashMap<PanelPaint, Graph> getTabulations() {
         return tabulations;
     }
 
-    public void setTabulations(HashMap<JPanel, Graph> tabulations) {
+    public void setTabulations(HashMap<PanelPaint, Graph> tabulations) {
         this.tabulations = tabulations;
     }
 
