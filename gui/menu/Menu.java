@@ -11,6 +11,12 @@ import gui.menu.components.SettingsMenu;
 
 public class Menu extends JMenuBar
 {
+    private File file;
+    private Edit edit;
+    private Algorithms algorithms;
+    private SettingsMenu settingsMenu;
+    private Other other;
+
     public Menu(Gui gui, Draw drawArea)
     {
         super(); //Init of the JMenuBar
@@ -22,10 +28,27 @@ public class Menu extends JMenuBar
          * - Other (Documentation, Licence, Contacts, About)
          */
 
-        this.add(new File(gui, drawArea));
-        this.add(new Edit(gui));
-        this.add(new Algorithms(gui, drawArea));
-        this.add(new SettingsMenu(gui));
-        this.add(new Other());
+        file = new File(gui, drawArea);
+        this.add(file);
+        
+        edit = new Edit(gui);
+        this.add(edit);
+        
+        algorithms = new Algorithms(gui, drawArea);
+        this.add(algorithms);
+        
+        settingsMenu = new SettingsMenu(gui);
+        this.add(settingsMenu);
+
+        other = new Other();
+        this.add(other);
     }
+    
+    public Edit getEdit() {
+        return edit;
+    }
+
+    public void setEdit(Edit edit) {
+        this.edit = edit;
+    }   
 }

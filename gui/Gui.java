@@ -79,7 +79,7 @@ public class Gui extends JFrame
         }
 
         //Init the elements then adding them in correct order
-        draw = new Draw();
+        draw = new Draw(this);
         menu = new Menu(this, draw);
         tools = new Tools(this, draw);
 

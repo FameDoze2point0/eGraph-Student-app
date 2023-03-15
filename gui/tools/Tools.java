@@ -203,4 +203,14 @@ public class Tools extends JToolBar
     public void setNewElement(JButton newElement) {
         this.newElement = newElement;
     }
+
+    public JButton getUndo()
+    {
+        return undo;
+    }
+
+    public JButton getRedo()
+    {
+        return redo;
+    }
 }

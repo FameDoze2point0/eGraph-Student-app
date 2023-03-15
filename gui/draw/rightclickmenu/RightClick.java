@@ -236,7 +236,6 @@ public class RightClick extends JPopupMenu
         this.deleteElement.setVisible(deleteElement);
         rightClickedOnElement = itemSelected;
     }
-
     public JMenuItem getDeleteElement() {
         return deleteElement;
     }

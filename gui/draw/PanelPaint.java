@@ -54,7 +54,10 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
         //Right click menu
         rightClickMenu = new RightClick(drawArea, this, gui);
-        this.add(rightClickMenu);   
+        this.add(rightClickMenu);
+
+        undo = new Stack<Graph>();
+        redo = new Stack<Graph>();
     }
 
     public void paint(Graphics graphics)
@@ -124,6 +127,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                     //In state 1, when the mouse is clicked, we create a new vertex/state
                     //We save for undo
                     updateUndo();
+                    
                     //We retrieve the actual graph/automaton
                     int cpt = graph.getCpt();
                     graph.addVertex(new Vertex(cpt,e.getX() - radius, e.getY() - radius, Gui.getSettings().getVertexDiameter(), Gui.getSettings().getVertexStrokeWidth(), Gui.getSettings().getVertexInsideColor(), Gui.getSettings().getVertexOutsideColor(), ""+(cpt), Gui.getSettings().getVertexNameColor())); //We add the new vertex to the graph
@@ -145,6 +149,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                         {
                             //Saving the graph before we add the edge
                             updateUndo();
+
                             //Adding the edge to the graph
                             Integer weight = null;
                             int nbrOfEdges = graph.getEdges().size();
@@ -227,7 +232,11 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
     @Override //We release the dragged vertex
     public void mouseReleased(MouseEvent e) {
-        isDragged = null;
+        if (isDragged != null) {
+            isDragged = null;
+            // updateUndo();
+        }
+        
     }
 
     @Override
@@ -254,21 +263,72 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
     public void updateUndo()
     {
-        
-        Graph currentGraph = gui.getTabulations().get(this);
-        Graph toAdd = ((((Object)currentGraph).clone());
+        Graph graphCopy = gui.getTabulations().get(this).clone();
+        undo.add(graphCopy); //Adding a copy
+
+        getRightClickMenu().getUndo().setEnabled(true);
+        gui.getTools().getUndo().setEnabled(true);
+        gui.getMenu().getEdit().getUndo().setEnabled(true);
+        this.repaint();
+
+        if(!redo.isEmpty())
+        {
+            redo.clear();
+        }
     }
 
     public void undo()
     {
-        redo.add(undo.pop());
-        
+        Graph currentGraph = null;
+        if(redo.isEmpty())
+        {
+            currentGraph = gui.getTabulations().get(this).clone();
+            redo.add(currentGraph);
+        }
+        else
+        {
+            redo.add(undo.pop());
+            gui.getTabulations().replace(this,redo.peek());
+        }
+
+
+        if(undo.empty())
+        {
+            getRightClickMenu().getUndo().setEnabled(false);
+            gui.getTools().getUndo().setEnabled(false);
+            gui.getMenu().getEdit().getUndo().setEnabled(false);
+        }
+
+        if(!redo.empty())
+        {
+            getRightClickMenu().getRedo().setEnabled(true);
+            gui.getTools().getRedo().setEnabled(true);
+            gui.getMenu().getEdit().getRedo().setEnabled(true);
+        }
+
+        repaint();
     }
 
     public void redo()
     {
         undo.add(redo.pop());
+        gui.getTabulations().replace(this,undo.peek());
 
+        if(redo.empty())
+        {
+            getRightClickMenu().getRedo().setEnabled(false);
+            gui.getTools().getRedo().setEnabled(false);
+            gui.getMenu().getEdit().getRedo().setEnabled(false);
+        }
+
+        if(!undo.empty())
+        {
+            getRightClickMenu().getUndo().setEnabled(true);
+            gui.getTools().getUndo().setEnabled(true);
+            gui.getMenu().getEdit().getUndo().setEnabled(true);
+        }
+
+        repaint();
     }
 
     public Draw getDrawArea() {
@@ -285,5 +345,21 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
     public void setGui(Gui gui) {
         this.gui = gui;
+    }
+
+    public Stack<Graph> getUndo() {
+        return undo;
+    }
+
+    public void setUndo(Stack<Graph> undo) {
+        this.undo = undo;
+    }
+
+    public Stack<Graph> getRedo() {
+        return redo;
+    }
+
+    public void setRedo(Stack<Graph> redo) {
+        this.redo = redo;
     }
 }

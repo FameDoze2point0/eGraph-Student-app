@@ -13,7 +13,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-public class Graph implements Serializable
+public class Graph implements Serializable, Cloneable
 {    
     private int cpt = 0;
     private String name;
@@ -23,6 +23,8 @@ public class Graph implements Serializable
     private PanelPaint panelPaint;
     private ArrayList<ArrayList<Boolean>> existingEdge;
     private Boolean alertDisplay;
+
+    
 
     public Graph(String name, Boolean oriented, Boolean weighted, PanelPaint panelPaint) {
         this.name = name;
@@ -34,6 +36,27 @@ public class Graph implements Serializable
         this.existingEdge = new ArrayList<>();
         this.alertDisplay = true;
     }
+
+    public Graph clone()
+    {
+        try
+        {
+            Graph graph = (Graph)super.clone();
+            graph.setName(name);
+            graph.setVertices((ArrayList<Vertex>)vertices.clone());
+            graph.setEdges((ArrayList<Edge>)edges.clone());
+            graph.setExistingEdge((ArrayList<ArrayList<Boolean>>)existingEdge.clone());
+
+            return graph;
+        }
+        
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+            return null;
+        }
+    }
+
 
     public void paint(Graphics graphics, Object collision){
 
@@ -252,6 +275,10 @@ public class Graph implements Serializable
 
     public void setExistingEdge(ArrayList<ArrayList<Boolean>> existingEdge) {
         this.existingEdge = existingEdge;
+    }
+
+    public Boolean getAlertDisplay() {
+        return alertDisplay;
     }
     
     public void switchDisplay(){

@@ -17,16 +17,49 @@ import util.Graph;
 
 public class Draw extends JTabbedPane implements ChangeListener
 {
-    public Draw()
+
+    private Gui gui;
+
+    public Draw(Gui gui)
     {
         super();
         this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT); //Allow to force tab to stay on the same line
         this.addChangeListener(this); //We redraw when we change of tabulation
+        this.gui = gui;
     }
 
     @Override
-    public void stateChanged(ChangeEvent e) {
+    public void stateChanged(ChangeEvent e)
+    {
         this.getSelectedComponent().repaint();
+
+        PanelPaint pp = (PanelPaint)getSelectedComponent();
+    
+        if(pp.getUndo().isEmpty())
+        {
+            pp.getRightClickMenu().getUndo().setEnabled(false);
+            gui.getTools().getUndo().setEnabled(false);
+            gui.getMenu().getEdit().getUndo().setEnabled(false);
+        }
+        else
+        {
+            pp.getRightClickMenu().getUndo().setEnabled(true);
+            gui.getTools().getUndo().setEnabled(true);
+            gui.getMenu().getEdit().getUndo().setEnabled(true);
+        }
+    
+        if(pp.getRedo().isEmpty())
+        {
+            pp.getRightClickMenu().getRedo().setEnabled(false);
+            gui.getTools().getRedo().setEnabled(false);
+            gui.getMenu().getEdit().getRedo().setEnabled(false);
+        }
+        else
+        {
+            pp.getRightClickMenu().getRedo().setEnabled(true);
+            gui.getTools().getRedo().setEnabled(true);
+            gui.getMenu().getEdit().getRedo().setEnabled(true);
+        }
     }
 
     //TO LOAD AND SAVE GRAPH
