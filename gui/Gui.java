@@ -38,12 +38,13 @@ public class Gui extends JFrame
      * - 0 : Mouse is selected
      * - 1 : new Vertex Mode
      * - 2 : new Edge Mode
+     * - 3 : Settings are opened
      */ int state = 0;
 
     public Gui()
     {
         //General settings
-        super("eGraphe STUDENT");
+        super("eGraph STUDENT");
         this.setSize((int)(width*0.8),(int)(height*0.8));
         this.setLocationRelativeTo(null); //Centering the frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,13 +77,13 @@ public class Gui extends JFrame
             settings = new Settings();
         }
 
-        //We create the settings JDialog
-        settings.setWindow(new SettingsDialog(this));
-
         //Init the elements then adding them in correct order
         draw = new Draw();
         menu = new Menu(this, draw);
         tools = new Tools(this, draw);
+
+        //We create the settings JDialog
+        settings.setWindow(new SettingsDialog(this, draw, settings));
 
         this.setJMenuBar(menu);
         this.add(tools, BorderLayout.NORTH);

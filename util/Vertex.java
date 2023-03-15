@@ -150,5 +150,21 @@ public class Vertex implements Serializable
     public String toString() {
         return name;
     }
+
+	public static int getCpt() {
+		return cpt;
+	}
+
+	public static void setCpt(int cpt) {
+		Vertex.cpt = cpt;
+	}
+
+	public Color getNameColor() {
+		return nameColor;
+	}
+
+	public void setNameColor(Color nameColor) {
+		this.nameColor = nameColor;
+	}
     
 }

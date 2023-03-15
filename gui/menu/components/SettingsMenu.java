@@ -5,29 +5,28 @@ import gui.Gui;
 import settings.Settings;
 
 import java.awt.event.*;
+import java.awt.*;
 
-public class SettingsMenu extends JMenu
+public class SettingsMenu extends JMenuItem
 {
-    private JMenuItem settings;
-    private JMenuItem shortcuts;
-    private JMenuItem defaultGraph;
-    private JMenuItem defaultAutomaton;
-
     public SettingsMenu(Gui gui)
     {
         super("Settings");
         // - Settings (Shortcuts, style(Default,...), Default automaton, Default graph)
 
         //Settings
-        settings = new JMenuItem("Settings...");
-        settings.addActionListener(new ActionListener()
+        //settings = new JMenuItem("Settings...");
+        this.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
+                gui.setState(3);
                 Gui.getSettings().getWindow().setVisible(true);
             }
         });
-        this.add(settings);
+
+        this.setMaximumSize(new Dimension(65,20));
+        //this.add(settings);
 
         // //Shortcuts
         // shortcuts = new JMenuItem("Shortcuts...");
@@ -64,29 +63,5 @@ public class SettingsMenu extends JMenu
         // });
         // defaultAutomaton.setEnabled(false);
         // this.add(defaultAutomaton);
-    }
-
-    public JMenuItem getShortcuts() {
-        return shortcuts;
-    }
-
-    public void setShortcuts(JMenuItem shortcuts) {
-        this.shortcuts = shortcuts;
-    }
-
-    public JMenuItem getDefaultGraph() {
-        return defaultGraph;
-    }
-
-    public void setDefaultGraph(JMenuItem defaultGraph) {
-        this.defaultGraph = defaultGraph;
-    }
-
-    public JMenuItem getDefaultAutomaton() {
-        return defaultAutomaton;
-    }
-
-    public void setDefaultAutomaton(JMenuItem defaultAutomaton) {
-        this.defaultAutomaton = defaultAutomaton;
     }
 }

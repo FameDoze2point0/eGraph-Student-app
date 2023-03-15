@@ -5,6 +5,7 @@ import gui.Gui;
 import gui.draw.rightclickmenu.RightClick;
 import gui.popups.newElement.AskWeight;
 import settings.Settings;
+import settings.SettingsDialog;
 import util.Edge;
 import util.Graph;
 import util.Vertex;
@@ -52,7 +53,16 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     public void paint(Graphics graphics)
     {
         super.paint(graphics); //Refresh the JPanel with blank space
-        Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
+        Graph graph;
+        if(gui.getState() == 3)
+        {
+            graph = SettingsDialog.getExample_graph();
+        }
+        else
+        {
+            graph = gui.getTabulations().get(drawArea.getSelectedComponent());
+        }
+
         if (graph != null) {
             Object itemCollision = graph.vertexCollision(X, Y);
             if (itemCollision == null) {
@@ -147,7 +157,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
 
         // === RIGHT CLICK DETECTION === to open up the quick interaction menu
-        else if(e.getButton() == MouseEvent.BUTTON3)
+        else if(e.getButton() == MouseEvent.BUTTON3 && gui.getState() != 3)
         {
             //When we right click, we detect if we are on top of a vertex or an edge to add some quick interactions to them
             if((vertex = graph.vertexCollision(e.getX(), e.getY())) != null)
