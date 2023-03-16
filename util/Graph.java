@@ -46,7 +46,6 @@ public class Graph implements Serializable, Cloneable
             graph.setVertices((ArrayList<Vertex>)vertices.clone());
             graph.setEdges((ArrayList<Edge>)edges.clone());
             graph.setExistingEdge((ArrayList<ArrayList<Boolean>>)existingEdge.clone());
-
             return graph;
         }
         

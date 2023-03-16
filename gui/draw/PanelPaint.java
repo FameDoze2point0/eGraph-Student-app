@@ -232,11 +232,10 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
     @Override //We release the dragged vertex
     public void mouseReleased(MouseEvent e) {
-        if (isDragged != null) {
+        if(isDragged != null)
+        {
             isDragged = null;
-            // updateUndo();
         }
-        
     }
 
     @Override
@@ -283,21 +282,11 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
     public void undo()
     {
-
-        Graph currentGraph = null;
-        if(redo.isEmpty())
-        {
-            currentGraph = gui.getTabulations().get(this).clone();
-            redo.add(currentGraph);
-        }
-        redo.add(undo.pop());
-        gui.getTabulations().replace(this,redo.peek());
+        redo.add(gui.getTabulations().get(this));
+        gui.getTabulations().replace(this,undo.pop());
         
-
-
         if(undo.empty())
         {
-            redo.pop();
             getRightClickMenu().getUndo().setEnabled(false);
             gui.getTools().getUndo().setEnabled(false);
             gui.getMenu().getEdit().getUndo().setEnabled(false);
@@ -314,20 +303,11 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
     public void redo()
     {
-
-        Graph currentGraph = null;
-        if(undo.isEmpty())
-        {
-            currentGraph = gui.getTabulations().get(this).clone();
-            undo.add(currentGraph);
-        }
-
-        undo.add(redo.pop());
-        gui.getTabulations().replace(this,undo.peek());
+        undo.add(gui.getTabulations().get(this));
+        gui.getTabulations().replace(this,redo.pop());
 
         if(redo.empty())
         {
-            undo.pop();
             getRightClickMenu().getRedo().setEnabled(false);
             gui.getTools().getRedo().setEnabled(false);
             gui.getMenu().getEdit().getRedo().setEnabled(false);
