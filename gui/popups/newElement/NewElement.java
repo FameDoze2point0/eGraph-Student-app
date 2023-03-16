@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import gui.Gui;
 import gui.draw.Draw;
 import util.Graph;
+import util.Vertex;
 import gui.draw.PanelPaint;
 
 public class NewElement extends JDialog
@@ -86,7 +87,7 @@ public class NewElement extends JDialog
                     main.setSize(new Dimension(250,250));
                     main.setLocationRelativeTo(null);
                 }else{
-                    main.setSize(new Dimension(400,400));
+                    main.setSize(new Dimension(600,600));
                     main.setLocationRelativeTo(null);
                 }
             }
@@ -96,6 +97,7 @@ public class NewElement extends JDialog
         this.addBlankTab(gui, drawArea);
 
         this.addMatrixTab(gui, drawArea);
+        
 
         this.setVisible(true);
     }
@@ -193,7 +195,13 @@ public class NewElement extends JDialog
         // Matrix Tabulation
 
         matrixPanel = new JPanel();
-        matrixPanel.setLayout(new GridLayout(2, 1));
+        matrixPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
+        gbc.weighty = 0.3;
+        gbc.gridy = 0;
 
         informationMatrixPanel = new JPanel();
         informationMatrixPanel.setLayout(new GridLayout(2,3,8,8));
@@ -206,35 +214,33 @@ public class NewElement extends JDialog
         numberVertexTextField.setSize(new Dimension(20,20));
         informationMatrixPanel.add(numberVertexTextField);
 
-        numberVertexButton = new JButton("Run");
+        numberVertexButton = new JButton("Update");
         numberVertexButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
                 try {
-                    if ((Integer.parseInt(numberVertexTextField.getText())) > 0) {
-                        nbVertex = Integer.parseInt(numberVertexTextField.getText());
-                        inputMatrixPanel = new JPanel();
-                        inputMatrixPanel.setLayout(new GridLayout(nbVertex,nbVertex,8,8));
-                        matrixPanel.add(inputMatrixPanel);
-                        cellsList = new ArrayList<JTextField>();
-                        for (int i = 0; i < nbVertex*nbVertex; i++) {
-                            JTextField temp = new JTextField();
-                            numberVertexTextField.setHorizontalAlignment(JTextField.CENTER);
-                            numberVertexTextField.setSize(new Dimension(20,20));
-                            cellsList.add(temp);
-                            inputMatrixPanel.add(temp);
+                    int i = Integer.parseInt(numberVertexTextField.getText());
+                    if (i > 0 && i <= nbVertex) {
+                        for (int j = 0; j < nbVertex*nbVertex; j++) {
+                            cellsList.get(j).setBackground(Color.gray);
+                            cellsList.get(j).setEnabled(false);
+                        }
+                        for (int k = 0; k < i; k++) {
+                            for (int j = 0; j < i; j++) {
+                                cellsList.get(j+k*(nbVertex)).setBackground(Color.white);
+                                cellsList.get(j+k*(nbVertex)).setEnabled(true);
+                            }
                         }
                     }
-
                 } catch (Exception exce) {
                     System.out.println(exce.toString());
                 }
                 
             }
         });
-        informationMatrixPanel.add(numberVertexButton);
-
+        informationMatrixPanel.add(numberVertexButton,gbc);
+        
 
         graphMatrixButton = new JRadioButton("Graph ");
         graphMatrixButton.setSelected(true);
@@ -264,7 +270,40 @@ public class NewElement extends JDialog
         matrixPanel.add(informationMatrixPanel);
 
 
+        gbc.weighty = 0.8;
+        gbc.gridy = 1;
+
+        inputMatrixPanel = new JPanel();
+        nbVertex = 12;
+        inputMatrixPanel.setLayout(new GridLayout(nbVertex+1,nbVertex+1,8,8));
+        inputMatrixPanel.add(new JLabel());
+        for (int j = 0; j < nbVertex; j++) {
+            inputMatrixPanel.add(new JLabel(""+j,SwingConstants.CENTER));
+        }
+
+        int n = 0;
+        cellsList = new ArrayList<JTextField>();
+        for (int i = 0; i < (nbVertex*nbVertex); i++) {
+            if (i%nbVertex == 0) {
+                inputMatrixPanel.add(new JLabel(""+(n++),SwingConstants.CENTER));
+            }
+            JTextField temp = new JTextField();
+            temp.setHorizontalAlignment(JTextField.CENTER);
+            temp.setSize(new Dimension(20,20));
+            temp.setEnabled(false);
+            temp.setBackground(Color.gray);
+            cellsList.add(temp);
+            inputMatrixPanel.add(temp);
+        }
+        matrixPanel.add(inputMatrixPanel,gbc);
         
+
+        gbc.weighty = 0.1;
+        gbc.gridy = 2;
+
+        createFigure = new JButton("Create");
+        matrixPanel.add(createFigure,gbc);
+
         
 
         tabbedPane.addTab("Matrix", matrixPanel);
