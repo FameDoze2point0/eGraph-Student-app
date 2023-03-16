@@ -1,4 +1,4 @@
-package util.algorithm;
+package util.algorithms;
 import util.*;
 import java.util.*;
 

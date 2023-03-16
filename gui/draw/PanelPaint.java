@@ -149,20 +149,12 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                         {
                             //Saving the graph before we add the edge
                             updateUndo();
-
-                            //Adding the edge to the graph
                             Integer weight = null;
-                            int nbrOfEdges = graph.getEdges().size();
-                            graph.addEdge(new Edge(start, vertex, 0, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(), Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), graph,Gui.getSettings().getArrowLength()));
-                            if(graph.getWeighted() && nbrOfEdges+1 == graph.getEdges().size())
-                            {
-                                AskWeight askingWeightPage = new AskWeight(gui, drawArea);
-                                weight = askingWeightPage.getWeight();
-                                if(weight != null)
-                                {
-                                    graph.getEdges().get(nbrOfEdges).setWeight(weight);
-                                }
+                            if (graph.getWeighted()) {
+                                AskWeight askWeightPage = new AskWeight(gui, drawArea);
+                                weight = askWeightPage.getWeight();
                             }
+                            graph.addEdge(new Edge(start, vertex, weight, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(), Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), graph,Gui.getSettings().getArrowLength()));
                             start = null;
                         }
                     }

@@ -1,4 +1,4 @@
-package util.algorithm;
+package util.algorithms;
 import util.*;
 import java.util.*;
 import java.awt.*;
@@ -16,9 +16,6 @@ public class BFS extends Thread{
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
         this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start);
     }
-
-    
-
 
     @Override
     public void run() {

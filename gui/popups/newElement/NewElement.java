@@ -8,17 +8,18 @@ import javax.swing.event.ChangeListener;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.time.chrono.IsoChronology;
 import java.util.ArrayList;
 
 import gui.Gui;
 import gui.draw.Draw;
+import util.Edge;
 import util.Graph;
 import util.Vertex;
 import gui.draw.PanelPaint;
 
 public class NewElement extends JDialog
 {
+    JDialog main;
     // ===== Variables used to create the settings window =====
     JTabbedPane tabbedPane;
 
@@ -48,6 +49,9 @@ public class NewElement extends JDialog
                 informationMatrixPanel,
                 inputMatrixPanel;
         
+            // figure name
+                private JLabel nameFigureLabel;
+                private JTextField nameFigureJTextField;
             // number of vertex
                 private JLabel numberVertexLabel;
                 private JTextField numberVertexTextField;
@@ -73,12 +77,12 @@ public class NewElement extends JDialog
         this.setMinimumSize(new Dimension(250,250));
         this.setSize(new Dimension(250,250));
         this.setLocationRelativeTo(null);
-        this.setResizable(false);
+        this.setResizable(true);
         this.setAlwaysOnTop(true);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
-        JDialog main = this;
+        main = this;
         tabbedPane = new JTabbedPane();
         tabbedPane.addChangeListener(new ChangeListener() {
             @Override
@@ -87,7 +91,7 @@ public class NewElement extends JDialog
                     main.setSize(new Dimension(250,250));
                     main.setLocationRelativeTo(null);
                 }else{
-                    main.setSize(new Dimension(600,600));
+                    main.setSize(new Dimension(350,200));
                     main.setLocationRelativeTo(null);
                 }
             }
@@ -204,9 +208,16 @@ public class NewElement extends JDialog
         gbc.gridy = 0;
 
         informationMatrixPanel = new JPanel();
-        informationMatrixPanel.setLayout(new GridLayout(2,3,8,8));
+        informationMatrixPanel.setLayout(new GridLayout(5,2,8,8));
 
-        numberVertexLabel = new JLabel("Number of vertex : ");
+        nameFigureLabel = new JLabel("Name : ");
+        informationMatrixPanel.add(nameFigureLabel);
+        nameFigureJTextField = new JTextField("Figure");
+        nameFigureJTextField.setHorizontalAlignment(JTextField.CENTER);
+        nameFigureJTextField.setSize(new Dimension(20,20));
+        informationMatrixPanel.add(nameFigureJTextField);
+
+        numberVertexLabel = new JLabel("Vertices [min 1, max 32] : ");
         informationMatrixPanel.add(numberVertexLabel);
 
         numberVertexTextField = new JTextField("1");
@@ -214,32 +225,7 @@ public class NewElement extends JDialog
         numberVertexTextField.setSize(new Dimension(20,20));
         informationMatrixPanel.add(numberVertexTextField);
 
-        numberVertexButton = new JButton("Update");
-        numberVertexButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-                try {
-                    int i = Integer.parseInt(numberVertexTextField.getText());
-                    if (i > 0 && i <= nbVertex) {
-                        for (int j = 0; j < nbVertex*nbVertex; j++) {
-                            cellsList.get(j).setBackground(Color.gray);
-                            cellsList.get(j).setEnabled(false);
-                        }
-                        for (int k = 0; k < i; k++) {
-                            for (int j = 0; j < i; j++) {
-                                cellsList.get(j+k*(nbVertex)).setBackground(Color.white);
-                                cellsList.get(j+k*(nbVertex)).setEnabled(true);
-                            }
-                        }
-                    }
-                } catch (Exception exce) {
-                    System.out.println(exce.toString());
-                }
-                
-            }
-        });
-        informationMatrixPanel.add(numberVertexButton,gbc);
+        
         
 
         graphMatrixButton = new JRadioButton("Graph ");
@@ -267,6 +253,60 @@ public class NewElement extends JDialog
         elementsMatrixButton.add(graphMatrixButton);
         elementsMatrixButton.add(automatonMatrixButton);
 
+        numberVertexButton = new JButton("Update");
+        numberVertexButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                try {
+                    if (Integer.parseInt(numberVertexTextField.getText()) <= 32) {
+                        inputMatrixPanel.removeAll();
+                        nbVertex = Integer.parseInt(numberVertexTextField.getText());
+                        inputMatrixPanel.setLayout(new GridLayout(nbVertex+1,nbVertex+1,8,8));
+                        inputMatrixPanel.add(new JLabel());
+                        for (int j = 0; j < nbVertex; j++) {
+                            inputMatrixPanel.add(new JLabel(""+j,SwingConstants.CENTER));
+                        }
+
+                        int n = 0;
+                        cellsList = new ArrayList<JTextField>();
+                        for (int i = 0; i < (nbVertex*nbVertex); i++) {
+                            if (i%nbVertex == 0) {
+                                inputMatrixPanel.add(new JLabel(""+(n++),SwingConstants.CENTER));
+                            }
+                            JTextField temp = new JTextField();
+                            temp.setHorizontalAlignment(JTextField.CENTER);
+                            temp.setSize(new Dimension(15,15));
+                            cellsList.add(temp);
+                            inputMatrixPanel.add(temp);
+                        }
+                        main.setSize(new Dimension(350+(nbVertex+1)*35,200+(nbVertex+1)*35));
+                        main.setLocationRelativeTo(null);
+                        createFigure.setEnabled(true);
+                    }
+
+                } catch (Exception exce) {
+                    System.out.println(exce.toString());
+                }                
+            }
+        });
+        informationMatrixPanel.add(numberVertexButton,gbc);
+
+        createFigure = new JButton("Create");
+        createFigure.setEnabled(false);
+        createFigure.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                if (nameFigureJTextField.getText().length() != 0 && nbVertex <= 32) {
+                    createMatrix(gui, drawArea);
+                    dispose();
+                }
+                
+            }
+        });
+        informationMatrixPanel.add(createFigure);
+
         matrixPanel.add(informationMatrixPanel);
 
 
@@ -274,39 +314,58 @@ public class NewElement extends JDialog
         gbc.gridy = 1;
 
         inputMatrixPanel = new JPanel();
-        nbVertex = 12;
-        inputMatrixPanel.setLayout(new GridLayout(nbVertex+1,nbVertex+1,8,8));
-        inputMatrixPanel.add(new JLabel());
-        for (int j = 0; j < nbVertex; j++) {
-            inputMatrixPanel.add(new JLabel(""+j,SwingConstants.CENTER));
-        }
 
-        int n = 0;
-        cellsList = new ArrayList<JTextField>();
-        for (int i = 0; i < (nbVertex*nbVertex); i++) {
-            if (i%nbVertex == 0) {
-                inputMatrixPanel.add(new JLabel(""+(n++),SwingConstants.CENTER));
-            }
-            JTextField temp = new JTextField();
-            temp.setHorizontalAlignment(JTextField.CENTER);
-            temp.setSize(new Dimension(20,20));
-            temp.setEnabled(false);
-            temp.setBackground(Color.gray);
-            cellsList.add(temp);
-            inputMatrixPanel.add(temp);
-        }
         matrixPanel.add(inputMatrixPanel,gbc);
         
-
-        gbc.weighty = 0.1;
-        gbc.gridy = 2;
-
-        createFigure = new JButton("Create");
-        matrixPanel.add(createFigure,gbc);
-
         
 
         tabbedPane.addTab("Matrix", matrixPanel);
+    }
+
+    private void createMatrix(Gui gui, Draw drawArea){
+        try {
+
+            PanelPaint pp = new PanelPaint(gui, drawArea);
+            
+            if (type == 1) {
+                
+                Graph graph = new Graph(nameFigureJTextField.getText(), true, true, pp);
+                int centerX = (int)drawArea.getSize().getWidth()/2,
+                    centerY = (int)drawArea.getSize().getHeight()/2,
+                    radiusFigure = (int)(2*centerY/3),x,y;
+                
+                System.out.println("center x = "+centerX+" center Y = "+centerY);
+                for (int i = 0; i < nbVertex; i++) {
+                    int cpt = graph.getCpt();
+                    x = (int)(centerX + radiusFigure*Math.cos(Math.PI*2*i/nbVertex));
+                    y = (int)(centerY + radiusFigure*Math.sin(Math.PI*2*i/nbVertex));
+                    
+                    graph.addVertex(new Vertex(cpt,x-Gui.getSettings().getVertexDiameter()/2, y-Gui.getSettings().getVertexDiameter()/2, Gui.getSettings().getVertexDiameter(), Gui.getSettings().getVertexStrokeWidth(), Gui.getSettings().getVertexInsideColor(), Gui.getSettings().getVertexOutsideColor(), ""+(cpt), Gui.getSettings().getVertexNameColor())); //We add the new vertex to the graph
+                }
+                ArrayList<Vertex> vertices = graph.getVertices();
+
+                for (int k = 0; k < nbVertex; k++) {
+                    for (int j = 0; j < nbVertex; j++) {
+
+                        if (cellsList.get(j+k*nbVertex).getText().length() != 0) {
+                            graph.addEdge(new Edge(vertices.get(k), vertices.get(j), Integer.parseInt(cellsList.get(j+k*nbVertex).getText()), Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(), Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), graph,Gui.getSettings().getArrowLength()));
+
+                        }
+                    }
+                }
+                gui.getTabulations().put(pp, graph);
+
+
+            }else{
+
+            }
+
+            drawArea.addTab(nameFigureJTextField.getText(), null,pp, nameFigureJTextField.getText());
+            drawArea.setSelectedComponent(pp);
+            pp.repaint();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
 

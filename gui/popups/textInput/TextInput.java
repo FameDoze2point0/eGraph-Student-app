@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import gui.Gui;
 import util.Edge;
+import util.Graph;
 import util.Vertex;
 
 import java.awt.*;
@@ -52,7 +53,7 @@ public class TextInput extends JDialog
 
                     if(input.getText().length() > 0)
                     {
-                        sendInput(obj);
+                        sendInput(obj, gui);
                     }
                 }
             });
@@ -63,7 +64,7 @@ public class TextInput extends JDialog
     }
 
     //Method that retrieve the user input and close the window
-    public void sendInput(Object obj)
+    public void sendInput(Object obj, Gui gui)
     {
         //Obj is the element we want to change the text of
         if(obj instanceof Vertex)
@@ -76,7 +77,19 @@ public class TextInput extends JDialog
         {
             try
             {
-                ((Edge)obj).setWeight(Integer.parseInt(input.getText()));
+                Graph graph = gui.getTabulations().get(gui.getDraw().getSelectedComponent());
+                Edge myEdge = ((Edge)obj);
+                myEdge.setWeight(Integer.parseInt(input.getText()));
+
+                if(!graph.getOriented())
+                {
+                    for(Edge edge : graph.getEdges()) {
+                        if (myEdge.getStart() == edge.getEnd() && edge.getStart() == myEdge.getEnd()) {
+                            edge.setWeight(Integer.parseInt(input.getText()));
+                            break;
+                        }
+                    }
+                }
                 this.dispose();
             }
             catch (Exception e)
