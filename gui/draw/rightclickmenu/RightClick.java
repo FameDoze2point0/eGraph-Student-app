@@ -10,7 +10,7 @@ import javax.swing.JPopupMenu;
 import gui.Gui;
 import gui.draw.Draw;
 import gui.draw.PanelPaint;
-import gui.popups.algorithms.algorithmsPage;
+import gui.popups.algorithms.AlgorithmsPage;
 import gui.popups.newElement.NewElement;
 import gui.popups.textInput.TextInput;
 import util.Edge;
@@ -234,7 +234,7 @@ public class RightClick extends JPopupMenu
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                new algorithmsPage(gui, drawArea);
+                new AlgorithmsPage(gui, drawArea);
             }
             
         });

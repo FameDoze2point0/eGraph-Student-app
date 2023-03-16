@@ -11,7 +11,7 @@ import javax.swing.JToolBar;
 import gui.Gui;
 import gui.draw.Draw;
 import gui.draw.PanelPaint;
-import gui.popups.algorithms.algorithmsPage;
+import gui.popups.algorithms.AlgorithmsPage;
 import gui.popups.newElement.NewElement;
 import util.Graph;
 
@@ -152,7 +152,7 @@ public class Tools extends JToolBar
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                new algorithmsPage(gui, drawArea);
+                new AlgorithmsPage(gui, drawArea);
             }
             
         });

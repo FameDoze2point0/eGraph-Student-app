@@ -19,9 +19,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 
-public class algorithmsPage extends JDialog{
-    
-
+public class AlgorithmsPage extends JDialog
+{
+    //OLD
     private JPanel global;
         private JPanel algoChoiceArea;
             private JLabel algoChoiceLabel;
@@ -35,70 +35,114 @@ public class algorithmsPage extends JDialog{
             private JComboBox<String> endingVertexList;
         private JButton submit;
 
-    public algorithmsPage(Gui gui, Draw draw){
-        
+    //NEW
+    private JPanel panel_listeAlgo,
+                   panel_informations,
+                   panel_choix;
+
+    public AlgorithmsPage(Gui gui, Draw draw)
+    {    
         super(gui, "Algorithm launching page", true);
-        this.setSize(900,100);
+        this.setSize(900,700);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setAlwaysOnTop(true);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        global = new JPanel(new GridLayout(1,4));
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
 
-        //algorithm part
-        algoChoiceArea = new JPanel();
-        algoChoiceLabel = new JLabel("Algorithms :");
-        algoChoiceArea.add(algoChoiceLabel);
-        algoList = new JComboBox(algoType);
+        //List of algorithms
+        panel_listeAlgo = new JPanel();
+        panel_listeAlgo.setBackground(Color.RED);
 
-        Graph graph = gui.getTabulations().get(draw.getSelectedComponent());
-        DefaultListSelectionModel model = new DefaultListSelectionModel();
-        model.addSelectionInterval(0, 2);
-        if (graph.getOriented() && graph.getWeighted()) {
-            model.addSelectionInterval(3, 5);
-        }else if(graph.getWeighted()){
-            model.addSelectionInterval(6, 7);
-        }
-        EnabledJComboBoxRenderer enableRenderer = new EnabledJComboBoxRenderer(model); 
-        algoList.setRenderer(enableRenderer);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.weightx = 0.2;
+        constraints.weighty = 1;
 
-        addAlgoListener(gui,draw);
-        algoChoiceArea.add(algoList);
-        global.add(algoChoiceArea);
-
-        String[] vName = new String[graph.getVertices().size()];
-
-        for (int i = 0; i < vName.length; i++) 
-            vName[i] = "" + graph.getVertices().get(i).getName();
-
-        //starting vertex part
-        startingVertexArea = new JPanel();
-        startingVertexLabel = new JLabel("Starting vertex :");
-        startingVertexArea.add(startingVertexLabel);
-        startingVertexList = new JComboBox<String>(vName);
-        startingVertexArea.add(startingVertexList);
-        global.add(startingVertexArea);
+        this.add(panel_listeAlgo,constraints);
 
 
-        //ending vertex part
-        endingVertexArea = new JPanel();
-        endingVertexLabel = new JLabel("Ending vertex :");
-        endingVertexArea.add(endingVertexLabel);
-        endingVertexList = new JComboBox<String>(vName);
-        endingVertexList.setEnabled(false);
-        endingVertexArea.add(endingVertexList);
-        global.add(endingVertexArea);
+
+        //Informations
+        panel_informations = new JPanel();
+        panel_listeAlgo.setBackground(Color.GREEN);
+
+        constraints.gridx = (int)(900*0.2);
+        constraints.gridy = 0;
+        constraints.weightx = 0.8;
+        constraints.weighty = 0.8;
+
+        this.add(panel_listeAlgo,constraints);
 
 
-        submit = new JButton("Launch");
-        addSubmitListener(gui,draw);
-        global.add(submit);
+
+        //Choices
+        panel_informations = new JPanel();
+        panel_listeAlgo.setBackground(Color.BLUE);
+
+        constraints.gridx = (int)(900*0.8);
+        constraints.gridy = (int)(700*0.8);
+        constraints.weightx = 0.8;
+        constraints.weighty = 0.2;
+
+        this.add(panel_listeAlgo,constraints);
+
+        // global = new JPanel(new GridLayout(1,4));
+
+        // //algorithm part
+        // algoChoiceArea = new JPanel();
+        // algoChoiceLabel = new JLabel("Algorithms :");
+        // algoChoiceArea.add(algoChoiceLabel);
+        // algoList = new JComboBox(algoType);
+
+        // Graph graph = gui.getTabulations().get(draw.getSelectedComponent());
+        // DefaultListSelectionModel model = new DefaultListSelectionModel();
+        // model.addSelectionInterval(0, 2);
+        // if (graph.getOriented() && graph.getWeighted()) {
+        //     model.addSelectionInterval(3, 5);
+        // }else if(graph.getWeighted()){
+        //     model.addSelectionInterval(6, 7);
+        // }
+        // EnabledJComboBoxRenderer enableRenderer = new EnabledJComboBoxRenderer(model); 
+        // algoList.setRenderer(enableRenderer);
+
+        // addAlgoListener(gui,draw);
+        // algoChoiceArea.add(algoList);
+        // global.add(algoChoiceArea);
+
+        // String[] vName = new String[graph.getVertices().size()];
+
+        // for (int i = 0; i < vName.length; i++) 
+        //     vName[i] = "" + graph.getVertices().get(i).getName();
+
+        // //starting vertex part
+        // startingVertexArea = new JPanel();
+        // startingVertexLabel = new JLabel("Starting vertex :");
+        // startingVertexArea.add(startingVertexLabel);
+        // startingVertexList = new JComboBox<String>(vName);
+        // startingVertexArea.add(startingVertexList);
+        // global.add(startingVertexArea);
+
+
+        // //ending vertex part
+        // endingVertexArea = new JPanel();
+        // endingVertexLabel = new JLabel("Ending vertex :");
+        // endingVertexArea.add(endingVertexLabel);
+        // endingVertexList = new JComboBox<String>(vName);
+        // endingVertexList.setEnabled(false);
+        // endingVertexArea.add(endingVertexList);
+        // global.add(endingVertexArea);
+
+
+        // submit = new JButton("Launch");
+        // addSubmitListener(gui,draw);
+        // global.add(submit);
         
 
-        this.add(global);
+        // this.add(global);
         this.setVisible(true);
-
     }
 
     public void addAlgoListener(Gui gui, Draw draw){

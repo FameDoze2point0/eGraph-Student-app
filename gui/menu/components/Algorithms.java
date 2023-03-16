@@ -12,7 +12,7 @@ import javax.swing.KeyStroke;
 
 import gui.Gui;
 import gui.draw.Draw;
-import gui.popups.algorithms.algorithmsPage;;
+import gui.popups.algorithms.AlgorithmsPage;;
 
 public class Algorithms extends JMenu
 {
@@ -29,7 +29,7 @@ public class Algorithms extends JMenu
         {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new algorithmsPage(gui, drawArea);
+                new AlgorithmsPage(gui, drawArea);
             }
         });
         launch.setMnemonic(KeyEvent.VK_A);
