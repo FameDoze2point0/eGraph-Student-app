@@ -3,12 +3,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import gui.Gui;
 import gui.draw.Draw;
 import gui.draw.PanelPaint;
+import gui.popups.algorithms.algorithmsPage;
 import gui.popups.newElement.NewElement;
 import gui.popups.textInput.TextInput;
 import util.Edge;
@@ -43,12 +45,13 @@ public class RightClick extends JPopupMenu
         JMenuItem exportPDF;
         JMenuItem exportSVG;
     JMenuItem launchAlgo;
+    JMenuItem close;
     
     public RightClick(Draw drawArea, PanelPaint panel, Gui gui)
     {
         super("Quick menu");
         //We first elements for edges and vertexs
-        deleteElement = new JMenuItem("Delete");
+        deleteElement = new JMenuItem("Delete", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_cancel.png"));
         deleteElement.addActionListener(new ActionListener()
         {
             @Override
@@ -98,7 +101,7 @@ public class RightClick extends JPopupMenu
         });
         this.add(deleteElement);
         //We then build vertex's elements
-        renameElement = new JMenuItem("Rename...");
+        renameElement = new JMenuItem("Rename...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_drawtext.png"));
         renameElement.addActionListener(new ActionListener()
         {
             @Override
@@ -108,7 +111,7 @@ public class RightClick extends JPopupMenu
         });
         this.add(renameElement);
         //We then build edge's elements
-        changeWeight = new JMenuItem("Edit weight...");
+        changeWeight = new JMenuItem("Edit weight...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_fontwork.png"));
         changeWeight.addActionListener(new ActionListener()
         {
             @Override
@@ -121,7 +124,7 @@ public class RightClick extends JPopupMenu
         this.add(new Separator()); // === NEW CATEGORY ===
 
         //We then add elements that are always there
-        undo = new JMenuItem("Undo");
+        undo = new JMenuItem("Undo", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_redo.png"));
         undo.addActionListener(new ActionListener()
         {
             @Override
@@ -132,7 +135,7 @@ public class RightClick extends JPopupMenu
         });
         this.add(undo);
 
-        redo = new JMenuItem("Redo");
+        redo = new JMenuItem("Redo", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_undo.png"));
         redo.addActionListener(new ActionListener()
         {
             @Override
@@ -147,7 +150,7 @@ public class RightClick extends JPopupMenu
         this.add(new Separator());
 
         mode = new JMenu("Mode");
-            cursorMode = new JMenuItem("Cursor Mode");
+            cursorMode = new JMenuItem("Cursor Mode", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_drawselect.png"));
             cursorMode.addActionListener(new ActionListener()
             {
                 @Override
@@ -157,7 +160,7 @@ public class RightClick extends JPopupMenu
             });
             mode.add(cursorMode);
 
-            newVertexMode = new JMenuItem("New Vertex Mode");
+            newVertexMode = new JMenuItem("New Vertex Mode", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_sphere.png"));
             newVertexMode.addActionListener(new ActionListener()
             {
                 @Override
@@ -167,7 +170,7 @@ public class RightClick extends JPopupMenu
             });
             mode.add(newVertexMode);
 
-            newEdgeMode = new JMenuItem("New Edge Mode");
+            newEdgeMode = new JMenuItem("New Edge Mode", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_connectorlinescircles.png"));
             newEdgeMode.addActionListener(new ActionListener()
             {
                 @Override
@@ -180,7 +183,7 @@ public class RightClick extends JPopupMenu
 
         this.add(new Separator()); // === NEW CATEGORY ===
 
-        newElement = new JMenuItem("New...");
+        newElement = new JMenuItem("New...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_bezierinsert.png"));
         newElement.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -190,7 +193,7 @@ public class RightClick extends JPopupMenu
         });
         this.add(newElement);
 
-        openElement = new JMenuItem("Open...");
+        openElement = new JMenuItem("Open...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_insertmasterpage.png"));
         openElement.addActionListener(new ActionListener()
         {
 
@@ -202,7 +205,7 @@ public class RightClick extends JPopupMenu
         });
         this.add(openElement);
 
-        saveElement = new JMenuItem("Save...");
+        saveElement = new JMenuItem("Save...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_recsave.png"));
         saveElement.addActionListener(new ActionListener()
         {
 
@@ -226,8 +229,35 @@ public class RightClick extends JPopupMenu
 
         this.add(new Separator()); // === NEW CATEGORY ===
 
-        launchAlgo = new JMenuItem("Launch algorithm...");
+        launchAlgo = new JMenuItem("Launch algorithm...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_usewizards.png"));
+        launchAlgo.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new algorithmsPage(gui, drawArea);
+            }
+            
+        });
         this.add(launchAlgo);
+
+        this.add(new Separator()); // === NEW CATEGORY ===
+
+        //close tab
+        close = new JMenuItem("Close Tabulation", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_dbformdelete.png"));
+        close.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (drawArea.getTabCount() > 1) {
+                    
+                    
+                    gui.getTabulations().remove(drawArea.getSelectedComponent());
+                    drawArea.remove(drawArea.getSelectedIndex());
+                    drawArea.setSelectedIndex(0); 
+                }
+            }
+        });
+        this.add(close);
     }
 
     public void changeState(Boolean changeWeight, Boolean renameElement, Boolean deleteElement, Object itemSelected){

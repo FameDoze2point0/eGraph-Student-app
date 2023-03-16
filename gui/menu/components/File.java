@@ -59,7 +59,7 @@ public class File extends JMenu
         this.add(openFile);
 
         //Save file
-        saveAs = new JMenuItem("Save as...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_recsave.png"));
+        saveAs = new JMenuItem("Save...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_recsave.png"));
         saveAs.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)

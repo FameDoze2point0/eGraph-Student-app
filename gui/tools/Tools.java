@@ -11,6 +11,7 @@ import javax.swing.JToolBar;
 import gui.Gui;
 import gui.draw.Draw;
 import gui.draw.PanelPaint;
+import gui.popups.algorithms.algorithmsPage;
 import gui.popups.newElement.NewElement;
 import util.Graph;
 
@@ -31,6 +32,7 @@ public class Tools extends JToolBar
     JButton load;
     JButton settings;
     JButton close;
+    JButton launchAlgo;
 
     public Tools(Gui gui, Draw drawArea)
     {
@@ -121,11 +123,11 @@ public class Tools extends JToolBar
 
         //save
         save = new JButton("Save...", new ImageIcon(System.getProperty("user.dir")+"/ressources/lc_recsave.png"));
-        redo.addActionListener(new ActionListener()
+        save.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //save
+                drawArea.saveTabulation(gui);
             }
         });
         this.add(save);
@@ -136,7 +138,7 @@ public class Tools extends JToolBar
         {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //load
+                drawArea.loadTabulation(gui);
             }
         });
         this.add(load);
@@ -144,13 +146,26 @@ public class Tools extends JToolBar
         //Adding a separator
         this.add(new JToolBar.Separator());
 
+        //Launch algorithms
+        launchAlgo = new JButton("Launch algorithm...", new ImageIcon(System.getProperty("user.dir")+"/ressources/lc_usewizards.png"));
+        launchAlgo.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new algorithmsPage(gui, drawArea);
+            }
+            
+        });
+        this.add(launchAlgo);
+
         //settings
         settings = new JButton("Settings...", new ImageIcon(System.getProperty("user.dir")+"/ressources/lc_choosemacro.png"));
         settings.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //settings
+                gui.setState(3);
+                Gui.getSettings().getWindow().setVisible(true);
             }
         });
         this.add(settings);
@@ -161,7 +176,13 @@ public class Tools extends JToolBar
         {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //close
+                if (drawArea.getTabCount() > 1) {
+                    
+                    
+                    gui.getTabulations().remove(drawArea.getSelectedComponent());
+                    drawArea.remove(drawArea.getSelectedIndex());
+                    drawArea.setSelectedIndex(0); 
+                }
             }
         });
         this.add(close);
