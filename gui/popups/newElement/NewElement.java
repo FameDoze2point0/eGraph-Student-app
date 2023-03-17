@@ -79,7 +79,7 @@ public class NewElement extends JDialog
         this.setMinimumSize(new Dimension(250,250));
         this.setSize(new Dimension(250,250));
         this.setLocationRelativeTo(null);
-        this.setResizable(true);
+        this.setResizable(false);
         this.setAlwaysOnTop(true);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);

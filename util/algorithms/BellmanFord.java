@@ -10,12 +10,12 @@ public class BellmanFord extends Thread{
     private Color vertexDefaultColor, edgeDefaultColor;
     private AnimationAlgorithm animAlgo;
 
-    public BellmanFord(Graph g, Vertex start, Gui gui, Draw draw){
+    public BellmanFord(Graph g, Vertex start,Boolean isAnimated, Gui gui, Draw draw){
         this.graph = g;
         this.start = start;
         this.vertexDefaultColor = g.getVertices().get(0).getBorderColor();
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
-        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start, gui, draw);
+        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start,isAnimated, gui, draw);
     }
 
     public int[][] graphToArray(int size){

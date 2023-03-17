@@ -12,11 +12,11 @@ public class FloydWarshall extends Thread{
     private Color vertexDefaultColor, edgeDefaultColor;
     private AnimationAlgorithm animAlgo;
 
-    public FloydWarshall(Graph g, Gui gui, Draw draw){
+    public FloydWarshall(Graph g,Boolean isAnimated, Gui gui, Draw draw){
         this.graph = g;
         this.vertexDefaultColor = g.getVertices().get(0).getBorderColor();
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
-        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, gui, draw);
+        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor,isAnimated, gui, draw);
     }
 
     public String printArray(int [][] M){

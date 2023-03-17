@@ -1,6 +1,5 @@
 package settings;
 
-import java.awt.Dimension;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
@@ -12,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -23,10 +24,11 @@ import util.Edge;
 import util.Graph;
 import util.Vertex;
 
-public class SettingsDialog extends JDialog
+public class SettingsDialog extends JDialog implements ChangeListener
 {
      // ===== VARIABLES USED TO CREATE THE SETTINGS WINDOW =====
         JTabbedPane tabbedPane;
+        GridBagConstraints gbc;
         // === vertices ===
         JPanel vertex_panel_settings;
             // == LABELS ==    
@@ -34,7 +36,7 @@ public class SettingsDialog extends JDialog
                            vertex_label_outsideColor,
                            vertex_label_nameColor,
                            vertex_label_diameter,
-                           vertex_label_StrokeWidth;
+                           vertex_label_strokeWidth;
 
             // == DISPLAY CURRENT COLOR ==
             private JPanel vertex_panel_insideColor,
@@ -44,9 +46,10 @@ public class SettingsDialog extends JDialog
             // == BUTTONS ==
             private JButton vertex_button_insideColor,
                             vertex_button_outsideColor,
-                            vertex_button_nameColor,
-                            vertex_button_diameter,
-                            vertex_button_strokeWidth;
+                            vertex_button_nameColor;
+                            
+            private JSlider vertex_slider_diameter,
+                            vertex_slider_strokeWidth;
 
             // == EDIT CURRENT VALUES ==
             private JTextField vertex_textField_diameter,
@@ -72,12 +75,13 @@ public class SettingsDialog extends JDialog
 
             // == BUTTONS ==
             private JButton edge_button_strokeColor,
-                           edge_button_highlightColor,
-                           edge_button_arrowTipColor,
-                           edge_button_weightColor,
-                           edge_button_weightBorderColor,
-                           edge_button_strokeWidth,
-                           edge_button_arrowLenght;
+                            edge_button_highlightColor,
+                            edge_button_arrowTipColor,
+                            edge_button_weightColor,
+                            edge_button_weightBorderColor;
+
+            private JSlider edge_slider_strokeWidth,
+                            edge_slider_arrowLenght;
 
             // == EDIT CURRENT VALUES ==
             private JTextField edge_textField_strokeWidth,
@@ -184,24 +188,34 @@ public class SettingsDialog extends JDialog
         tabbedPane = new JTabbedPane();
         add(tabbedPane);
 
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
 
         // ===== VERTICES SETTINGS =====
         //vertex_panel_settings
-        vertex_panel_settings = new JPanel();
-        vertex_panel_settings.setLayout(new GridLayout(0, 3,0,10));
+        vertex_panel_settings = new JPanel(new GridBagLayout());
+        //vertex_panel_settings.setLayout(new GridLayout(0, 3,0,10));
         //Vertexs settings area
         //INSIDE COLOR
-        vertex_label_insideColor = new JLabel("Inside color : ");
-        vertex_panel_settings.add(vertex_label_insideColor);
+        vertex_label_insideColor = new JLabel("Inside color : ",SwingConstants.CENTER);
+        vertex_panel_settings.add(vertex_label_insideColor, gbc);
 
         vertex_panel_insideColor = new JPanel();
+        gbc.gridx = 1;
         vertex_panel_insideColor.setMaximumSize(new Dimension(16,16));
         vertex_panel_insideColor.setBackground(Gui.getSettings().getVertexInsideColor());
         vertex_panel_insideColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        vertex_panel_settings.add(vertex_panel_insideColor);
+        vertex_panel_settings.add(vertex_panel_insideColor, gbc);
 
         vertex_button_insideColor = new JButton("Change...");
+        gbc.gridx = 2;
         vertex_button_insideColor.addActionListener(new ActionListener()
         {
             @Override
@@ -218,19 +232,23 @@ public class SettingsDialog extends JDialog
                 }
             }   
         });
-        vertex_panel_settings.add(vertex_button_insideColor);
+        vertex_panel_settings.add(vertex_button_insideColor,gbc);
 
         //OUTSIDE COLOR
-        vertex_label_outsideColor = new JLabel("Outside color : ");
-        vertex_panel_settings.add(vertex_label_outsideColor);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        vertex_label_outsideColor = new JLabel("Outside color : ",SwingConstants.CENTER);
+        vertex_panel_settings.add(vertex_label_outsideColor,gbc);
 
         vertex_panel_outsideColor = new JPanel();
+        gbc.gridx = 1;
         vertex_panel_outsideColor.setMaximumSize(new Dimension(16,16));
         vertex_panel_outsideColor.setBackground(Gui.getSettings().getVertexOutsideColor());
         vertex_panel_outsideColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        vertex_panel_settings.add(vertex_panel_outsideColor);
+        vertex_panel_settings.add(vertex_panel_outsideColor,gbc);
 
         vertex_button_outsideColor = new JButton("Change...");
+        gbc.gridx = 2;
         vertex_button_outsideColor.addActionListener(new ActionListener()
         {
             @Override
@@ -246,19 +264,23 @@ public class SettingsDialog extends JDialog
                 }
             }   
         });
-        vertex_panel_settings.add(vertex_button_outsideColor);
+        vertex_panel_settings.add(vertex_button_outsideColor,gbc);
 
         //NAME COLOR
-        vertex_label_nameColor = new JLabel("Name color : ");
-        vertex_panel_settings.add(vertex_label_nameColor);
+        vertex_label_nameColor = new JLabel("Name color : ",SwingConstants.CENTER);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        vertex_panel_settings.add(vertex_label_nameColor,gbc);
 
         vertex_panel_nameColor = new JPanel();
+        gbc.gridx = 1;
         vertex_panel_nameColor.setMaximumSize(new Dimension(16,16));
         vertex_panel_nameColor.setBackground(Gui.getSettings().getVertexNameColor());
         vertex_panel_nameColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        vertex_panel_settings.add(vertex_panel_nameColor);
+        vertex_panel_settings.add(vertex_panel_nameColor,gbc);
 
         vertex_button_nameColor = new JButton("Change...");
+        gbc.gridx = 2;
         vertex_button_nameColor.addActionListener(new ActionListener()
         {
             @Override
@@ -274,24 +296,27 @@ public class SettingsDialog extends JDialog
                 }
             }   
         });
-        vertex_panel_settings.add(vertex_button_nameColor);
+        vertex_panel_settings.add(vertex_button_nameColor,gbc);
 
         //Vertex Diameter
-        vertex_label_diameter = new JLabel("Diameter : ["+Gui.getSettings().getVertexDiameter()+"]");
-        vertex_panel_settings.add(vertex_label_diameter);
-        vertex_textField_diameter = new JTextField();
-        vertex_panel_settings.add(vertex_textField_diameter);
-        vertex_button_diameter = new JButton("Change");
-        vertex_button_diameter.addActionListener(new ActionListener()
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        vertex_label_diameter = new JLabel("Diameter : ["+Gui.getSettings().getVertexDiameter()+"]",SwingConstants.CENTER);
+        vertex_panel_settings.add(vertex_label_diameter,gbc);
+
+        vertex_slider_diameter = new JSlider(0,100,settings.getVertexDiameter());
+        gbc.gridx = 1;
+        gbc.gridwidth = 2;
+        vertex_slider_diameter.addChangeListener(new ChangeListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void stateChanged(ChangeEvent e) {
                 try
                 {
-                    Gui.getSettings().setVertexDiameter(Integer.parseInt(vertex_textField_diameter.getText()));
+                    Gui.getSettings().setVertexDiameter(vertex_slider_diameter.getValue());
                     vertex_label_diameter.setText("Diameter : ["+Gui.getSettings().getVertexDiameter()+"]");
-                    example_graph.getVertices().get(0).setDiameter(Integer.parseInt(vertex_textField_diameter.getText()));
-                    example_graph.getVertices().get(1).setDiameter(Integer.parseInt(vertex_textField_diameter.getText()));
+                    example_graph.getVertices().get(0).setDiameter(vertex_slider_diameter.getValue());
+                    example_graph.getVertices().get(1).setDiameter(vertex_slider_diameter.getValue());
                     panel_drawArea.repaint();
                 }
 
@@ -301,24 +326,28 @@ public class SettingsDialog extends JDialog
                 }
             }   
         });
-        vertex_panel_settings.add(vertex_button_diameter);
+        vertex_panel_settings.add(vertex_slider_diameter,gbc);
+        gbc.gridwidth = 1;
         
         //Vertex StrokeWidth
-        vertex_label_StrokeWidth = new JLabel("Stroke : ["+Gui.getSettings().getVertexStrokeWidth()+"]");
-        vertex_panel_settings.add(vertex_label_StrokeWidth);
-        vertex_textField_strokeWidth = new JTextField();
-        vertex_panel_settings.add(vertex_textField_strokeWidth);
-        vertex_button_strokeWidth = new JButton("Change");
-        vertex_button_strokeWidth.addActionListener(new ActionListener()
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        vertex_label_strokeWidth = new JLabel("Stroke : ["+Gui.getSettings().getVertexStrokeWidth()+"]",SwingConstants.CENTER);
+        vertex_panel_settings.add(vertex_label_strokeWidth,gbc);
+
+        vertex_slider_strokeWidth = new JSlider(0,100,settings.getEdgeStrokeWidth());
+        gbc.gridx = 1;
+        gbc.gridwidth = 2;
+        vertex_slider_strokeWidth.addChangeListener(new ChangeListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void stateChanged(ChangeEvent e) {
                 try
                 {
-                    Gui.getSettings().setVertexStrokeWidth(Integer.parseInt(vertex_textField_strokeWidth.getText()));
-                    vertex_label_StrokeWidth.setText("Stroke : ["+Gui.getSettings().getVertexStrokeWidth()+"]");
-                    example_graph.getVertices().get(0).setStrokeWidth(Integer.parseInt(vertex_textField_strokeWidth.getText()));
-                    example_graph.getVertices().get(1).setStrokeWidth(Integer.parseInt(vertex_textField_strokeWidth.getText()));
+                    Gui.getSettings().setVertexStrokeWidth(vertex_slider_strokeWidth.getValue());
+                    vertex_label_strokeWidth.setText("Stroke : ["+Gui.getSettings().getVertexStrokeWidth()+"]");
+                    example_graph.getVertices().get(0).setStrokeWidth(vertex_slider_strokeWidth.getValue());
+                    example_graph.getVertices().get(1).setStrokeWidth(vertex_slider_strokeWidth.getValue());
                     panel_drawArea.repaint();
                 }
 
@@ -328,7 +357,8 @@ public class SettingsDialog extends JDialog
                 }
             }   
         });
-        vertex_panel_settings.add(vertex_button_strokeWidth);
+        vertex_panel_settings.add(vertex_slider_strokeWidth,gbc);
+        gbc.gridwidth = 1;
         
         //We add vertex_panel_settings as a tabulation 
         tabbedPane.add("Vertex", vertex_panel_settings);
@@ -337,20 +367,23 @@ public class SettingsDialog extends JDialog
 
         // ===== EDGES SETTINGS =====
         //EdgePanel
-        edgePanel = new JPanel();
-        edgePanel.setLayout(new GridLayout(0, 3,0,2));
+        edgePanel = new JPanel(new GridBagLayout());
         //Edges settings area
         //INSIDE COLOR
-        edge_label_strokeColor = new JLabel("Stroke color : ");
-        edgePanel.add(edge_label_strokeColor);
+        edge_label_strokeColor = new JLabel("Stroke color : ",SwingConstants.CENTER);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        edgePanel.add(edge_label_strokeColor,gbc);
 
         edge_panel_strokeColor = new JPanel();
+        gbc.gridx = 1;
         edge_panel_strokeColor.setMaximumSize(new Dimension(16,16));
         edge_panel_strokeColor.setBackground(Gui.getSettings().getEdgeStrokeColor());
         edge_panel_strokeColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        edgePanel.add(edge_panel_strokeColor);
+        edgePanel.add(edge_panel_strokeColor,gbc);
 
         edge_button_strokeColor = new JButton("Change...");
+        gbc.gridx = 2;
         edge_button_strokeColor.addActionListener(new ActionListener()
         {
             @Override
@@ -366,19 +399,23 @@ public class SettingsDialog extends JDialog
                 }
             }   
         });
-        edgePanel.add(edge_button_strokeColor);
+        edgePanel.add(edge_button_strokeColor,gbc);
 
         //HIGHTLIGHT COLOR
-        edge_label_highlightColor = new JLabel("Highlight color : ");
-        edgePanel.add(edge_label_highlightColor);
+        edge_label_highlightColor = new JLabel("Highlight color : ",SwingConstants.CENTER);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        edgePanel.add(edge_label_highlightColor,gbc);
 
         edge_panel_highlightColor = new JPanel();
+        gbc.gridx = 1;
         edge_panel_highlightColor.setMaximumSize(new Dimension(16,16));
         edge_panel_highlightColor.setBackground(Gui.getSettings().getEdgeHighlightColor());
         edge_panel_highlightColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        edgePanel.add(edge_panel_highlightColor);
+        edgePanel.add(edge_panel_highlightColor,gbc);
 
         edge_button_highlightColor = new JButton("Change...");
+        gbc.gridx = 2;
         edge_button_highlightColor.addActionListener(new ActionListener()
         {
             @Override
@@ -395,19 +432,23 @@ public class SettingsDialog extends JDialog
                 }
             }   
         });
-        edgePanel.add(edge_button_highlightColor);
+        edgePanel.add(edge_button_highlightColor,gbc);
 
         //ARROW TIP COLOR
-        edge_label_arrowTipColor = new JLabel("Arrow Tip color : ");
-        edgePanel.add(edge_label_arrowTipColor);
+        edge_label_arrowTipColor = new JLabel("Arrow Tip color : ",SwingConstants.CENTER);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        edgePanel.add(edge_label_arrowTipColor,gbc);
 
         edge_panel_arrowTipColor = new JPanel();
+        gbc.gridx = 1;
         edge_panel_arrowTipColor.setMaximumSize(new Dimension(16,16));
         edge_panel_arrowTipColor.setBackground(Gui.getSettings().getEdgeArrowTipColor());
         edge_panel_arrowTipColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        edgePanel.add(edge_panel_arrowTipColor);
+        edgePanel.add(edge_panel_arrowTipColor,gbc);
 
         edge_button_arrowTipColor = new JButton("Change...");
+        gbc.gridx = 2;
         edge_button_arrowTipColor.addActionListener(new ActionListener()
         {
             @Override
@@ -423,19 +464,23 @@ public class SettingsDialog extends JDialog
                 }
             }   
         });
-        edgePanel.add(edge_button_arrowTipColor);
+        edgePanel.add(edge_button_arrowTipColor,gbc);
 
         //WEIGHT COLOR
-        edge_label_weightColor = new JLabel("Weight color : ");
-        edgePanel.add(edge_label_weightColor);
+        edge_label_weightColor = new JLabel("Weight color : ",SwingConstants.CENTER);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        edgePanel.add(edge_label_weightColor,gbc);
 
         edge_panel_weightColor = new JPanel();
+        gbc.gridx = 1;
         edge_panel_weightColor.setMaximumSize(new Dimension(16,16));
         edge_panel_weightColor.setBackground(Gui.getSettings().getEdgeWeightColor());
         edge_panel_weightColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        edgePanel.add(edge_panel_weightColor);
+        edgePanel.add(edge_panel_weightColor,gbc);
 
         edge_button_weightColor = new JButton("Change...");
+        gbc.gridx = 2;
         edge_button_weightColor.addActionListener(new ActionListener()
         {
             @Override
@@ -452,19 +497,23 @@ public class SettingsDialog extends JDialog
                 }
             }   
         });
-        edgePanel.add(edge_button_weightColor);
+        edgePanel.add(edge_button_weightColor,gbc);
 
         //WEIGHT BORDER COLOR
-        edge_label_weightBorderColor = new JLabel("Weight border color : ");
-        edgePanel.add(edge_label_weightBorderColor);
+        edge_label_weightBorderColor = new JLabel("Weight border color : ",SwingConstants.CENTER);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        edgePanel.add(edge_label_weightBorderColor,gbc);
 
         edge_panel_weightBorderColor = new JPanel();
+        gbc.gridx = 1;
         edge_panel_weightBorderColor.setMaximumSize(new Dimension(16,16));
         edge_panel_weightBorderColor.setBackground(Gui.getSettings().getEdgeWeightBorderColor());
         edge_panel_weightBorderColor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        edgePanel.add(edge_panel_weightBorderColor);
+        edgePanel.add(edge_panel_weightBorderColor,gbc);
 
         edge_button_weightBorderColor = new JButton("Change...");
+        gbc.gridx = 2;
         edge_button_weightBorderColor.addActionListener(new ActionListener()
         {
             @Override
@@ -480,24 +529,27 @@ public class SettingsDialog extends JDialog
                 }
             }   
         });
-        edgePanel.add(edge_button_weightBorderColor);
+        edgePanel.add(edge_button_weightBorderColor,gbc);
 
         //Stroke width
-        edge_label_strokeWidth = new JLabel("Stroke width : ["+Gui.getSettings().getEdgeStrokeWidth()+"]");
-        edgePanel.add(edge_label_strokeWidth);
-        edge_textField_strokeWidth = new JTextField();
-        edgePanel.add(edge_textField_strokeWidth);
-        edge_button_strokeWidth = new JButton("Change");
-        edge_button_strokeWidth.addActionListener(new ActionListener()
+        edge_label_strokeWidth = new JLabel("Stroke width : ["+Gui.getSettings().getEdgeStrokeWidth()+"]",SwingConstants.CENTER);
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        edgePanel.add(edge_label_strokeWidth,gbc);
+
+        edge_slider_strokeWidth = new JSlider(0,100,settings.getEdgeStrokeWidth());
+        gbc.gridx = 1;
+        gbc.gridwidth = 2;
+        edge_slider_strokeWidth.addChangeListener(new ChangeListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void stateChanged(ChangeEvent e) {
                 try
                 {
-                    Gui.getSettings().setEdgeStrokeWidth(Integer.parseInt(edge_textField_strokeWidth.getText()));
+                    Gui.getSettings().setEdgeStrokeWidth(edge_slider_strokeWidth.getValue());
                     edge_label_strokeWidth.setText("Stroke width : ["+Gui.getSettings().getEdgeStrokeWidth()+"]");
                     //Changing the graph elements
-                    example_graph.getEdges().get(0).setStrokeWidth(Integer.parseInt(edge_textField_strokeWidth.getText()));
+                    example_graph.getEdges().get(0).setStrokeWidth(edge_slider_strokeWidth.getValue());
                     panel_drawArea.repaint();
                 }
 
@@ -507,24 +559,28 @@ public class SettingsDialog extends JDialog
                 }
             }   
         });
-        edgePanel.add(edge_button_strokeWidth);
+        edgePanel.add(edge_slider_strokeWidth,gbc);
+        gbc.gridwidth = 1;
 
         //Arrow Lenght
-        edge_label_arrowLenght = new JLabel("Arrow lenght : ["+Gui.getSettings().getArrowLength()+"]");
-        edgePanel.add(edge_label_arrowLenght);
-        edge_textField_arrowLenght = new JTextField();
-        edgePanel.add(edge_textField_arrowLenght);
-        edge_button_arrowLenght = new JButton("Change");
-        edge_button_arrowLenght.addActionListener(new ActionListener()
+        edge_label_arrowLenght = new JLabel("Arrow lenght : ["+Gui.getSettings().getArrowLength()+"]",SwingConstants.CENTER);
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        edgePanel.add(edge_label_arrowLenght,gbc);
+
+        edge_slider_arrowLenght = new JSlider(0,100,settings.getArrowLength());
+        gbc.gridx = 1;
+        gbc.gridwidth = 2;
+        edge_slider_arrowLenght.addChangeListener(new ChangeListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void stateChanged(ChangeEvent e) {
                 try
                 {
-                    Gui.getSettings().setArrowLength(Integer.parseInt(edge_textField_arrowLenght.getText()));
+                    Gui.getSettings().setArrowLength(edge_slider_arrowLenght.getValue());
                     edge_label_arrowLenght.setText("Arrow lenght : ["+Gui.getSettings().getArrowLength()+"]");
                     //Changing the graph elements
-                    example_graph.getEdges().get(0).setArrowTipWidth(Integer.parseInt(edge_textField_arrowLenght.getText()));
+                    example_graph.getEdges().get(0).setArrowTipWidth(edge_slider_arrowLenght.getValue());
                     panel_drawArea.repaint();
                 }
 
@@ -534,7 +590,7 @@ public class SettingsDialog extends JDialog
                 }
             }   
         });
-        edgePanel.add(edge_button_arrowLenght);
+        edgePanel.add(edge_slider_arrowLenght,gbc);
                 
         //We add edgePanel as a tabulation 
         tabbedPane.addTab("Edges", edgePanel);
@@ -638,7 +694,9 @@ public class SettingsDialog extends JDialog
                 vertex_panel_outsideColor.setBackground(Color.BLACK);
                 vertex_panel_nameColor.setBackground(Color.BLACK);
                 vertex_label_diameter.setText("Diameter : [50]");
-                vertex_label_StrokeWidth.setText("Diameter : [5]");
+                vertex_label_strokeWidth.setText("Diameter : [5]");
+                vertex_slider_diameter.setValue(50);
+                vertex_slider_strokeWidth.setValue(5);
                 
                 //Edges
                 edge_panel_strokeColor.setBackground(Color.BLACK);
@@ -648,6 +706,9 @@ public class SettingsDialog extends JDialog
                 edge_panel_arrowTipColor.setBackground(Color.BLACK);
                 edge_label_arrowLenght.setText("Arrow lenght : [15]");
                 edge_label_strokeWidth.setText("Stroke width : [5]");
+                edge_slider_arrowLenght.setValue(15);
+                edge_slider_strokeWidth.setValue(5);
+
 
                 //We repaint
                 example_graph.getPanelPaint().repaint();
@@ -701,14 +762,6 @@ public class SettingsDialog extends JDialog
 
     public void setVertex_label_diameter(JLabel vertex_label_diameter) {
         this.vertex_label_diameter = vertex_label_diameter;
-    }
-
-    public JLabel getVertex_label_StrokeWidth() {
-        return vertex_label_StrokeWidth;
-    }
-
-    public void setVertex_label_StrokeWidth(JLabel vertex_label_StrokeWidth) {
-        this.vertex_label_StrokeWidth = vertex_label_StrokeWidth;
     }
 
     public JPanel getVertex_panel_insideColor() {
@@ -789,22 +842,6 @@ public class SettingsDialog extends JDialog
 
     public void setvertex_panel_settings(JPanel vertex_panel_settings) {
         this.vertex_panel_settings = vertex_panel_settings;
-    }
-
-    public JButton getVertex_button_diameter() {
-        return vertex_button_diameter;
-    }
-
-    public void setVertex_button_diameter(JButton vertex_button_diameter) {
-        this.vertex_button_diameter = vertex_button_diameter;
-    }
-
-    public JButton getVertex_button_strokeWidth() {
-        return vertex_button_strokeWidth;
-    }
-
-    public void setVertex_button_strokeWidth(JButton vertex_button_strokeWidth) {
-        this.vertex_button_strokeWidth = vertex_button_strokeWidth;
     }
 
     public JPanel getEdgePanel() {
@@ -951,22 +988,6 @@ public class SettingsDialog extends JDialog
         this.edge_button_weightBorderColor = edge_button_weightBorderColor;
     }
 
-    public JButton getEdge_button_strokeWidth() {
-        return edge_button_strokeWidth;
-    }
-
-    public void setEdge_button_strokeWidth(JButton edge_button_strokeWidth) {
-        this.edge_button_strokeWidth = edge_button_strokeWidth;
-    }
-
-    public JButton getEdge_button_arrowLenght() {
-        return edge_button_arrowLenght;
-    }
-
-    public void setEdge_button_arrowLenght(JButton edge_button_arrowLenght) {
-        this.edge_button_arrowLenght = edge_button_arrowLenght;
-    }
-
     public JTextField getEdge_textField_strokeWidth() {
         return edge_textField_strokeWidth;
     }
@@ -1078,4 +1099,10 @@ public class SettingsDialog extends JDialog
 	public void setCloseTab_label_shortcut(JLabel closeTab_label_shortcut) {
 		this.closeTab_label_shortcut = closeTab_label_shortcut;
 	}
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'stateChanged'");
+    }
 }
