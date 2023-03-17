@@ -133,6 +133,7 @@ public class RightClick extends JPopupMenu
                 pp.undo();
             }
         });
+        undo.setEnabled(false);
         this.add(undo);
 
         redo = new JMenuItem("Redo", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_undo.png"));
@@ -144,6 +145,7 @@ public class RightClick extends JPopupMenu
                 pp.redo();
             }
         });
+        redo.setEnabled(false);
         this.add(redo);
 
         // === NEW CATEGORY ===

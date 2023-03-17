@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.awt.event.KeyEvent;
 import javax.swing.*;
 
 import gui.Gui;
@@ -61,11 +62,16 @@ public class AskWeight extends JDialog
         constraints.gridy = 0;
         constraints.gridwidth = 1;
 
-        submit = new JButton("Valid your choice");
-        submit.addActionListener(new ActionListener()
-        {
+
+        Action validationAskWeight = new AbstractAction("Valid your choice") {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                if (jtf.getText().length() > 5)
+                {
+                    jtf.setText(jtf.getText().substring(0,5));   
+                }
+
                 String text = jtf.getText();
 
                 try {
@@ -77,7 +83,11 @@ public class AskWeight extends JDialog
                     // System.out.println(exce);
                 }
             }
-        });
+        };
+        validationAskWeight.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
+        submit = new JButton(validationAskWeight);
+        submit.getActionMap().put("askWeight", validationAskWeight);
+        submit.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke)validationAskWeight.getValue(Action.ACCELERATOR_KEY), "askWeight");
         global.add(submit, constraints);
 
 

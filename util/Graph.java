@@ -202,6 +202,8 @@ public class Graph implements Serializable, Cloneable
                 if(!oriented)
                 {
                     edges.add(new Edge(e.getEnd(), e.getStart(), e.getWeight(), Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(),Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), this, Gui.getSettings().getArrowLength()));
+                    existingEdge.get(e.getStart().getId()).set(e.getEnd().getId(), true);
+                    existingEdge.get(e.getEnd().getId()).set(e.getStart().getId(), true);
                 }
                 else
                 {

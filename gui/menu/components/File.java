@@ -127,7 +127,7 @@ public class File extends JMenu
             }
         });
         exit.setMnemonic(KeyEvent.VK_ESCAPE);
-        exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+        exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, Event.CTRL_MASK));
         this.add(exit);
     }
 

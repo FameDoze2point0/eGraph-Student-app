@@ -28,6 +28,7 @@ public class Edit extends JMenu
                 pp.undo();
             }
         });
+        undo.setEnabled(false);
         this.add(undo);
 
         //Redo
@@ -40,6 +41,7 @@ public class Edit extends JMenu
                 pp.redo();
             }
         });
+        redo.setEnabled(false);
         this.add(redo);
     }
 

@@ -180,15 +180,17 @@ public class NewElement extends JDialog
         cancel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke)cancelAction.getValue(Action.ACCELERATOR_KEY), "cancelNew");
         blankPanel.add(cancel);
 
-        validation = new JButton("Create");
-        validation.addActionListener(new ActionListener()
-        {
 
+        Action validationAction = new AbstractAction("Create") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 createElement(gui, drawArea);
             }
-        });
+        };
+        validationAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
+        validation = new JButton(validationAction);
+        validation.getActionMap().put("createNew", validationAction);
+        validation.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke)validationAction.getValue(Action.ACCELERATOR_KEY), "createNew");
         blankPanel.add(validation);
 
 
@@ -292,9 +294,9 @@ public class NewElement extends JDialog
         });
         informationMatrixPanel.add(numberVertexButton,gbc);
 
-        createFigure = new JButton("Create");
-        createFigure.setEnabled(false);
-        createFigure.addActionListener(new ActionListener() {
+
+
+        Action validationMatrixAction = new AbstractAction("Create") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
@@ -302,11 +304,14 @@ public class NewElement extends JDialog
                     createMatrix(gui, drawArea);
                     dispose();
                 }
-                
             }
-        });
+        };
+        validationMatrixAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
+        createFigure = new JButton(validationMatrixAction);
+        createFigure.getActionMap().put("createMatrixNew", validationMatrixAction);
+        createFigure.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke)validationMatrixAction.getValue(Action.ACCELERATOR_KEY), "createMatrixNew");
+        createFigure.setEnabled(false);
         informationMatrixPanel.add(createFigure);
-
         matrixPanel.add(informationMatrixPanel);
 
 
@@ -348,6 +353,12 @@ public class NewElement extends JDialog
                     for (int j = 0; j < nbVertex; j++) {
 
                         if (cellsList.get(j+k*nbVertex).getText().length() != 0) {
+
+                            if (cellsList.get(j+k*nbVertex).getText().length() > 5)
+                            {
+                                cellsList.get(j+k*nbVertex).setText(cellsList.get(j+k*nbVertex).getText().substring(0,5));   
+                            }
+
                             graph.addEdge(new Edge(vertices.get(k), vertices.get(j), Integer.parseInt(cellsList.get(j+k*nbVertex).getText()), Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(), Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), graph,Gui.getSettings().getArrowLength()));
 
                         }

@@ -103,6 +103,7 @@ public class Tools extends JToolBar
                 pp.undo();
             }
         });
+        undo.setEnabled(false);
         this.add(undo);
 
         //redo
@@ -116,6 +117,7 @@ public class Tools extends JToolBar
                 pp.redo();
             }
         });
+        redo.setEnabled(false);
         this.add(redo);
 
         //Adding a separator

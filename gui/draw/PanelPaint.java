@@ -12,6 +12,7 @@ import javax.swing.JTabbedPane;
 import gui.Gui;
 import gui.draw.rightclickmenu.RightClick;
 import gui.popups.newElement.AskWeight;
+import gui.popups.textInput.TextInput;
 import settings.Settings;
 import settings.SettingsDialog;
 import util.Edge;
@@ -51,16 +52,57 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     private boolean isOpened = false; //When the information panel is opened, we do not redraw the graph (except the graph in settings)
     private JPanel filter; //When the menu is opened we add a filter
     private JPanel informations;
-        private JButton button_graph, button_vertices, button_edges;
-        private JPanel panel_graph, panel_vertices, panel_edges;
+        //Elements in the informations panel    
+        private JLabel graphNameLabel, isOriented, isWeighted, nbrVertex, nbrEdges;
+        private JButton nameChange, isOrientedSwitch, isWeightedSwitch, duplicate, applySettings;
 
-    public RightClick getRightClickMenu() {
-        return rightClickMenu;
-    }
 
-    public void setRightClickMenu(RightClick rightClickMenu) {
-        this.rightClickMenu = rightClickMenu;
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public PanelPaint(Gui gui, Draw drawArea)
     {
@@ -96,6 +138,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                     extend.setVisible(true);
                     isOpened = false;
                     filter.setVisible(false);
+                    repaint();
                 }
             });
 
@@ -114,89 +157,137 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
         //Informations panel
         {
-            informations = new JPanel(new GridBagLayout());
-            
-            //Creating a new GridBagConstraints
-            GridBagConstraints gbc2 = new GridBagConstraints();
-
-            //Placement of the 3 buttons
-            gbc2.fill = GridBagConstraints.BOTH;
-            gbc2.weightx = 1;
-            gbc2.weighty = 0.1;
-            gbc2.gridy = 0;
-
-            gbc2.gridx = 0; //First button
-            button_graph = new JButton("Graph");
-            button_graph.addActionListener(new ActionListener()
+            informations = new JPanel(new GridLayout(0,2));
             {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    panel_graph.setVisible(true);
-                    panel_vertices.setVisible(false);
-                    panel_edges.setVisible(false);
-                }
-            });
-            informations.add(button_graph, gbc2);
+                //Graph name
+                graphNameLabel = new JLabel();
+                graphNameLabel.setHorizontalAlignment(JLabel.CENTER);
+                informations.add(graphNameLabel);
 
-            gbc2.gridx = 1; //Second button
-            button_vertices = new JButton("Vertices");
-            button_vertices.addActionListener(new ActionListener()
-            {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    panel_graph.setVisible(false);
-                    panel_vertices.setVisible(true);
-                    panel_edges.setVisible(false);
-                }
-            });
-            informations.add(button_vertices, gbc2);
+                //Edit name
+                nameChange = new JButton("Edit name...");
+                nameChange.addActionListener(new ActionListener()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        new TextInput(gui, gui.getTabulations().get(drawArea.getSelectedComponent()));
+                    }
+                });
+                informations.add(nameChange);
+                
+                //Is oriented
+                isOriented = new JLabel();
+                isOriented.setHorizontalAlignment(JLabel.CENTER);
+                informations.add(isOriented);
 
-            gbc2.gridx = 2; //Last button
-            button_edges = new JButton("Edges");
-            button_edges.addActionListener(new ActionListener()
-            {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    panel_graph.setVisible(false);
-                    panel_vertices.setVisible(false);
-                    panel_edges.setVisible(true);
-                }
-            });
-            informations.add(button_edges, gbc2);
+                //Edit oriented
+                isOrientedSwitch = new JButton("Switch");
+                isOrientedSwitch.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Graph g = gui.getTabulations().get(gui.getDraw().getSelectedComponent());
+                        if ( g.getOriented())
+                        {
+                            g.setOriented(false);
+                            isOriented.setText("Oriented : No");
 
-            //Creating the panels
-            //Panels placement
-            gbc2.gridwidth = 3;
-            gbc2.weighty = 0.9;
-            gbc2.gridy = 1;
-            gbc2.gridx = 0;
+                            //We also have to put both direction the same weight so it do not overlap
+                            for(Edge edge1 : g.getEdges())
+                            {
+                                for(Edge edge2 : g.getEdges())
+                                {
+                                    if((edge1.getStart() == edge2.getEnd()) && (edge1.getWeight() != edge2.getWeight()))
+                                    {
+                                        edge2.setWeight(edge1.getWeight());
+                                    }
+                                }
+                            }
+                        }               
+                        else
+                        {
+                            g.setOriented(true);
+                            isOriented.setText("Oriented : Yes");    
+                        }   
+                        
+                    }
+                });
+                informations.add(isOrientedSwitch);
 
-            //Graph panel
-            {
-                panel_graph = new JPanel();
-                panel_graph.setBackground(Color.RED);
-                informations.add(panel_graph, gbc2);
-            }
+                //Is weighted
+                isWeighted = new JLabel();
+                isWeighted.setHorizontalAlignment(JLabel.CENTER);
+                informations.add(isWeighted);
 
-            //Vertices panel
-            {
-                panel_vertices = new JPanel();
-                panel_vertices.setBackground(Color.GREEN);
-                informations.add(panel_vertices, gbc2);
-            }
+                //Edit weighted
+                isWeightedSwitch = new JButton("Switch");
+                isWeightedSwitch.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Graph g = gui.getTabulations().get(gui.getDraw().getSelectedComponent());
+                        if ( g.getWeighted()){
+                            g.setWeighted(false);
+                            isWeighted.setText("Weighted : No");
+                        }
+                        else{
+                            g.setWeighted(true);
+                            isWeighted.setText("Weighted : Yes");
+                        }
+                    }
+                });
+                informations.add(isWeightedSwitch);
 
-            //Edges panel
-            {
-                panel_edges = new JPanel();
-                panel_edges.setBackground(Color.BLUE);
-                informations.add(panel_edges, gbc2);
+                //Number of vertex
+                nbrVertex = new JLabel();
+                nbrVertex.setHorizontalAlignment(JLabel.CENTER);
+                informations.add(nbrVertex);
+
+                //Duplicate button
+                duplicate = new JButton("Duplicate");
+                duplicate.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        //Getting graph to duplicate
+                        Graph toDup = gui.getTabulations().get(drawArea.getSelectedComponent());
+                        //Creating the tabulation
+                        PanelPaint panelPaint = new PanelPaint(gui, drawArea);
+                        drawArea.addTab(toDup.getName()+" - copy", null, panelPaint, toDup.getName()+" - copy"); //We create the new tab and retrieve it
+                        //Creating a new Graph
+                        //Each graph is associated with a tabulation
+                        Graph graph = toDup.clone();
+                        graph.setName(graph.getName()+" - copy");
+                        //We then add these two components to the list of opened tabulations
+                        gui.getTabulations().put(panelPaint,graph);
+
+                        //We go to the new tabulation and draw the panel
+                        drawArea.setSelectedComponent(panelPaint);
+                        panelPaint.repaint();
+                    }
+                });
+                informations.add(duplicate);
+
+                //Number of edges
+                nbrEdges = new JLabel();
+                nbrEdges.setHorizontalAlignment(JLabel.CENTER);
+                informations.add(nbrEdges);
+
+                //Apply settings button
+                applySettings = new JButton("Apply settings to graph");
+                applySettings.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+
+                    }
+                });
+                informations.add(applySettings);
             }
 
             //Placement of the informations panel
             gbc.gridx = 0;
             gbc.gridy = 1;
             gbc.weightx = 1;
-            gbc.weighty = 0.1;
+            gbc.weighty = 0.01;
             gbc.anchor = GridBagConstraints.PAGE_END;
             gbc.fill = GridBagConstraints.BOTH;
             
@@ -222,6 +313,39 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                     isOpened = true;
                     filter.setVisible(true);
                     filter.repaint();
+
+                    //We display current graph informations
+                    Graph graph;
+                    if((graph = gui.getTabulations().get(drawArea.getSelectedComponent())) != null)
+                    {
+                        //Retreiving graph info
+                        nbrVertex.setText("Vertices : "+graph.getVertices().size());
+                        nbrEdges.setText("Edges : "+graph.getVertices().size());
+                        graphNameLabel.setText("Name : "+graph.getName());
+                        if(graph.getOriented())
+                        {
+                            isOriented.setText("Oriented : Yes");
+                        }
+                        else
+                        {
+                            isOriented.setText("Oriented : No");
+                        }
+
+                        if(graph.getWeighted())
+                        {
+                            isWeighted.setText("Weighted : Yes");
+                        }
+                        else
+                        {
+                            isWeighted.setText("Weighted : No");
+                        }
+                    }
+                    else
+                    {
+                        graphNameLabel.setText("Name : Undefined");
+                        isOriented.setText("Oriented : Undefined");
+                        isWeighted.setText("Weighted : Undefined");
+                    }
                 }
             });
 
@@ -251,6 +375,33 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         undo = new Stack<Graph>();
         redo = new Stack<Graph>();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void paint(Graphics graphics)
     {
@@ -348,10 +499,13 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                             {
                                 //Saving the graph before we add the edge
                                 updateUndo();
-                                Integer weight = null;
+                                Integer weight = 0;
                                 if (graph.getWeighted()) {
                                     AskWeight askWeightPage = new AskWeight(gui, drawArea);
                                     weight = askWeightPage.getWeight();
+                                    if (weight == null){
+                                        weight = 0;
+                                    }
                                 }
                                 graph.addEdge(new Edge(start, vertex, weight, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(), Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), graph,Gui.getSettings().getArrowLength()));
                                 start = null;
@@ -560,5 +714,17 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
     public void setExtend(JButton extend) {
         this.extend = extend;
+    }
+
+    public RightClick getRightClickMenu() {
+        return rightClickMenu;
+    }
+
+    public void setRightClickMenu(RightClick rightClickMenu) {
+        this.rightClickMenu = rightClickMenu;
+    }
+
+    public JLabel getGraphNameLabel() {
+        return graphNameLabel;
     }
 }

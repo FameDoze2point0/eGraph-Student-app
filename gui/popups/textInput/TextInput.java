@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -10,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import gui.Gui;
+import gui.draw.PanelPaint;
 import util.Edge;
 import util.Graph;
 import util.Vertex;
@@ -39,24 +41,21 @@ public class TextInput extends JDialog
             input.setPreferredSize(new Dimension(90, 20));
             general.add(input);
 
-            validationButton = new JButton("Confirmation");
-            validationButton.setPreferredSize(new Dimension(190, 20));
-            validationButton.addActionListener(new ActionListener()
-            {
+
+            Action textInputAction = new AbstractAction("Create") {
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    if (input.getText().length() > 5)
-                    {
-                        input.setText(input.getText().substring(0,5));   
-                    }
-
                     if(input.getText().length() > 0)
                     {
                         sendInput(obj, gui);
                     }
                 }
-            });
+            };
+            textInputAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
+            validationButton = new JButton(textInputAction);
+            validationButton.getActionMap().put("textInputAction", textInputAction);
+            validationButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke)textInputAction.getValue(Action.ACCELERATOR_KEY), "textInputAction");
             general.add(validationButton);
 
         this.add(general);
@@ -69,6 +68,10 @@ public class TextInput extends JDialog
         //Obj is the element we want to change the text of
         if(obj instanceof Vertex)
         {
+            if (input.getText().length() > 5)
+            {
+                input.setText(input.getText().substring(0,5));   
+            }
             ((Vertex)obj).setName(input.getText());
             this.dispose();
         }
@@ -77,6 +80,10 @@ public class TextInput extends JDialog
         {
             try
             {
+                if (input.getText().length() > 5)
+                {
+                    input.setText(input.getText().substring(0,5));   
+                }
                 Graph graph = gui.getTabulations().get(gui.getDraw().getSelectedComponent());
                 Edge myEdge = ((Edge)obj);
                 myEdge.setWeight(Integer.parseInt(input.getText()));
@@ -91,6 +98,22 @@ public class TextInput extends JDialog
                     }
                 }
                 this.dispose();
+            }
+            catch (Exception e)
+            {
+                System.out.println("invalid input");
+            }
+        }
+
+        else if(obj instanceof Graph)
+        {
+            try
+            {
+                Graph graph = gui.getTabulations().get(gui.getDraw().getSelectedComponent());
+                graph.setName(input.getText()); //Graph name
+                gui.getDraw().setTitleAt(gui.getDraw().getSelectedIndex(), input.getText()); //Tab name
+                ((PanelPaint)gui.getDraw().getSelectedComponent()).getGraphNameLabel().setText("Name : "+input.getText());;
+                dispose();
             }
             catch (Exception e)
             {
