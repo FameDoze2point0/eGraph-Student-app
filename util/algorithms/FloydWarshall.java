@@ -1,7 +1,8 @@
 package util.algorithms;
 import util.*;
 import java.util.*;
-
+import gui.Gui;
+import gui.draw.Draw;
 import gui.draw.PanelPaint;
 
 import java.awt.*;
@@ -11,11 +12,11 @@ public class FloydWarshall extends Thread{
     private Color vertexDefaultColor, edgeDefaultColor;
     private AnimationAlgorithm animAlgo;
 
-    public FloydWarshall(Graph g){
+    public FloydWarshall(Graph g, Gui gui, Draw draw){
         this.graph = g;
         this.vertexDefaultColor = g.getVertices().get(0).getBorderColor();
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
-        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor);
+        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, gui, draw);
     }
 
     public String printArray(int [][] M){

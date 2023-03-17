@@ -1,6 +1,10 @@
 package util.algorithms;
 import util.*;
 import java.util.*;
+
+import gui.Gui;
+import gui.draw.Draw;
+
 import java.awt.*;
 
 public class BFS extends Thread{
@@ -9,12 +13,12 @@ public class BFS extends Thread{
     private Color vertexDefaultColor, edgeDefaultColor;
     private AnimationAlgorithm animAlgo;
 
-    public BFS(Graph g, Vertex start){
+    public BFS(Graph g, Vertex start, Gui gui, Draw draw){
         this.graph = g;
         this.start = start;
         this.vertexDefaultColor = g.getVertices().get(0).getBorderColor();
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
-        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start);
+        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start, gui, draw);
     }
 
     @Override
@@ -27,10 +31,11 @@ public class BFS extends Thread{
         String rep = "answer";
 
         list.add(start);
-        String text = "<html><body><blockquote><h1>Breadth First Search</h1><p><h2>Step 0 </h2><br>"+animAlgo.matrixString()+"<br><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br>";
+        String text = "<html><body><blockquote><h1>Breadth First Search</h1><p><h2>Step 0 </h2><br>"+animAlgo.matrixString()+"<br><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br></p></blockquote><body></html>";
+        animAlgo.addStep(text, graph.clone());
         int i = 1;
         while (!list.isEmpty()) {
-            text += "<h2>Step "+i+"</h2><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br>";
+            text = "<html><body><blockquote><h2>Step "+i+"</h2><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br>";
             
             i++;
             vertex = list.get(0);
@@ -50,14 +55,15 @@ public class BFS extends Thread{
                     
             }
             visited.add(vertex);
-            text += vertex.toString()+" is now visited !<br><br>";
+            text += vertex.toString()+" is now visited !<br><br></p></blockquote><body></html>";
+            animAlgo.addStep(text, graph.clone());
             animAlgo.changeColor(visited, list, edgeBrowsed);
         }
 
-       text += "<h2>Step "+i+"</h2><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br><br></p></body></blockquote></html>";
-
+        text = "<html><body><blockquote><h2>Step "+i+"</h2><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br><br></p></body></blockquote></html>";
+        animAlgo.addStep(text, graph.clone());
         System.out.println(rep);
-        animAlgo.displayLog(text);
+        animAlgo.displayLog();
         animAlgo.reset();  
     }
 }

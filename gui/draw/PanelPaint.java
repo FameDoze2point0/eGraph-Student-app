@@ -154,12 +154,14 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                                     }
                                 }
                             }
+                            
                         }               
                         else
                         {
                             g.setOriented(true);
-                            isOriented.setText("Oriented : Yes");    
-                        }   
+                            isOriented.setText("Oriented : Yes");  
+                        } 
+                   
                         
                     }
                 });

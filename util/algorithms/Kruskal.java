@@ -2,17 +2,19 @@ package util.algorithms;
 import util.*;
 import java.util.*;
 import java.awt.*;
+import gui.Gui;
+import gui.draw.Draw;
 public class Kruskal extends Thread {
     
     private Graph graph;
     private Color vertexDefaultColor, edgeDefaultColor;
     private AnimationAlgorithm animAlgo;
 
-    public Kruskal(Graph g){
+    public Kruskal(Graph g, Gui gui, Draw draw){
         this.graph = g;
         this.vertexDefaultColor = g.getVertices().get(0).getBorderColor();
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
-        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor);
+        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, gui, draw);
     }
 
     // Breadth-first search / Parcours largeur

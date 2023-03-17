@@ -2,18 +2,20 @@ package util.algorithms;
 import util.*;
 import java.util.*;
 import java.awt.*;
+import gui.Gui;
+import gui.draw.Draw;
 public class Prim extends Thread{
     private Graph graph;
     private Vertex start;
     private Color vertexDefaultColor, edgeDefaultColor;
     private AnimationAlgorithm animAlgo;
 
-    public Prim(Graph g, Vertex start){
+    public Prim(Graph g, Vertex start, Gui gui, Draw draw){
         this.graph = g;
         this.start = start;
         this.vertexDefaultColor = g.getVertices().get(0).getBorderColor();
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
-        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start);
+        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start, gui, draw);
     }
 
     public ArrayList<Edge> getNeighbours(Vertex vertex, ArrayList<Edge> edges){

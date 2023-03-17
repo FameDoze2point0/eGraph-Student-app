@@ -260,7 +260,6 @@ public class RightClick extends JPopupMenu
                 current.getPanelPaint().repaint();
             }
         });
-        clear.setEnabled(false);
         this.add(clear);
 
         //close tab

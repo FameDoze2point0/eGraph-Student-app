@@ -433,24 +433,24 @@ public class AlgorithmsPage extends JDialog
                 String s = selectedAlgo;
                 switch (s) {
                     case "BFS": //BFS
-                        BFS algoBFS = new BFS(graph, v1);
+                        BFS algoBFS = new BFS(graph, v1,gui,draw);
                         algoBFS.start();
                         //graph.algo_BFS(v1);
                         break;
 
                     case "DFS": //DFS
-                        DFS algoDFS = new DFS(graph, v1);
+                        DFS algoDFS = new DFS(graph, v1, gui, draw);
                         algoDFS.start();;
                         break;
                 
                     case "RS": //RS
-                        RS algoRS = new RS(graph, v1);
+                        RS algoRS = new RS(graph, v1, gui, draw);
                         algoRS.start();
                         break;
 
                     case "Dijkstra": //Dijkstra
                         try {
-                            Dijkstra algoDijkstra = new Dijkstra(graph, v1);
+                            Dijkstra algoDijkstra = new Dijkstra(graph, v1, gui, draw);
                             algoDijkstra.start();
                         } catch (Exception exce) {
                             System.out.println(exce);
@@ -459,7 +459,7 @@ public class AlgorithmsPage extends JDialog
 
                     case "Bellman": // Bellman-Ford
                         try {
-                            BellmanFord algoBellmanFord = new BellmanFord(graph, v1);
+                            BellmanFord algoBellmanFord = new BellmanFord(graph, v1, gui, draw);
                             algoBellmanFord.start();
                         } catch (Exception exce) {
                             System.out.println(e);
@@ -467,13 +467,13 @@ public class AlgorithmsPage extends JDialog
                         break;
 
                     case "Floyd": //Floyd Warshall
-                        FloydWarshall algoFloydWarshall = new FloydWarshall(graph);
+                        FloydWarshall algoFloydWarshall = new FloydWarshall(graph, gui, draw);
                         algoFloydWarshall.start();
                         break;
 
                     case "Prim": // Prim
                         try {
-                            Prim algoPrim = new Prim(graph, v1);
+                            Prim algoPrim = new Prim(graph, v1, gui, draw);
                             algoPrim.start();
                         } catch (Exception exce) {
                             System.out.println(e);
@@ -481,7 +481,7 @@ public class AlgorithmsPage extends JDialog
                         break;
                     
                     case "Kruskal": // Kruskal
-                        Kruskal algoKruskal = new Kruskal(graph); 
+                        Kruskal algoKruskal = new Kruskal(graph, gui, draw); 
                         algoKruskal.start();
                         break;
 

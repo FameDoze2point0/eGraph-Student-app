@@ -2,18 +2,20 @@ package util.algorithms;
 import util.*;
 import java.util.*;
 import java.awt.*;
+import gui.Gui;
+import gui.draw.Draw;
 public class Dijkstra extends Thread{
     private Graph graph;
     private Vertex start;
     private Color vertexDefaultColor, edgeDefaultColor;
     private AnimationAlgorithm animAlgo;
 
-    public Dijkstra(Graph g, Vertex start){
+    public Dijkstra(Graph g, Vertex start, Gui gui, Draw draw){
         this.graph = g;
         this.start = start;
         this.vertexDefaultColor = g.getVertices().get(0).getBorderColor();
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
-        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start);
+        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start, gui, draw);
     }
 
     public int minDistance(int dist[],Boolean sptSet[], int size){
