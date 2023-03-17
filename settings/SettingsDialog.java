@@ -593,6 +593,7 @@ public class SettingsDialog extends JDialog
         // ===== EXAMPLE DRAW =====
         //We create the PanelPaint
         panel_drawArea = new PanelPaint(gui, drawArea);
+        panel_drawArea.getExtend().setVisible(false);
 
         //We create an example graph
         example_graph = new Graph("example", true, true, panel_drawArea);

@@ -1,8 +1,14 @@
 package gui.draw;
 import java.awt.event.*;
+import java.lang.ProcessHandle.Info;
 import java.util.Stack;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
 import gui.Gui;
 import gui.draw.rightclickmenu.RightClick;
 import gui.popups.newElement.AskWeight;
@@ -29,9 +35,24 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     private RightClick rightClickMenu;
 
     //Stack to do the undo/redo
-    Stack<Graph> undo;
-    Stack<Graph> redo;
+    private Stack<Graph> undo;
+    private Stack<Graph> redo;
 
+    //GridBagLayout constraints
+    private GridBagConstraints gbc; //Used to place the button
+
+    //Extend button
+    private JButton extend;
+
+    //Close button
+    private JButton close;
+
+    //The informations panel
+    private boolean isOpened = false; //When the information panel is opened, we do not redraw the graph (except the graph in settings)
+    private JPanel filter; //When the menu is opened we add a filter
+    private JPanel informations;
+        private JButton button_graph, button_vertices, button_edges;
+        private JPanel panel_graph, panel_vertices, panel_edges;
 
     public RightClick getRightClickMenu() {
         return rightClickMenu;
@@ -43,7 +64,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
     public PanelPaint(Gui gui, Draw drawArea)
     {
-        super();
+        super(new GridBagLayout());
         //Retreiving the gui and the draw area
         this.gui = gui;
         this.drawArea = drawArea;
@@ -55,6 +76,177 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         //Right click menu
         rightClickMenu = new RightClick(drawArea, this, gui);
         this.add(rightClickMenu);
+
+        //Constraints
+        gbc = new GridBagConstraints();
+
+        //Close Button
+        {
+            close = new JButton("Close", new ImageIcon(System.getProperty("user.dir")+"/ressources/lc_downsearch.png"));
+            close.setPreferredSize(new Dimension(32, 32));
+
+            //When we click on this button, we want to reveal :
+            //  - A JTabbedPane to modify the graph
+            //  - A JButton to close back the new openend JTabbedPane
+            close.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    close.setVisible(false);
+                    informations.setVisible(false);
+                    extend.setVisible(true);
+                    isOpened = false;
+                    filter.setVisible(false);
+                }
+            });
+
+            //Placement
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.weightx = 1;
+            gbc.weighty = 0.2;
+            gbc.anchor = GridBagConstraints.PAGE_END;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+
+            //Not visible by default
+            close.setVisible(false);
+            add(close, gbc);
+        }
+
+        //Informations panel
+        {
+            informations = new JPanel(new GridBagLayout());
+            
+            //Creating a new GridBagConstraints
+            GridBagConstraints gbc2 = new GridBagConstraints();
+
+            //Placement of the 3 buttons
+            gbc2.fill = GridBagConstraints.BOTH;
+            gbc2.weightx = 1;
+            gbc2.weighty = 0.1;
+            gbc2.gridy = 0;
+
+            gbc2.gridx = 0; //First button
+            button_graph = new JButton("Graph");
+            button_graph.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    panel_graph.setVisible(true);
+                    panel_vertices.setVisible(false);
+                    panel_edges.setVisible(false);
+                }
+            });
+            informations.add(button_graph, gbc2);
+
+            gbc2.gridx = 1; //Second button
+            button_vertices = new JButton("Vertices");
+            button_vertices.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    panel_graph.setVisible(false);
+                    panel_vertices.setVisible(true);
+                    panel_edges.setVisible(false);
+                }
+            });
+            informations.add(button_vertices, gbc2);
+
+            gbc2.gridx = 2; //Last button
+            button_edges = new JButton("Edges");
+            button_edges.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    panel_graph.setVisible(false);
+                    panel_vertices.setVisible(false);
+                    panel_edges.setVisible(true);
+                }
+            });
+            informations.add(button_edges, gbc2);
+
+            //Creating the panels
+            //Panels placement
+            gbc2.gridwidth = 3;
+            gbc2.weighty = 0.9;
+            gbc2.gridy = 1;
+            gbc2.gridx = 0;
+
+            //Graph panel
+            {
+                panel_graph = new JPanel();
+                panel_graph.setBackground(Color.RED);
+                informations.add(panel_graph, gbc2);
+            }
+
+            //Vertices panel
+            {
+                panel_vertices = new JPanel();
+                panel_vertices.setBackground(Color.GREEN);
+                informations.add(panel_vertices, gbc2);
+            }
+
+            //Edges panel
+            {
+                panel_edges = new JPanel();
+                panel_edges.setBackground(Color.BLUE);
+                informations.add(panel_edges, gbc2);
+            }
+
+            //Placement of the informations panel
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.weightx = 1;
+            gbc.weighty = 0.1;
+            gbc.anchor = GridBagConstraints.PAGE_END;
+            gbc.fill = GridBagConstraints.BOTH;
+            
+            //Not visible by default
+            informations.setVisible(false);
+            add(informations,gbc);
+        }
+
+        //Extend button
+        {
+            extend = new JButton("Extends", new ImageIcon(System.getProperty("user.dir")+"/ressources/lc_upsearch.png"));
+            extend.setPreferredSize(new Dimension(32, 32));
+
+            //When we click on this button, we want to reveal :
+            //  - A JTabbedPane to modify the graph
+            //  - A JButton to close back the new openend JTabbedPane
+            extend.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    close.setVisible(true);
+                    informations.setVisible(true);
+                    extend.setVisible(false);
+                    isOpened = true;
+                    filter.setVisible(true);
+                    filter.repaint();
+                }
+            });
+
+            //Placement
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.weightx = 1;
+            gbc.weighty = 0.1;
+            gbc.anchor = GridBagConstraints.PAGE_END;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+
+            add(extend, gbc);
+        }
+
+        //Filter (when the information panel is opened)
+        filter = new JPanel();
+        filter.setBackground(new Color(0, 0, 0, 80));
+        //By default hidden, only showed when the menu is opened
+        filter.setVisible(false);
+
+        //We place the filter on the PanelPaint
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        add(filter, gbc);
 
         undo = new Stack<Graph>();
         redo = new Stack<Graph>();
@@ -88,7 +280,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             int radius = Gui.getSettings().getVertexDiameter()/2;
             int diameter = Gui.getSettings().getVertexDiameter();
             //We draw a vertex on top of the mouse with 50% opacity
-            //Setting 50% opacity
+            //Setting 35% opacity
             ((Graphics2D)graphics).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.35f));
             //Borders
             graphics.setColor(Gui.getSettings().getVertexOutsideColor());
@@ -109,86 +301,94 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
             ((Graphics2D)graphics).setStroke(new BasicStroke(Gui.getSettings().getEdgeStrokeWidth())); //Change stroke
             graphics.drawLine(start.getCoordX()+Gui.getSettings().getVertexDiameter()/2, start.getCoordY()+Gui.getSettings().getVertexDiameter()/2, X, Y);
         }
+
+        close.repaint();
+        extend.repaint();
+        informations.repaint();
     }
 
     @Override
     public void mouseClicked(MouseEvent e)
     {
-        Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
-        Vertex vertex;
-        Edge edge;
-        int radius = Gui.getSettings().getVertexDiameter()/2;
-        //=== LEFT CLICK DETECTION === to create new elements and interact
-        if(e.getButton() == MouseEvent.BUTTON1)
+        //Only redraw is the information panel is not opened
+        if(!isOpened)
         {
-            switch(gui.getState())
+            Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
+            Vertex vertex;
+            Edge edge;
+            int radius = Gui.getSettings().getVertexDiameter()/2;
+            //=== LEFT CLICK DETECTION === to create new elements and interact
+            if(e.getButton() == MouseEvent.BUTTON1)
             {
-                case(1): {
-                    //In state 1, when the mouse is clicked, we create a new vertex/state
-                    //We save for undo
-                    updateUndo();
-                    
-                    //We retrieve the actual graph/automaton
-                    int cpt = graph.getCpt();
-                    graph.addVertex(new Vertex(cpt,e.getX() - radius, e.getY() - radius, Gui.getSettings().getVertexDiameter(), Gui.getSettings().getVertexStrokeWidth(), Gui.getSettings().getVertexInsideColor(), Gui.getSettings().getVertexOutsideColor(), ""+(cpt), Gui.getSettings().getVertexNameColor())); //We add the new vertex to the graph
-                    break;
-                }
-
-                case(2): {
-                    //In state 2, we want the user to click on 2 differents vertex/state to create an edge
-                    //We first look if the user clicked on a vertex
-                    if((vertex = graph.vertexCollision(X,Y)) != null)
-                    {
-                        //The user clicked on this vertex
-                        //If the start vertex is != null, then we have both vertex required to draw the edge
-                        if(start == null)
-                        {
-                            start = vertex;
-                        }
-                        else
-                        {
-                            //Saving the graph before we add the edge
-                            updateUndo();
-                            Integer weight = null;
-                            if (graph.getWeighted()) {
-                                AskWeight askWeightPage = new AskWeight(gui, drawArea);
-                                weight = askWeightPage.getWeight();
-                            }
-                            graph.addEdge(new Edge(start, vertex, weight, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(), Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), graph,Gui.getSettings().getArrowLength()));
-                            start = null;
-                        }
+                switch(gui.getState())
+                {
+                    case(1): {
+                        //In state 1, when the mouse is clicked, we create a new vertex/state
+                        //We save for undo
+                        updateUndo();
+                        
+                        //We retrieve the actual graph/automaton
+                        int cpt = graph.getCpt();
+                        graph.addVertex(new Vertex(cpt,e.getX() - radius, e.getY() - radius, Gui.getSettings().getVertexDiameter(), Gui.getSettings().getVertexStrokeWidth(), Gui.getSettings().getVertexInsideColor(), Gui.getSettings().getVertexOutsideColor(), ""+(cpt), Gui.getSettings().getVertexNameColor())); //We add the new vertex to the graph
+                        break;
                     }
-                    break;
+
+                    case(2): {
+                        //In state 2, we want the user to click on 2 differents vertex/state to create an edge
+                        //We first look if the user clicked on a vertex
+                        if((vertex = graph.vertexCollision(X,Y)) != null)
+                        {
+                            //The user clicked on this vertex
+                            //If the start vertex is != null, then we have both vertex required to draw the edge
+                            if(start == null)
+                            {
+                                start = vertex;
+                            }
+                            else
+                            {
+                                //Saving the graph before we add the edge
+                                updateUndo();
+                                Integer weight = null;
+                                if (graph.getWeighted()) {
+                                    AskWeight askWeightPage = new AskWeight(gui, drawArea);
+                                    weight = askWeightPage.getWeight();
+                                }
+                                graph.addEdge(new Edge(start, vertex, weight, Gui.getSettings().getEdgeStrokeWidth(), Gui.getSettings().getEdgeStrokeColor(), Gui.getSettings().getEdgeHighlightColor(), Gui.getSettings().getEdgeArrowTipColor(), Gui.getSettings().getEdgeWeightColor(), Gui.getSettings().getEdgeWeightBorderColor(), graph,Gui.getSettings().getArrowLength()));
+                                start = null;
+                            }
+                        }
+                        break;
+                    }
+
+                    default: {
+                        break;
+                    }
                 }
+                this.repaint();
+            }
 
-                default: {
-                    break;
+
+
+            // === RIGHT CLICK DETECTION === to open up the quick interaction menu
+            else if(e.getButton() == MouseEvent.BUTTON3 && gui.getState() != 3)
+            {
+                //When we right click, we detect if we are on top of a vertex or an edge to add some quick interactions to them
+                if((vertex = graph.vertexCollision(e.getX(), e.getY())) != null)
+                {
+
+                    rightClickMenu.changeState(false, true, true, vertex);
                 }
+                else if((edge = graph.edgeCollision(e.getX(), e.getY())) != null)
+                {
+                    rightClickMenu.changeState(true, false, true, edge);
+                }
+                else
+                {
+                    rightClickMenu.changeState(false, false, false, null);
+                }
+                //We then have some default features, always there
+                rightClickMenu.show(drawArea.getSelectedComponent() , e.getX(), e.getY()); 
             }
-            this.repaint();
-        }
-
-
-
-        // === RIGHT CLICK DETECTION === to open up the quick interaction menu
-        else if(e.getButton() == MouseEvent.BUTTON3 && gui.getState() != 3)
-        {
-            //When we right click, we detect if we are on top of a vertex or an edge to add some quick interactions to them
-            if((vertex = graph.vertexCollision(e.getX(), e.getY())) != null)
-            {
-
-                rightClickMenu.changeState(false, true, true, vertex);
-            }
-            else if((edge = graph.edgeCollision(e.getX(), e.getY())) != null)
-            {
-                rightClickMenu.changeState(true, false, true, edge);
-            }
-            else
-            {
-                rightClickMenu.changeState(false, false, false, null);
-            }
-            //We then have some default features, always there
-            rightClickMenu.show(drawArea.getSelectedComponent() , e.getX(), e.getY()); 
         }
     }
 
@@ -213,13 +413,17 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     @Override //Is used to register the vertex we click on (to drag it)
     public void mousePressed(MouseEvent e)
     {
-        //If we are on top of a vertex, we drag it
-        Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
-        Vertex vertex;
-        if((vertex = graph.vertexCollision(X,Y)) != null)
+        //Only if the information panel is not opened
+        if(!isOpened)
         {
-            isDragged = vertex;
-        }
+            //If we are on top of a vertex, we drag it
+            Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
+            Vertex vertex;
+            if((vertex = graph.vertexCollision(X,Y)) != null)
+            {
+                isDragged = vertex;
+            }
+        }    
     }
 
     @Override //We release the dragged vertex
@@ -246,10 +450,14 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     @Override
     public void mouseMoved(MouseEvent e)
     {
-        //We always repaint, to see if we are on top of an element to highlight it, to preview when we are creating a new edge/vertex, ...
-        X = e.getX();
-        Y = e.getY();
-        repaint();
+        //Only redraw is the information panel is not opened OR we are in settings
+        if(!isOpened)
+        {
+            //We always repaint, to see if we are on top of an element to highlight it, to preview when we are creating a new edge/vertex, ...
+            X = e.getX();
+            Y = e.getY();
+            repaint();
+        }
     }
 
     public void updateUndo()
@@ -344,5 +552,13 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
 
     public void setRedo(Stack<Graph> redo) {
         this.redo = redo;
+    }
+
+    public JButton getExtend() {
+        return extend;
+    }
+
+    public void setExtend(JButton extend) {
+        this.extend = extend;
     }
 }
