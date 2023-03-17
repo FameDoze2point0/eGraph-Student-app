@@ -33,6 +33,7 @@ public class Tools extends JToolBar
     JButton settings;
     JButton close;
     JButton launchAlgo;
+    JButton clear;
 
     public Tools(Gui gui, Draw drawArea)
     {
@@ -49,8 +50,6 @@ public class Tools extends JToolBar
         });
         this.add(newElement);
 
-
-
         //Adding a separator
         this.add(new JToolBar.Separator());
 
@@ -64,6 +63,7 @@ public class Tools extends JToolBar
                 gui.setState(0);
             }
         });
+        cursor.setEnabled(false);
         this.add(cursor);
 
         //New Vertex/State
@@ -76,6 +76,7 @@ public class Tools extends JToolBar
                 gui.setState(1);
             }
         });
+        newVertex.setEnabled(false);
         this.add(newVertex);
 
         //New edge
@@ -88,6 +89,7 @@ public class Tools extends JToolBar
                 gui.setState(2);
             }
         });
+        newEdge.setEnabled(false);
         this.add(newEdge);
 
         //Adding a separator
@@ -158,6 +160,7 @@ public class Tools extends JToolBar
             }
             
         });
+        launchAlgo.setEnabled(false);
         this.add(launchAlgo);
 
         //settings
@@ -172,6 +175,27 @@ public class Tools extends JToolBar
         });
         this.add(settings);
 
+        //Adding a separator
+        this.add(new JToolBar.Separator());
+
+        //clear
+        clear = new JButton("Clear", new ImageIcon(System.getProperty("user.dir")+"/ressources/lc_clickchangerotation.png"));
+        clear.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //We clear the current graph (if opened)
+                Graph current = gui.getTabulations().get(drawArea.getSelectedComponent());
+                current.getEdges().clear();
+                current.getVertices().clear();
+                current.getExistingEdge().clear();
+                current.setCpt(0);
+                current.getPanelPaint().repaint();
+            }
+        });
+        clear.setEnabled(false);
+        this.add(clear);
+
         //close tab
         close = new JButton("Close Tabulation", new ImageIcon(System.getProperty("user.dir")+"/ressources/lc_dbformdelete.png"));
         close.addActionListener(new ActionListener()
@@ -179,14 +203,24 @@ public class Tools extends JToolBar
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (drawArea.getTabCount() > 1) {
-                    
-                    
                     gui.getTabulations().remove(drawArea.getSelectedComponent());
                     drawArea.remove(drawArea.getSelectedIndex());
                     drawArea.setSelectedIndex(0); 
+
+                    //If less than 2 tab, disable close a tabulation
+                    if(drawArea.getTabCount() < 2)
+                    {
+                        close.setEnabled(false);
+                        
+                        for(PanelPaint pp : gui.getTabulations().keySet())
+                        {
+                            pp.getRightClickMenu().getClose().setEnabled(false);
+                        }
+                    }
                 }
             }
         });
+        close.setEnabled(false);
         this.add(close);
     }
 
@@ -235,5 +269,77 @@ public class Tools extends JToolBar
     public JButton getRedo()
     {
         return redo;
+    }
+
+    public JButton getNewElementMatrix() {
+        return newElementMatrix;
+    }
+
+    public void setNewElementMatrix(JButton newElementMatrix) {
+        this.newElementMatrix = newElementMatrix;
+    }
+
+    public JButton getCursorButton() {
+        return cursor;
+    }
+
+    public void setCursor(JButton cursor) {
+        this.cursor = cursor;
+    }
+
+    public void setUndo(JButton undo) {
+        this.undo = undo;
+    }
+
+    public void setRedo(JButton redo) {
+        this.redo = redo;
+    }
+
+    public JButton getSave() {
+        return save;
+    }
+
+    public void setSave(JButton save) {
+        this.save = save;
+    }
+
+    public JButton getLoad() {
+        return load;
+    }
+
+    public void setLoad(JButton load) {
+        this.load = load;
+    }
+
+    public JButton getSettings() {
+        return settings;
+    }
+
+    public void setSettings(JButton settings) {
+        this.settings = settings;
+    }
+
+    public JButton getClose() {
+        return close;
+    }
+
+    public void setClose(JButton close) {
+        this.close = close;
+    }
+
+    public JButton getLaunchAlgo() {
+        return launchAlgo;
+    }
+
+    public void setLaunchAlgo(JButton launchAlgo) {
+        this.launchAlgo = launchAlgo;
+    }
+
+    public JButton getClear() {
+        return clear;
+    }
+
+    public void setClear(JButton clear) {
+        this.clear = clear;
     }
 }

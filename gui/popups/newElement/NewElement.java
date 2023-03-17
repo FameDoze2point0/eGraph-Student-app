@@ -16,6 +16,8 @@ import util.Edge;
 import util.Graph;
 import util.Vertex;
 import gui.draw.PanelPaint;
+import gui.draw.rightclickmenu.RightClick;
+import gui.tools.Tools;
 
 public class NewElement extends JDialog
 {
@@ -329,7 +331,6 @@ public class NewElement extends JDialog
 
     private void createMatrix(Gui gui, Draw drawArea){
         try {
-
             PanelPaint pp = new PanelPaint(gui, drawArea);
             
             if (type == 1) {
@@ -373,6 +374,7 @@ public class NewElement extends JDialog
 
             drawArea.addTab(nameFigureJTextField.getText(), null,pp, nameFigureJTextField.getText());
             drawArea.setSelectedComponent(pp);
+            enableIcon(gui, drawArea);
             pp.repaint();
         } catch (Exception e) {
             // TODO: handle exception
@@ -405,6 +407,33 @@ public class NewElement extends JDialog
         }
 
         //Once the automaton/graph is created, we close the JDialog
+        enableIcon(gui, drawArea);
         this.dispose();
+    }
+
+    //Enable disabled icon when we create the first figure
+    private void enableIcon(Gui gui, Draw drawArea)
+    {
+        //Menu
+        gui.getMenu().getEdit().getClear().setEnabled(true);
+        gui.getMenu().getAlgorithms().getLaunch().setEnabled(true);
+
+        //Toolbar
+        Tools tools = gui.getTools();
+        tools.getCursorButton().setEnabled(true);
+        tools.getNewVertex().setEnabled(true);
+        tools.getNewEdge().setEnabled(true);
+        tools.getLaunchAlgo().setEnabled(true);
+        tools.getClear().setEnabled(true);
+
+        //If More than 1 tab, can close a tabulation
+        if(drawArea.getTabCount() > 1)
+        {
+            gui.getTools().getClose().setEnabled(true);
+            for(PanelPaint pp : gui.getTabulations().keySet())
+            {
+                pp.getRightClickMenu().getClose().setEnabled(true);
+            }
+        }
     }
 }

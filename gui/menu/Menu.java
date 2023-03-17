@@ -31,7 +31,7 @@ public class Menu extends JMenuBar
         file = new File(gui, drawArea);
         this.add(file);
         
-        edit = new Edit(gui);
+        edit = new Edit(gui, drawArea);
         this.add(edit);
         
         algorithms = new Algorithms(gui, drawArea);
@@ -51,4 +51,12 @@ public class Menu extends JMenuBar
     public void setEdit(Edit edit) {
         this.edit = edit;
     }   
+
+    public Algorithms getAlgorithms() {
+        return algorithms;
+    }
+
+    public void setAlgorithms(Algorithms algorithms) {
+        this.algorithms = algorithms;
+    }
 }

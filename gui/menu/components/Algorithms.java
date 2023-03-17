@@ -32,6 +32,7 @@ public class Algorithms extends JMenu
                 new AlgorithmsPage(gui, drawArea);
             }
         });
+        launch.setEnabled(false);
         launch.setMnemonic(KeyEvent.VK_A);
         launch.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK));
         this.add(launch);

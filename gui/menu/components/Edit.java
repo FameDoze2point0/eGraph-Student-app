@@ -4,7 +4,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import gui.Gui;
+import gui.draw.Draw;
 import gui.draw.PanelPaint;
+import util.Graph;
 
 import java.awt.event.*;
 
@@ -12,8 +14,9 @@ public class Edit extends JMenu
 {
     private JMenuItem undo;
     private JMenuItem redo;
+    private JMenuItem clear;
 
-    public Edit(Gui gui)
+    public Edit(Gui gui, Draw drawArea)
     {
         super("Edit");
         // - Edit (Undo, Redo, Cut, Copy, Paste)
@@ -43,6 +46,24 @@ public class Edit extends JMenu
         });
         redo.setEnabled(false);
         this.add(redo);
+
+        //clear
+        clear = new JMenuItem("Clear", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_clickchangerotation.png"));
+        clear.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //We clear the current graph (if opened)
+                Graph current = gui.getTabulations().get(drawArea.getSelectedComponent());
+                current.getEdges().clear();
+                current.getVertices().clear();
+                current.getExistingEdge().clear();
+                current.setCpt(0);
+                current.getPanelPaint().repaint();
+            }
+        });
+        clear.setEnabled(false);
+        this.add(clear);
     }
 
     public JMenuItem getUndo() {
@@ -59,5 +80,13 @@ public class Edit extends JMenu
 
     public void setRedo(JMenuItem redo) {
         this.redo = redo;
+    }
+
+    public JMenuItem getClear() {
+        return clear;
+    }
+
+    public void setClear(JMenuItem clear) {
+        this.clear = clear;
     }
 }

@@ -277,7 +277,27 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                     @Override
                     public void actionPerformed(ActionEvent e)
                     {
+                        Settings settings = Gui.getSettings();
+                        Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
+                        for(Vertex vertex : graph.getVertices())
+                        {
+                            vertex.setBorderColor(settings.getVertexOutsideColor());
+                            vertex.setInsideColor(settings.getVertexInsideColor());
+                            vertex.setNameColor(settings.getVertexNameColor());
+                            vertex.setStrokeWidth(settings.getVertexStrokeWidth());
+                            vertex.setDiameter(settings.getVertexDiameter());
+                        }
 
+                        for(Edge edge : graph.getEdges())
+                        {
+                            edge.setStrokeColor(settings.getEdgeStrokeColor());
+                            edge.setHighlightColor(settings.getEdgeHighlightColor());
+                            edge.setWeightColor(settings.getEdgeWeightColor());
+                            edge.setWeightBorderColor(settings.getEdgeWeightBorderColor());
+                            edge.setEdgeArrowTipColor(settings.getEdgeArrowTipColor());
+                            edge.setStrokeWidth(settings.getEdgeStrokeWidth());
+                            edge.setArrowTipWidth(settings.getArrowLength());
+                        }
                     }
                 });
                 informations.add(applySettings);
@@ -320,7 +340,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
                     {
                         //Retreiving graph info
                         nbrVertex.setText("Vertices : "+graph.getVertices().size());
-                        nbrEdges.setText("Edges : "+graph.getVertices().size());
+                        nbrEdges.setText("Edges : "+graph.getEdges().size());
                         graphNameLabel.setText("Name : "+graph.getName());
                         if(graph.getOriented())
                         {
@@ -462,7 +482,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     public void mouseClicked(MouseEvent e)
     {
         //Only redraw is the information panel is not opened
-        if(!isOpened)
+        if(!isOpened && gui.getState() != 3)
         {
             Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());
             Vertex vertex;
@@ -568,7 +588,7 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
     public void mousePressed(MouseEvent e)
     {
         //Only if the information panel is not opened
-        if(!isOpened)
+        if(!isOpened && gui.getState() != 3)
         {
             //If we are on top of a vertex, we drag it
             Graph graph = gui.getTabulations().get(drawArea.getSelectedComponent());

@@ -45,6 +45,7 @@ public class RightClick extends JPopupMenu
         JMenuItem exportPDF;
         JMenuItem exportSVG;
     JMenuItem launchAlgo;
+    JMenuItem clear;
     JMenuItem close;
     
     public RightClick(Draw drawArea, PanelPaint panel, Gui gui)
@@ -244,6 +245,24 @@ public class RightClick extends JPopupMenu
 
         this.add(new Separator()); // === NEW CATEGORY ===
 
+        //clear
+        clear = new JMenuItem("Clear", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_clickchangerotation.png"));
+        clear.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //We clear the current graph (if opened)
+                Graph current = gui.getTabulations().get(drawArea.getSelectedComponent());
+                current.getEdges().clear();
+                current.getVertices().clear();
+                current.getExistingEdge().clear();
+                current.setCpt(0);
+                current.getPanelPaint().repaint();
+            }
+        });
+        clear.setEnabled(false);
+        this.add(clear);
+
         //close tab
         close = new JMenuItem("Close Tabulation", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_dbformdelete.png"));
         close.addActionListener(new ActionListener()
@@ -251,14 +270,24 @@ public class RightClick extends JPopupMenu
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (drawArea.getTabCount() > 1) {
-                    
-                    
                     gui.getTabulations().remove(drawArea.getSelectedComponent());
                     drawArea.remove(drawArea.getSelectedIndex());
-                    drawArea.setSelectedIndex(0); 
+                    drawArea.setSelectedIndex(0);
+
+                    //If less than 2 tab, disable close a tabulation
+                    if(drawArea.getTabCount() < 2)
+                    {
+                        gui.getTools().getClose().setEnabled(false);
+                        
+                        for(PanelPaint pp : gui.getTabulations().keySet())
+                        {
+                            pp.getRightClickMenu().getClose().setEnabled(false);
+                        }
+                    }
                 }
             }
         });
+        close.setEnabled(false);
         this.add(close);
     }
 
@@ -404,5 +433,11 @@ public class RightClick extends JPopupMenu
         this.cursorMode = cursorMode;
     }   
 
-    
+    public JMenuItem getClose() {
+        return close;
+    }
+
+    public void setClose(JMenuItem close) {
+        this.close = close;
+    }
 }
