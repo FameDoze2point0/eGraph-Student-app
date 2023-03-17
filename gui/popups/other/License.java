@@ -16,7 +16,7 @@ public class License extends JDialog
         this.setMinimumSize(new Dimension(500,350));
         this.setSize(new Dimension(500,350));
         this.setLocationRelativeTo(null);
-        this.setResizable(true);
+        this.setResizable(false);
         this.setAlwaysOnTop(true);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 

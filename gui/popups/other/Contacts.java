@@ -18,7 +18,7 @@ public class Contacts extends JDialog
         this.setMinimumSize(new Dimension(370,165));
         this.setSize(new Dimension(370,165));
         this.setLocationRelativeTo(null);
-        this.setResizable(true);
+        this.setResizable(false);
         this.setAlwaysOnTop(true);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 

@@ -16,7 +16,7 @@ public class About extends JDialog
         this.setMinimumSize(new Dimension(500,450));
         this.setSize(new Dimension(500,450));
         this.setLocationRelativeTo(null);
-        this.setResizable(true);
+        this.setResizable(false);
         this.setAlwaysOnTop(true);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
