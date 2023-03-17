@@ -56,54 +56,6 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         private JLabel graphNameLabel, isOriented, isWeighted, nbrVertex, nbrEdges;
         private JButton nameChange, isOrientedSwitch, isWeightedSwitch, duplicate, applySettings;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public PanelPaint(Gui gui, Draw drawArea)
     {
         super(new GridBagLayout());
@@ -395,33 +347,6 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         undo = new Stack<Graph>();
         redo = new Stack<Graph>();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void paint(Graphics graphics)
     {

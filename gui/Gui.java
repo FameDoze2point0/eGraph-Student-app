@@ -46,7 +46,7 @@ public class Gui extends JFrame
     {
         //General settings
         super("eGraph STUDENT");
-        this.setSize((int)(width*0.8),(int)(height*0.8));
+        this.setSize((int)(width),(int)(height));
         this.setLocationRelativeTo(null); //Centering the frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
