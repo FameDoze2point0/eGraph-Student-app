@@ -1,5 +1,6 @@
 package util.algorithms;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.dnd.DragGestureEvent;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -123,6 +124,7 @@ public class AnimationAlgorithm {
         jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
         for (int i = 0; i < textSteps.size(); i++) {
             jp.add(new JLabel(textSteps.get(i)));
+            //System.out.println("test 1");
             jp.add(graphicSteps.get(i));
         }
         global.setViewportView(jp);
@@ -141,8 +143,6 @@ public class AnimationAlgorithm {
 
         global = new JScrollPane();
         JPanel jp = new JPanel();
-        jp.add(new JLabel(log));
-        //global.add(new JLabel(log));
         global.setViewportView(jp);
            
         jd.add(global);
@@ -153,7 +153,8 @@ public class AnimationAlgorithm {
     public void addStep(String textStep, Graph FigureStep){
         textSteps.add(textStep);
         PanelPaint pp = new PanelPaint(gui, draw);
-        pp.getExtend().setVisible(false);
+        pp.setSize(new Dimension(850,600));
+        //pp.getExtend().setVisible(false);
         FigureStep.setPanelPaint(pp);
         graphicSteps.add(pp);
 

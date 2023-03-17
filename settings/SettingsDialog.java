@@ -1,7 +1,6 @@
 package settings;
 
 import java.awt.Dimension;
-import java.awt.event.WindowListener;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
@@ -20,6 +19,7 @@ import java.awt.event.*;
 import gui.Gui;
 import gui.draw.Draw;
 import gui.draw.PanelPaint;
+import util.Edge;
 import util.Graph;
 import util.Vertex;
 
@@ -98,6 +98,9 @@ public class SettingsDialog extends JDialog
         // == DRAW AREA ===
         private static PanelPaint panel_drawArea;
         private static Graph example_graph;
+
+        //RESET
+        private JButton reset;
 
 
     // ===== END VARIABLES USED TO CREATE THE SETTINGS WINDOW =====
@@ -597,12 +600,70 @@ public class SettingsDialog extends JDialog
 
         //We create an example graph
         example_graph = new Graph("example", true, true, panel_drawArea);
-        example_graph.addVertex(new Vertex(0, 50, 50, settings.getVertexDiameter(), settings.getVertexStrokeWidth(), settings.getVertexInsideColor(), settings.getVertexOutsideColor(), "A", settings.getVertexNameColor()));
+        example_graph.addVertex(new Vertex(0, 50, 30, settings.getVertexDiameter(), settings.getVertexStrokeWidth(), settings.getVertexInsideColor(), settings.getVertexOutsideColor(), "A", settings.getVertexNameColor()));
 
-        example_graph.addVertex(new Vertex(0, 400, 130, settings.getVertexDiameter(), settings.getVertexStrokeWidth(), settings.getVertexInsideColor(), settings.getVertexOutsideColor(), "B", settings.getVertexNameColor()));
+        example_graph.addVertex(new Vertex(0, 400, 110, settings.getVertexDiameter(), settings.getVertexStrokeWidth(), settings.getVertexInsideColor(), settings.getVertexOutsideColor(), "B", settings.getVertexNameColor()));
 
         example_graph.addEdge(example_graph.getVertices().get(0), example_graph.getVertices().get(1), 27);
-        //gui.getTabulations().put(vertex_panel_drawArea,example_graph);
+
+        //Reset button
+        reset = new JButton("Reset to default settings");
+        reset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                for(Vertex vertex : example_graph.getVertices())
+                {
+                    vertex.setBorderColor(Color.BLACK);
+                    vertex.setInsideColor(Color.WHITE);
+                    vertex.setNameColor(Color.BLACK);
+                    vertex.setStrokeWidth(5);
+                    vertex.setDiameter(50);
+                }
+
+                for(Edge edge : example_graph.getEdges())
+                {
+                    edge.setStrokeColor(Color.BLACK);
+                    edge.setHighlightColor(Color.BLACK);
+                    edge.setWeightColor(Color.WHITE);
+                    edge.setWeightBorderColor(Color.BLACK);
+                    edge.setEdgeArrowTipColor(Color.BLACK);
+                    edge.setStrokeWidth(5);
+                    edge.setArrowTipWidth(15);
+                }
+
+                //We reset the panels/Jlabels
+                //Vertex
+                vertex_panel_insideColor.setBackground(Color.WHITE);
+                vertex_panel_outsideColor.setBackground(Color.BLACK);
+                vertex_panel_nameColor.setBackground(Color.BLACK);
+                vertex_label_diameter.setText("Diameter : [50]");
+                vertex_label_StrokeWidth.setText("Diameter : [5]");
+                
+                //Edges
+                edge_panel_strokeColor.setBackground(Color.BLACK);
+                edge_panel_highlightColor.setBackground(Color.BLACK);
+                edge_panel_weightColor.setBackground(Color.WHITE);
+                edge_panel_weightBorderColor.setBackground(Color.BLACK);
+                edge_panel_arrowTipColor.setBackground(Color.BLACK);
+                edge_label_arrowLenght.setText("Arrow lenght : [15]");
+                edge_label_strokeWidth.setText("Stroke width : [5]");
+
+                //We repaint
+                example_graph.getPanelPaint().repaint();
+            }
+        });
+
+        //Button placement
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 1;
+        gbc.weighty = 0.1;
+        gbc.anchor = GridBagConstraints.PAGE_END;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        
+        panel_drawArea.add(reset,gbc);
 
         //We draw the graph
         panel_drawArea.repaint();

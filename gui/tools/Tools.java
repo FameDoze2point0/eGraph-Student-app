@@ -1,12 +1,22 @@
 package gui.tools;
 import java.awt.Color;
+import java.awt.Desktop.Action;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JToolBar;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import java.awt.*;
+
 
 import gui.Gui;
 import gui.draw.Draw;
@@ -53,17 +63,23 @@ public class Tools extends JToolBar
         //Adding a separator
         this.add(new JToolBar.Separator());
 
-        //Use cursor
-        cursor = new JButton("Cursor", new ImageIcon(System.getProperty("user.dir")+"/ressources/lc_drawselect.png"));
-        cursor.addActionListener(new ActionListener()
-        {
+
+        AbstractAction setCursor = new AbstractAction() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Programme enter state 0
                 gui.setState(0);
             }
-        });
+            
+        };
+        setCursor.putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+        cursor = new JButton(setCursor);
+        cursor.setText("Cursor ");
+        cursor.setIcon(new ImageIcon(System.getProperty("user.dir")+"/ressources/lc_drawselect.png"));
+        cursor.getActionMap().put("setCursor", setCursor);
+        cursor.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke)setCursor.getValue(AbstractAction.ACCELERATOR_KEY), "setCursor");
         cursor.setEnabled(false);
+
         this.add(cursor);
 
         //New Vertex/State
