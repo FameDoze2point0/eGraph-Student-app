@@ -40,7 +40,7 @@ public class Menu extends JMenuBar
         settingsMenu = new SettingsMenu(gui);
         this.add(settingsMenu);
 
-        other = new Other();
+        other = new Other(gui);
         this.add(other);
     }
     

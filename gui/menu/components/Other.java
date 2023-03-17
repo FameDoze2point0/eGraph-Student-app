@@ -4,17 +4,23 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.*;
 import javax.swing.KeyStroke;
+
+import gui.Gui;
+import gui.popups.other.About;
+import gui.popups.other.Contacts;
+import gui.popups.other.License;
+
 import java.awt.event.KeyEvent;
 import java.awt.Event;
 
 public class Other extends JMenu
 {
     private JMenuItem documentation;
-    private JMenuItem licence;
+    private JMenuItem license;
     private JMenuItem contacts;
     private JMenuItem about;
 
-    public Other()
+    public Other(Gui gui)
     {
         super("Other");
         // - Other (Documentation, Licence, Contacts, About)
@@ -33,19 +39,19 @@ public class Other extends JMenu
 
         this.add(documentation);
 
-        //Licence
-        licence = new JMenuItem("Licence...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_editheaderandfooter.png"));
-        licence.addActionListener(new ActionListener()
+        //License
+        license = new JMenuItem("License...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_editheaderandfooter.png"));
+        license.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("open licence");
+                new License(gui);
             }
         });
-        licence.setMnemonic(KeyEvent.VK_L);
-        licence.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+        license.setMnemonic(KeyEvent.VK_L);
+        license.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
 
-        this.add(licence);
+        this.add(license);
 
         //Contacts
         contacts = new JMenuItem("Contacts...", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_drawcaption.png"));
@@ -53,7 +59,7 @@ public class Other extends JMenu
         {
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("open contatcs");
+                new Contacts(gui);
             }
         });
         contacts.setMnemonic(KeyEvent.VK_C);
@@ -66,7 +72,7 @@ public class Other extends JMenu
         {
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("about");
+                new About(gui);
             }
         });
         this.add(about);
