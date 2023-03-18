@@ -1,29 +1,28 @@
 package gui.popups.textInput;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import gui.Gui;
 import gui.draw.PanelPaint;
 import util.Edge;
 import util.Graph;
 import util.Vertex;
 
-import java.awt.*;
-import javax.swing.*;
-
 public class TextInput extends JDialog
 {
-    JPanel general;
-        JTextField input;
-        JButton validationButton;
+    private JPanel general;
+    private JTextField input;
+    private JButton validationButton;
 
     public TextInput(Gui gui, Object obj)
     {
@@ -65,6 +64,7 @@ public class TextInput extends JDialog
     //Method that retrieve the user input and close the window
     public void sendInput(Object obj, Gui gui)
     {
+        Graph graph = gui.getTabulations().get(gui.getDraw().getSelectedComponent());
         //Obj is the element we want to change the text of
         if(obj instanceof Vertex)
         {
@@ -73,6 +73,7 @@ public class TextInput extends JDialog
                 input.setText(input.getText().substring(0,5));   
             }
             ((Vertex)obj).setName(input.getText());
+            graph.getPanelPaint().repaint();
             this.dispose();
         }
 
@@ -84,7 +85,6 @@ public class TextInput extends JDialog
                 {
                     input.setText(input.getText().substring(0,5));   
                 }
-                Graph graph = gui.getTabulations().get(gui.getDraw().getSelectedComponent());
                 Edge myEdge = ((Edge)obj);
                 myEdge.setWeight(Integer.parseInt(input.getText()));
 
@@ -97,6 +97,7 @@ public class TextInput extends JDialog
                         }
                     }
                 }
+                graph.getPanelPaint().repaint();
                 this.dispose();
             }
             catch (Exception e)
@@ -109,7 +110,6 @@ public class TextInput extends JDialog
         {
             try
             {
-                Graph graph = gui.getTabulations().get(gui.getDraw().getSelectedComponent());
                 graph.setName(input.getText()); //Graph name
                 gui.getDraw().setTitleAt(gui.getDraw().getSelectedIndex(), input.getText()); //Tab name
                 ((PanelPaint)gui.getDraw().getSelectedComponent()).getGraphNameLabel().setText("Name : "+input.getText());;

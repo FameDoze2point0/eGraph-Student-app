@@ -1,17 +1,18 @@
 package util;
 
-import java.util.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 
-import javax.swing.*;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import gui.Gui;
 import gui.draw.PanelPaint;
-import settings.Settings;
-
-import java.awt.*;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 
 public class Graph implements Serializable, Cloneable
 {    

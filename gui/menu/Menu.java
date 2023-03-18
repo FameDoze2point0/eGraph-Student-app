@@ -1,6 +1,5 @@
 package gui.menu;
 import javax.swing.JMenuBar;
-
 import gui.Gui;
 import gui.draw.Draw;
 import gui.menu.components.Algorithms;
@@ -58,5 +57,13 @@ public class Menu extends JMenuBar
 
     public void setAlgorithms(Algorithms algorithms) {
         this.algorithms = algorithms;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 }

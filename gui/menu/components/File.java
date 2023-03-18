@@ -1,16 +1,15 @@
 package gui.menu.components;
+import java.awt.Event;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-import java.awt.event.KeyEvent;
-import java.awt.Event;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import gui.Gui;
 import gui.draw.Draw;
+import gui.draw.PanelPaint;
 import gui.popups.newElement.NewElement;
 
 public class File extends JMenu
@@ -25,6 +24,8 @@ public class File extends JMenu
         private JMenuItem exportSVG;
 
     private JMenuItem closeTabulation;
+   
+
     private JMenuItem exit;
 
     public File(Gui gui, Draw draw)
@@ -109,11 +110,24 @@ public class File extends JMenu
                     draw.remove(draw.getSelectedIndex());
                     draw.setSelectedIndex(0); 
                 }
+
+                //If less than 2 tab, disable close a tabulation
+                if(draw.getTabCount() < 2)
+                {
+                    gui.getTools().getClose().setEnabled(false);
+                    gui.getMenu().getFile().getCloseTabulation().setEnabled(false);
+                    
+                    for(PanelPaint pp : gui.getTabulations().keySet())
+                    {
+                        pp.getRightClickMenu().getClose().setEnabled(false);
+                    }
+                }
                 
             }
         });
         closeTabulation.setMnemonic(KeyEvent.VK_W);
         closeTabulation.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
+        closeTabulation.setEnabled(false);
         this.add(closeTabulation);
 
 
@@ -185,5 +199,12 @@ public class File extends JMenu
 
     public void setExit(JMenuItem exit) {
         this.exit = exit;
+    }
+    public JMenuItem getCloseTabulation() {
+        return closeTabulation;
+    }
+
+    public void setCloseTabulation(JMenuItem closeTabulation) {
+        this.closeTabulation = closeTabulation;
     }
 }

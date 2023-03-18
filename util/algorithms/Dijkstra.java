@@ -1,10 +1,15 @@
 package util.algorithms;
-import util.*;
-import java.util.*;
-import java.awt.*;
+import java.awt.Color;
+import java.util.ArrayList;
+
 import gui.Gui;
 import gui.draw.Draw;
-public class Dijkstra extends Thread{
+import util.Edge;
+import util.Graph;
+import util.Vertex;
+
+public class Dijkstra extends Thread
+{
     private Graph graph;
     private Vertex start;
     private Color vertexDefaultColor, edgeDefaultColor;
@@ -15,9 +20,10 @@ public class Dijkstra extends Thread{
         this.start = start;
         this.vertexDefaultColor = g.getVertices().get(0).getBorderColor();
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
-        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start,isAnimated, gui, draw);
+        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor,isAnimated);
     }
 
+    // function used to find the shortest distance from the visited vertex to another one
     public int minDistance(int dist[],Boolean sptSet[], int size){
         
         int min = Integer.MAX_VALUE, min_index = -1;
@@ -31,12 +37,7 @@ public class Dijkstra extends Thread{
         return min_index;
     }
 
-    public void printArray(int dist[], ArrayList<Vertex> vertices){
-        System.out.println("Vertex \t\t Distance from Source");
-        for (int i = 0; i < dist.length; i++)
-            System.out.println(vertices.get(i).getName() + " \t\t " + dist[i]);
-    }
-
+    // transform a graph into a 2D array
     public int[][] graphToArray(int size){
 
         int graphArr[][] = new int[size][size];
@@ -50,10 +51,10 @@ public class Dijkstra extends Thread{
         return graphArr;
     }
 
+    //function which search an edge from a starting and ending vertices
     public void searchEdge(int idStart, int idEnd, ArrayList<Edge> browsed){
         ArrayList<Edge> edges = graph.getEdges();
         
-
         for (Edge edge : edges) {
             if (edge.getStart().getId() == idStart && edge.getEnd().getId() == idEnd && !browsed.contains(edge)) {
                 browsed.add(edge);
@@ -63,6 +64,7 @@ public class Dijkstra extends Thread{
             }
         }
     }
+    
     public void searchVertex(int idVertex, ArrayList<Vertex> visited){
     
         for (Vertex vertex : graph.getVertices()) {
@@ -107,7 +109,6 @@ public class Dijkstra extends Thread{
                     dist[i] = dist[u] + graphArr[u][i];
                     text += "The shorter way from the visited vertices is the edge between "+u+" and "+i+" with the weight : "+dist[i]+"<br>";
                     searchEdge(u, i, edgeBrowsed);
-                    System.out.println("u = " + u + "i = " + i);
                 } 
             animAlgo.changeColor(vertexVisited, null, edgeBrowsed);   
         }
@@ -115,7 +116,6 @@ public class Dijkstra extends Thread{
         text += "</p></body></blockquote></html>";
 
         animAlgo.displayLog(text);
-        printArray(dist, vertices);
         animAlgo.reset();
     }
 

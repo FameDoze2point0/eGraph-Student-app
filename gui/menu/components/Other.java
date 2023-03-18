@@ -1,18 +1,17 @@
 package gui.menu.components;
+import java.awt.Event;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import java.awt.event.*;
 import javax.swing.KeyStroke;
-
 import gui.Gui;
 import gui.popups.other.About;
 import gui.popups.other.Contacts;
 import gui.popups.other.Documentation;
 import gui.popups.other.License;
-
-import java.awt.event.KeyEvent;
-import java.awt.Event;
 
 public class Other extends JMenu
 {

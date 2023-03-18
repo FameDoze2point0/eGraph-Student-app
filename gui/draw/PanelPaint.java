@@ -1,14 +1,23 @@
 package gui.draw;
-import java.awt.event.*;
-import java.lang.ProcessHandle.Info;
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.Stack;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-
 import gui.Gui;
 import gui.draw.rightclickmenu.RightClick;
 import gui.popups.newElement.AskWeight;
@@ -18,7 +27,6 @@ import settings.SettingsDialog;
 import util.Edge;
 import util.Graph;
 import util.Vertex;
-import java.awt.*;
 
 public class PanelPaint extends JPanel implements MouseListener, MouseMotionListener
 {
@@ -631,6 +639,14 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         this.drawArea = drawArea;
     }
 
+    public RightClick getRightClickMenu() {
+        return rightClickMenu;
+    }
+
+    public void setRightClickMenu(RightClick rightClickMenu) {
+        this.rightClickMenu = rightClickMenu;
+    }
+
     public Gui getGui() {
         return gui;
     }
@@ -663,15 +679,9 @@ public class PanelPaint extends JPanel implements MouseListener, MouseMotionList
         this.extend = extend;
     }
 
-    public RightClick getRightClickMenu() {
-        return rightClickMenu;
-    }
-
-    public void setRightClickMenu(RightClick rightClickMenu) {
-        this.rightClickMenu = rightClickMenu;
-    }
-
     public JLabel getGraphNameLabel() {
         return graphNameLabel;
-    }
+    }    
+
+    
 }

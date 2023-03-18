@@ -1,10 +1,17 @@
 package util.algorithms;
-import util.*;
-import java.util.*;
-import java.awt.*;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import gui.Gui;
 import gui.draw.Draw;
-public class Kruskal extends Thread {
+import util.Edge;
+import util.Graph;
+import util.Triplet;
+import util.Vertex;
+
+public class Kruskal extends Thread
+{
     
     private Graph graph;
     private Color vertexDefaultColor, edgeDefaultColor;
@@ -14,9 +21,10 @@ public class Kruskal extends Thread {
         this.graph = g;
         this.vertexDefaultColor = g.getVertices().get(0).getBorderColor();
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
-        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor,isAnimated, gui, draw);
+        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor,isAnimated);
     }
 
+    //bfs algorithm used to find the connected components of the graph
     // Breadth-first search / Parcours largeur
     private ArrayList<Vertex> BFS(Vertex start, Graph graph){
         ArrayList<Vertex> visited = new ArrayList<Vertex>();
@@ -39,13 +47,13 @@ public class Kruskal extends Thread {
         return visited;
     }
 
-
-
+    // is the vertex A and B in the same connected component ?
     public Boolean isInCc(Vertex a, Graph g, Vertex b){
         ArrayList<Vertex> visited =  BFS(a,g);
         return (visited.contains(b)?true:false);
     }
 
+    //method used to find all neighbours of a vertex
     public ArrayList<Edge> getNeighbours(Vertex vertex, ArrayList<Edge> edges){
 
         ArrayList<Edge> neighbours = new ArrayList<Edge>();
@@ -77,9 +85,7 @@ public class Kruskal extends Thread {
             }
         }
         Collections.sort(L);
-        for (Triplet tri : L) {
-            System.out.println(tri);
-        }
+
 
         String text = "<html><body><blockquote><h1>Kruskal</h1><p><h2>Step 0 </h2><br>"+animAlgo.matrixString()+"<br><br>visited (vertex) : "+visited.toString()+"<br>edgeBrowsed (start,end[,weight]): "+browsed.toString()+"<br>";
         int n = 1;

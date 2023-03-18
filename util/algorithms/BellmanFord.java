@@ -1,10 +1,14 @@
 package util.algorithms;
-import util.*;
-import java.util.*;
-import java.awt.*;
+import java.awt.Color;
+import java.util.ArrayList;
 import gui.Gui;
 import gui.draw.Draw;
-public class BellmanFord extends Thread{
+import util.Edge;
+import util.Graph;
+import util.Vertex;
+
+public class BellmanFord extends Thread
+{
     private Graph graph;
     private Vertex start;
     private Color vertexDefaultColor, edgeDefaultColor;
@@ -15,9 +19,11 @@ public class BellmanFord extends Thread{
         this.start = start;
         this.vertexDefaultColor = g.getVertices().get(0).getBorderColor();
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
-        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start,isAnimated, gui, draw);
+        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor,isAnimated);
     }
 
+
+    //method to transform the graph in a 2D array
     public int[][] graphToArray(int size){
 
         int graphArr[][] = new int[size][size];
@@ -56,6 +62,7 @@ public class BellmanFord extends Thread{
         }
         return flag;
     }
+
     void clearEdge(int start, int end, ArrayList<Edge> browsed){
         Edge e1 = null, e2 = null;
         for (Edge edge : browsed) {

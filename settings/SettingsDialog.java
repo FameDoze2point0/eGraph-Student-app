@@ -1,22 +1,33 @@
 package settings;
-
+import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-
 import gui.Gui;
 import gui.draw.Draw;
 import gui.draw.PanelPaint;
@@ -186,6 +197,19 @@ public class SettingsDialog extends JDialog implements ChangeListener
 
         //The JDialog is composed of a JTabbedPane
         tabbedPane = new JTabbedPane();
+
+        //To quit the jdialog when pressing echap
+        Action quitAction = new AbstractAction("Cancel") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                dispose();                
+            }
+        };
+        quitAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+        tabbedPane.getActionMap().put("quitSettings", quitAction);
+        tabbedPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke)quitAction.getValue(Action.ACCELERATOR_KEY), "quitSettings");
+        tabbedPane.setVisible(true);
         add(tabbedPane);
 
         gbc = new GridBagConstraints();
@@ -221,7 +245,7 @@ public class SettingsDialog extends JDialog implements ChangeListener
             @Override
             public void actionPerformed(ActionEvent e) {
                 Color tempColor;
-                if((tempColor = JColorChooser.showDialog(gui, "Select a new color", Gui.getSettings().vertexInsideColor)) != null)
+                if((tempColor = JColorChooser.showDialog(gui, "Select a new color", Gui.getSettings().getVertexInsideColor())) != null)
                 {
                     Gui.getSettings().setVertexInsideColor(tempColor);
                     vertex_panel_insideColor.setBackground(Gui.getSettings().getVertexInsideColor());
@@ -732,377 +756,15 @@ public class SettingsDialog extends JDialog implements ChangeListener
         // ===== END DRAW =====
     }
 
-    public JLabel getVertex_label_insideColor() {
-        return vertex_label_insideColor;
-    }
-
-    public void setVertex_label_insideColor(JLabel vertex_label_insideColor) {
-        this.vertex_label_insideColor = vertex_label_insideColor;
-    }
-
-    public JLabel getVertex_label_outsideColor() {
-        return vertex_label_outsideColor;
-    }
-
-    public void setVertex_label_outsideColor(JLabel vertex_label_outsideColor) {
-        this.vertex_label_outsideColor = vertex_label_outsideColor;
-    }
-
-    public JLabel getVertex_label_nameColor() {
-        return vertex_label_nameColor;
-    }
-
-    public void setVertex_label_nameColor(JLabel vertex_label_nameColor) {
-        this.vertex_label_nameColor = vertex_label_nameColor;
-    }
-
-    public JLabel getVertex_label_diameter() {
-        return vertex_label_diameter;
-    }
-
-    public void setVertex_label_diameter(JLabel vertex_label_diameter) {
-        this.vertex_label_diameter = vertex_label_diameter;
-    }
-
-    public JPanel getVertex_panel_insideColor() {
-        return vertex_panel_insideColor;
-    }
-
-    public void setVertex_panel_insideColor(JPanel vertex_panel_insideColor) {
-        this.vertex_panel_insideColor = vertex_panel_insideColor;
-    }
-
-    public JPanel getVertex_panel_outsideColor() {
-        return vertex_panel_outsideColor;
-    }
-
-    public void setVertex_panel_outsideColor(JPanel vertex_panel_outsideColor) {
-        this.vertex_panel_outsideColor = vertex_panel_outsideColor;
-    }
-
-    public JPanel getVertex_panel_nameColor() {
-        return vertex_panel_nameColor;
-    }
-
-    public void setVertex_panel_nameColor(JPanel vertex_panel_nameColor) {
-        this.vertex_panel_nameColor = vertex_panel_nameColor;
-    }
-
-    public JButton getVertex_button_insideColor() {
-        return vertex_button_insideColor;
-    }
-
-    public void setVertex_button_insideColor(JButton vertex_button_insideColor) {
-        this.vertex_button_insideColor = vertex_button_insideColor;
-    }
-
-    public JButton getVertex_button_outsideColor() {
-        return vertex_button_outsideColor;
-    }
-
-    public void setVertex_button_outsideColor(JButton vertex_button_outsideColor) {
-        this.vertex_button_outsideColor = vertex_button_outsideColor;
-    }
-
-    public JButton getVertex_button_nameColor() {
-        return vertex_button_nameColor;
-    }
-
-    public void setVertex_button_nameColor(JButton vertex_button_nameColor) {
-        this.vertex_button_nameColor = vertex_button_nameColor;
-    }
-
-    public JTextField getVertex_textField_diameter() {
-        return vertex_textField_diameter;
-    }
-
-    public void setVertex_textField_diameter(JTextField vertex_textField_diameter) {
-        this.vertex_textField_diameter = vertex_textField_diameter;
-    }
-
-    public JTextField getVertex_textField_strokeWidth() {
-        return vertex_textField_strokeWidth;
-    }
-
-    public void setVertex_textField_strokeWidth(JTextField vertex_textField_strokeWidth) {
-        this.vertex_textField_strokeWidth = vertex_textField_strokeWidth;
-    }
-
-    public JTabbedPane getTabbedPane() {
-        return tabbedPane;
-    }
-
-    public void setTabbedPane(JTabbedPane tabbedPane) {
-        this.tabbedPane = tabbedPane;
-    }
-
-    public JPanel getvertex_panel_settings() {
-        return vertex_panel_settings;
-    }
-
-    public void setvertex_panel_settings(JPanel vertex_panel_settings) {
-        this.vertex_panel_settings = vertex_panel_settings;
-    }
-
-    public JPanel getEdgePanel() {
-        return edgePanel;
-    }
-
-    public void setEdgePanel(JPanel edgePanel) {
-        this.edgePanel = edgePanel;
-    }
-
-    public JLabel getEdge_label_strokeColor() {
-        return edge_label_strokeColor;
-    }
-
-    public void setEdge_label_strokeColor(JLabel edge_label_strokeColor) {
-        this.edge_label_strokeColor = edge_label_strokeColor;
-    }
-
-    public JLabel getEdge_label_highlightColor() {
-        return edge_label_highlightColor;
-    }
-
-    public void setEdge_label_highlightColor(JLabel edge_label_highlightColor) {
-        this.edge_label_highlightColor = edge_label_highlightColor;
-    }
-
-    public JLabel getEdge_label_arrowTipColor() {
-        return edge_label_arrowTipColor;
-    }
-
-    public void setEdge_label_arrowTipColor(JLabel edge_label_arrowTipColor) {
-        this.edge_label_arrowTipColor = edge_label_arrowTipColor;
-    }
-
-    public JLabel getEdge_label_weightColor() {
-        return edge_label_weightColor;
-    }
-
-    public void setEdge_label_weightColor(JLabel edge_label_weightColor) {
-        this.edge_label_weightColor = edge_label_weightColor;
-    }
-
-    public JLabel getEdge_label_weightBorderColor() {
-        return edge_label_weightBorderColor;
-    }
-
-    public void setEdge_label_weightBorderColor(JLabel edge_label_weightBorderColor) {
-        this.edge_label_weightBorderColor = edge_label_weightBorderColor;
-    }
-
-    public JLabel getEdge_label_strokeWidth() {
-        return edge_label_strokeWidth;
-    }
-
-    public void setEdge_label_strokeWidth(JLabel edge_label_strokeWidth) {
-        this.edge_label_strokeWidth = edge_label_strokeWidth;
-    }
-
-    public JLabel getEdge_label_arrowLenght() {
-        return edge_label_arrowLenght;
-    }
-
-    public void setEdge_label_arrowLenght(JLabel edge_label_arrowLenght) {
-        this.edge_label_arrowLenght = edge_label_arrowLenght;
-    }
-
-    public JPanel getEdge_panel_strokeColor() {
-        return edge_panel_strokeColor;
-    }
-
-    public void setEdge_panel_strokeColor(JPanel edge_panel_strokeColor) {
-        this.edge_panel_strokeColor = edge_panel_strokeColor;
-    }
-
-    public JPanel getEdge_panel_highlightColor() {
-        return edge_panel_highlightColor;
-    }
-
-    public void setEdge_panel_highlightColor(JPanel edge_panel_highlightColor) {
-        this.edge_panel_highlightColor = edge_panel_highlightColor;
-    }
-
-    public JPanel getEdge_panel_arrowTipColor() {
-        return edge_panel_arrowTipColor;
-    }
-
-    public void setEdge_panel_arrowTipColor(JPanel edge_panel_arrowTipColor) {
-        this.edge_panel_arrowTipColor = edge_panel_arrowTipColor;
-    }
-
-    public JPanel getEdge_panel_weightColor() {
-        return edge_panel_weightColor;
-    }
-
-    public void setEdge_panel_weightColor(JPanel edge_panel_weightColor) {
-        this.edge_panel_weightColor = edge_panel_weightColor;
-    }
-
-    public JPanel getEdge_panel_weightBorderColor() {
-        return edge_panel_weightBorderColor;
-    }
-
-    public void setEdge_panel_weightBorderColor(JPanel edge_panel_weightBorderColor) {
-        this.edge_panel_weightBorderColor = edge_panel_weightBorderColor;
-    }
-
-    public JButton getEdge_button_strokeColor() {
-        return edge_button_strokeColor;
-    }
-
-    public void setEdge_button_strokeColor(JButton edge_button_strokeColor) {
-        this.edge_button_strokeColor = edge_button_strokeColor;
-    }
-
-    public JButton getEdge_button_highlightColor() {
-        return edge_button_highlightColor;
-    }
-
-    public void setEdge_button_highlightColor(JButton edge_button_highlightColor) {
-        this.edge_button_highlightColor = edge_button_highlightColor;
-    }
-
-    public JButton getEdge_button_arrowTipColor() {
-        return edge_button_arrowTipColor;
-    }
-
-    public void setEdge_button_arrowTipColor(JButton edge_button_arrowTipColor) {
-        this.edge_button_arrowTipColor = edge_button_arrowTipColor;
-    }
-
-    public JButton getEdge_button_weightColor() {
-        return edge_button_weightColor;
-    }
-
-    public void setEdge_button_weightColor(JButton edge_button_weightColor) {
-        this.edge_button_weightColor = edge_button_weightColor;
-    }
-
-    public JButton getEdge_button_weightBorderColor() {
-        return edge_button_weightBorderColor;
-    }
-
-    public void setEdge_button_weightBorderColor(JButton edge_button_weightBorderColor) {
-        this.edge_button_weightBorderColor = edge_button_weightBorderColor;
-    }
-
-    public JTextField getEdge_textField_strokeWidth() {
-        return edge_textField_strokeWidth;
-    }
-
-    public void setEdge_textField_strokeWidth(JTextField edge_textField_strokeWidth) {
-        this.edge_textField_strokeWidth = edge_textField_strokeWidth;
-    }
-
-    public JTextField getEdge_textField_arrowLenght() {
-        return edge_textField_arrowLenght;
-    }
-
-    public void setEdge_textField_arrowLenght(JTextField edge_textField_arrowLenght) {
-        this.edge_textField_arrowLenght = edge_textField_arrowLenght;
-    }
-
-    public JPanel getShortcutPanel() {
-        return shortcutPanel;
-    }
-
-    public void setShortcutPanel(JPanel shortcutPanel) {
-        this.shortcutPanel = shortcutPanel;
-    }
-
-    public JLabel getNew_label_shortcut() {
-        return new_label_shortcut;
-    }
-
-    public void setNew_label_shortcut(JLabel new_label_shortcut) {
-        this.new_label_shortcut = new_label_shortcut;
-    }
-
-    public JLabel getOpen_label_shortcut() {
-        return open_label_shortcut;
-    }
-
-    public void setOpen_label_shortcut(JLabel open_label_shortcut) {
-        this.open_label_shortcut = open_label_shortcut;
-    }
-
-    public JLabel getSave_label_shortcut() {
-        return save_label_shortcut;
-    }
-
-    public void setSave_label_shortcut(JLabel save_label_shortcut) {
-        this.save_label_shortcut = save_label_shortcut;
-    }
-
-    public JLabel getExit_label_shortcut() {
-        return exit_label_shortcut;
-    }
-
-    public void setExit_label_shortcut(JLabel exit_label_shortcut) {
-        this.exit_label_shortcut = exit_label_shortcut;
-    }
-
-    public JLabel getAlgorithms_label_shortcut() {
-        return algorithms_label_shortcut;
-    }
-
-    public void setAlgorithms_label_shortcut(JLabel algorithms_label_shortcut) {
-        this.algorithms_label_shortcut = algorithms_label_shortcut;
-    }
-
-    public JLabel getDocumentation_label_shortcut() {
-        return documentation_label_shortcut;
-    }
-
-    public void setDocumentation_label_shortcut(JLabel documentation_label_shortcut) {
-        this.documentation_label_shortcut = documentation_label_shortcut;
-    }
-
-    public JLabel getLicence_label_shortcut() {
-        return licence_label_shortcut;
-    }
-
-    public void setLicence_label_shortcut(JLabel licence_label_shortcut) {
-        this.licence_label_shortcut = licence_label_shortcut;
-    }
-
-    public JLabel getContact_label_shortcut() {
-        return contact_label_shortcut;
-    }
-
-    public void setContact_label_shortcut(JLabel contact_label_shortcut) {
-        this.contact_label_shortcut = contact_label_shortcut;
-    }
-
-	public JPanel getVertex_panel_settings() {
-		return vertex_panel_settings;
-	}
-
-	public void setVertex_panel_settings(JPanel vertex_panel_settings) {
-		this.vertex_panel_settings = vertex_panel_settings;
-	}
-
-	public static Graph getExample_graph() {
-		return example_graph;
-	}
-
-	public static void setExample_graph(Graph example_graph) {
-		SettingsDialog.example_graph = example_graph;
-	}
-
-	public JLabel getCloseTab_label_shortcut() {
-		return closeTab_label_shortcut;
-	}
-
-	public void setCloseTab_label_shortcut(JLabel closeTab_label_shortcut) {
-		this.closeTab_label_shortcut = closeTab_label_shortcut;
-	}
-
     @Override
     public void stateChanged(ChangeEvent e) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'stateChanged'");
     }
+
+    public static Graph getExample_graph() {
+        return example_graph;
+    }
+
+    
 }

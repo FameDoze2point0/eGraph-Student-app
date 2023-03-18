@@ -5,9 +5,12 @@
  */
 
 package util;
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.io.Serializable;
-import java.util.*;
 
 public class Vertex implements Serializable
 {
@@ -36,7 +39,6 @@ public class Vertex implements Serializable
         this.borderColor = borderColor;
         this.name = name;
         this.nameColor = nameColor;
-        System.out.println(name + " " + id);
     }
 
     public void paint(Graphics graphics, Object collision){
@@ -51,7 +53,7 @@ public class Vertex implements Serializable
         graphics.drawOval(coordX, coordY, diameter, diameter);
 
         graphics.setColor(insideColor);
-        graphics.fillOval(coordX+((int)(diameter*0.2)/2), coordY+((int)(diameter*0.2)/2), (int)(diameter*0.8), (int)(diameter*0.8));
+        graphics.fillOval(coordX, coordY,diameter,diameter);
 
         //We draw vertex name on top of the vertex (color of border)
         graphics.setColor(nameColor);

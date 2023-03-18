@@ -1,5 +1,6 @@
 package util;
-public class Triplet implements Comparable<Triplet>{
+public class Triplet implements Comparable<Triplet>
+{
     private Vertex vertex;
     private Edge edge;
     private int weight;

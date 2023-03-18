@@ -20,33 +20,33 @@ import util.Vertex;
 public class RightClick extends JPopupMenu
 {
 
-    Object rightClickedOnElement; //Element that got right clicked on and will be affected by right click option
+    private Object rightClickedOnElement; //Element that got right clicked on and will be affected by right click option
 
     //When right click on an element
-    JMenuItem deleteElement;
+    private JMenuItem deleteElement;
 
     //Graph elements
-    JMenuItem renameElement;
+    private JMenuItem renameElement;
 
     //Edge elements
-    JMenuItem changeWeight;
+    private JMenuItem changeWeight;
 
     //Always available elements
-    JMenuItem undo;
-    JMenuItem redo;
-    JMenu mode;
-        JMenuItem cursorMode;
-        JMenuItem newVertexMode;
-        JMenuItem newEdgeMode;
-    JMenuItem newElement;
-    JMenuItem openElement;
-    JMenuItem saveElement;
-    JMenu export;
-        JMenuItem exportPDF;
-        JMenuItem exportSVG;
-    JMenuItem launchAlgo;
-    JMenuItem clear;
-    JMenuItem close;
+    private JMenuItem undo;
+    private JMenuItem redo;
+    private JMenu mode;
+        private JMenuItem cursorMode;
+        private JMenuItem newVertexMode;
+        private JMenuItem newEdgeMode;
+    private JMenuItem newElement;
+    private JMenuItem openElement;
+    private JMenuItem saveElement;
+    private JMenu export;
+        private JMenuItem exportPDF;
+        private JMenuItem exportSVG;
+    private JMenuItem launchAlgo;
+    private JMenuItem clear;
+    private JMenuItem close;
     
     public RightClick(Draw drawArea, PanelPaint panel, Gui gui)
     {
@@ -277,6 +277,7 @@ public class RightClick extends JPopupMenu
                     if(drawArea.getTabCount() < 2)
                     {
                         gui.getTools().getClose().setEnabled(false);
+                        gui.getMenu().getFile().getCloseTabulation().setEnabled(false);
                         
                         for(PanelPaint pp : gui.getTabulations().keySet())
                         {
@@ -290,153 +291,38 @@ public class RightClick extends JPopupMenu
         this.add(close);
     }
 
-    public void changeState(Boolean changeWeight, Boolean renameElement, Boolean deleteElement, Object itemSelected){
+
+	public void changeState(Boolean changeWeight, Boolean renameElement, Boolean deleteElement, Object itemSelected){
         this.changeWeight.setVisible(changeWeight);
         this.renameElement.setVisible(renameElement);
         this.deleteElement.setVisible(deleteElement);
         rightClickedOnElement = itemSelected;
     }
-    public JMenuItem getDeleteElement() {
-        return deleteElement;
-    }
 
-    public void setDeleteElement(JMenuItem deleteElement) {
-        this.deleteElement = deleteElement;
-    }
-
-    public JMenuItem getRenameElement() {
-        return renameElement;
-    }
-
-    public void setRenameElement(JMenuItem renameElement) {
-        this.renameElement = renameElement;
-    }
-
-    public JMenuItem getChangeWeight() {
-        return changeWeight;
-    }
-
-    public void setChangeWeight(JMenuItem changeWeight) {
-        this.changeWeight = changeWeight;
-    }
 
     public JMenuItem getUndo() {
         return undo;
     }
 
+
     public void setUndo(JMenuItem undo) {
         this.undo = undo;
     }
+
 
     public JMenuItem getRedo() {
         return redo;
     }
 
+
     public void setRedo(JMenuItem redo) {
         this.redo = redo;
     }
 
-    public JMenu getMode() {
-        return mode;
-    }
-
-    public void setMode(JMenu mode) {
-        this.mode = mode;
-    }
-
-    public JMenuItem getNewEdgeMode() {
-        return newEdgeMode;
-    }
-
-    public void setNewEdgeMode(JMenuItem newEdgeMode) {
-        this.newEdgeMode = newEdgeMode;
-    }
-
-    public JMenuItem getNewVertexMode() {
-        return newVertexMode;
-    }
-
-    public void setNewVertexMode(JMenuItem newVertexMode) {
-        this.newVertexMode = newVertexMode;
-    }
-
-    public JMenuItem getNewElement() {
-        return newElement;
-    }
-
-    public void setNewElement(JMenuItem newElement) {
-        this.newElement = newElement;
-    }
-
-    public JMenuItem getOpenElement() {
-        return openElement;
-    }
-
-    public void setOpenElement(JMenuItem openElement) {
-        this.openElement = openElement;
-    }
-
-    public JMenuItem getSaveElement() {
-        return saveElement;
-    }
-
-    public void setSaveElement(JMenuItem saveElement) {
-        this.saveElement = saveElement;
-    }
-
-    public JMenu getExport() {
-        return export;
-    }
-
-    public void setExport(JMenu export) {
-        this.export = export;
-    }
-
-    public JMenuItem getExportPDF() {
-        return exportPDF;
-    }
-
-    public void setExportPDF(JMenuItem exportPDF) {
-        this.exportPDF = exportPDF;
-    }
-
-    public JMenuItem getExportSVG() {
-        return exportSVG;
-    }
-
-    public void setExportSVG(JMenuItem exportSVG) {
-        this.exportSVG = exportSVG;
-    }
-
-    public JMenuItem getLaunchAlgo() {
-        return launchAlgo;
-    }
-
-    public void setLaunchAlgo(JMenuItem launchAlgo) {
-        this.launchAlgo = launchAlgo;
-    }
-
-    public Object getRightClickedOnElement() {
-        return rightClickedOnElement;
-    }
-
-    public void setRightClickedOnElement(Object rightClickedOnElement) {
-        this.rightClickedOnElement = rightClickedOnElement;
-    }
-
-    public JMenuItem getCursorMode() {
-        return cursorMode;
-    }
-
-    public void setCursorMode(JMenuItem cursorMode) {
-        this.cursorMode = cursorMode;
-    }   
 
     public JMenuItem getClose() {
         return close;
     }
 
-    public void setClose(JMenuItem close) {
-        this.close = close;
-    }
+    
 }

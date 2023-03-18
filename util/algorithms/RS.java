@@ -1,11 +1,15 @@
 package util.algorithms;
-import util.*;
-import java.util.*;
-import java.awt.*;
+import java.awt.Color;
+import java.util.ArrayList;
+
 import gui.Gui;
 import gui.draw.Draw;
+import util.Edge;
+import util.Graph;
+import util.Vertex;
 
-public class RS extends Thread{
+public class RS extends Thread
+{
     
     private Graph graph;
     private Vertex start;
@@ -17,7 +21,7 @@ public class RS extends Thread{
         this.start = start;
         this.vertexDefaultColor = g.getVertices().get(0).getBorderColor();
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
-        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start,isAnimated, gui, draw);
+        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor,isAnimated);
     }
 
     @Override
@@ -36,6 +40,7 @@ public class RS extends Thread{
         while (!list.isEmpty()) {
             text += "<h2>Step "+j+"</h2><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br>";
             j++;
+            //we take a vertex randomly
             int i = (int)(Math.random()*list.size());
             vertex = list.get(i);
             list.remove(i);
@@ -57,7 +62,6 @@ public class RS extends Thread{
             animAlgo.changeColor(visited, list, edgeBrowsed);
         }
         text += "<h2>Step "+j+"</h2><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br><br></p></body></blockquote></html>";
-        System.out.println(rep);
         animAlgo.displayLog(text);
         animAlgo.reset();  
     }

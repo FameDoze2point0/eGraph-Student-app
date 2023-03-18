@@ -1,18 +1,21 @@
 package gui.popups.other;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JViewport;
-
+import javax.swing.KeyStroke;
 import gui.Gui;
 
 public class Documentation extends JDialog
@@ -50,6 +53,19 @@ public class Documentation extends JDialog
 
         //This JDialog is divided in several topics : graph creation, toolbar, extends button, right click, launch an algorithms, settings, shortcuts
         tabs = new JTabbedPane();
+
+        //To quit the jdialog when pressing echap
+        AbstractAction quitAction = new AbstractAction("Cancel") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                dispose();                
+            }
+        };
+        quitAction.putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+        tabs.getActionMap().put("quitDocumentation", quitAction);
+        tabs.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke)quitAction.getValue(AbstractAction.ACCELERATOR_KEY), "quitDocumentation");
+
         
         //graph creation
         graphCreation = new JScrollPane();

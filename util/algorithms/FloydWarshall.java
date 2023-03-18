@@ -1,12 +1,15 @@
 package util.algorithms;
-import util.*;
-import java.util.*;
+import java.awt.Color;
+import java.util.ArrayList;
+
 import gui.Gui;
 import gui.draw.Draw;
-import gui.draw.PanelPaint;
+import util.Edge;
+import util.Graph;
+import util.Vertex;
 
-import java.awt.*;
-public class FloydWarshall extends Thread{
+public class FloydWarshall extends Thread
+{
     
     private Graph graph;
     private Color vertexDefaultColor, edgeDefaultColor;
@@ -16,9 +19,10 @@ public class FloydWarshall extends Thread{
         this.graph = g;
         this.vertexDefaultColor = g.getVertices().get(0).getBorderColor();
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
-        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor,isAnimated, gui, draw);
+        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor,isAnimated);
     }
 
+    //transform the graph in a string matrix in order to display it
     public String printArray(int [][] M){
         String result = "";
 
@@ -84,7 +88,6 @@ public class FloydWarshall extends Thread{
         text += "</p></blockquote></body></html>";
 
         int width = edges.get(0).getStrokeWidth();
-        PanelPaint pp = graph.getPanelPaint();
         int shift = n /3;
         
         ArrayList<Edge> toDelete = new ArrayList<Edge>();

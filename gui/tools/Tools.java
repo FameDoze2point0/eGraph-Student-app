@@ -1,22 +1,14 @@
 package gui.tools;
-import java.awt.Desktop.Action;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JColorChooser;
+import javax.swing.JComponent;
 import javax.swing.JToolBar;
-import javax.swing.border.BevelBorder;
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import java.awt.*;
-
-
+import javax.swing.KeyStroke;
 import gui.Gui;
 import gui.draw.Draw;
 import gui.draw.PanelPaint;
@@ -27,22 +19,20 @@ import util.Graph;
 public class Tools extends JToolBar
 {
     //New graph/automaton
-    JButton newElement;
-    JButton newElementMatrix;
+    private JButton newElement;
 
     //Add elements to a graph/automaton
-    JButton cursor;
-    JButton newVertex;
-    JButton newEdge;
-    JButton addWeight;
-    JButton undo;
-    JButton redo;
-    JButton save;
-    JButton load;
-    JButton settings;
-    JButton close;
-    JButton launchAlgo;
-    JButton clear;
+    private JButton cursor;
+    private JButton newVertex;
+    private JButton newEdge;
+    private JButton undo;
+    private JButton redo;
+    private JButton save;
+    private JButton load;
+    private JButton settings;
+    private JButton close;
+    private JButton launchAlgo;
+    private JButton clear;
 
     public Tools(Gui gui, Draw drawArea)
     {
@@ -234,6 +224,7 @@ public class Tools extends JToolBar
                     if(drawArea.getTabCount() < 2)
                     {
                         close.setEnabled(false);
+                        gui.getMenu().getFile().getCloseTabulation().setEnabled(false);
                         
                         for(PanelPaint pp : gui.getTabulations().keySet())
                         {
@@ -247,122 +238,36 @@ public class Tools extends JToolBar
         this.add(close);
     }
 
-    public JButton getNewVertex() {
-        return newVertex;
-    }
-
-
-    public void setNewVertex(JButton newVertex) {
-        this.newVertex = newVertex;
-    }
-
-
-    public JButton getNewEdge() {
-        return newEdge;
-    }
-
-
-    public void setNewEdge(JButton newEdge) {
-        this.newEdge = newEdge;
-    }
-
-
-    public JButton getAddWeight() {
-        return addWeight;
-    }
-
-
-    public void setAddWeight(JButton addWeight) {
-        this.addWeight = addWeight;
-    }
-
-    public JButton getNewElement() {
-        return newElement;
-    }
-
-    public void setNewElement(JButton newElement) {
-        this.newElement = newElement;
-    }
-
-    public JButton getUndo()
-    {
-        return undo;
-    }
-
-    public JButton getRedo()
-    {
-        return redo;
-    }
-
-    public JButton getNewElementMatrix() {
-        return newElementMatrix;
-    }
-
-    public void setNewElementMatrix(JButton newElementMatrix) {
-        this.newElementMatrix = newElementMatrix;
-    }
-
     public JButton getCursorButton() {
         return cursor;
     }
 
-    public void setCursor(JButton cursor) {
-        this.cursor = cursor;
+    public JButton getNewVertex() {
+        return newVertex;
     }
 
-    public void setUndo(JButton undo) {
-        this.undo = undo;
-    }
-
-    public void setRedo(JButton redo) {
-        this.redo = redo;
-    }
-
-    public JButton getSave() {
-        return save;
-    }
-
-    public void setSave(JButton save) {
-        this.save = save;
-    }
-
-    public JButton getLoad() {
-        return load;
-    }
-
-    public void setLoad(JButton load) {
-        this.load = load;
-    }
-
-    public JButton getSettings() {
-        return settings;
-    }
-
-    public void setSettings(JButton settings) {
-        this.settings = settings;
-    }
-
-    public JButton getClose() {
-        return close;
-    }
-
-    public void setClose(JButton close) {
-        this.close = close;
+    public JButton getNewEdge() {
+        return newEdge;
     }
 
     public JButton getLaunchAlgo() {
         return launchAlgo;
     }
 
-    public void setLaunchAlgo(JButton launchAlgo) {
-        this.launchAlgo = launchAlgo;
-    }
-
     public JButton getClear() {
         return clear;
     }
 
-    public void setClear(JButton clear) {
-        this.clear = clear;
+    public JButton getClose() {
+        return close;
     }
+
+    public JButton getUndo() {
+        return undo;
+    }
+
+    public JButton getRedo() {
+        return redo;
+    }
+
 }

@@ -1,6 +1,4 @@
 package gui.draw;
-import java.awt.Component;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -10,7 +8,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileSystemView;
 
 import gui.Gui;
 import util.Graph;

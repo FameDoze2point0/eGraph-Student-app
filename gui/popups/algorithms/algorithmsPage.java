@@ -1,12 +1,34 @@
 package gui.popups.algorithms;
-
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import gui.Gui;
 import gui.draw.Draw;
-import util.*;
+import util.Edge;
+import util.Graph;
+import util.Vertex;
 import util.algorithms.BFS;
 import util.algorithms.BellmanFord;
 import util.algorithms.DFS;
@@ -16,17 +38,8 @@ import util.algorithms.Kruskal;
 import util.algorithms.Prim;
 import util.algorithms.RS;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-
-import javax.swing.JComboBox;
-import java.awt.Image.*;
-import java.io.*;
-
 public class AlgorithmsPage extends JDialog
 {
-    private JComboBox algoList;
     private JLabel startingVertexLabel;
     private JComboBox<String> startingVertexList;
     private JLabel endingVertexLabel;
@@ -65,7 +78,18 @@ public class AlgorithmsPage extends JDialog
 
             //List of algorithms
             panel_listeAlgo = new JPanel();
+            //To quit the jdialog when pressing echap
+            Action quitAction = new AbstractAction("Cancel") {
+                @Override
+                public void actionPerformed(ActionEvent e) {
 
+                    dispose();                
+                }
+            };
+            quitAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+            panel_listeAlgo.getActionMap().put("quitAlgorithmsPage", quitAction);
+            panel_listeAlgo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke)quitAction.getValue(Action.ACCELERATOR_KEY), "quitAlgorithmsPage");
+            
             constraints.gridx = 0;
             constraints.gridy = 0;
             constraints.weightx = 0.05;
@@ -448,6 +472,7 @@ public class AlgorithmsPage extends JDialog
                 if( gui.getTabulations().get(gui.getDraw().getSelectedComponent()).getVertices().isEmpty())
                     submit.setEnabled(false);
                 addSubmitListener(gui,draw);
+                
                 panel_choix.add(submit,gbc);
             }
             this.add(panel_choix,constraints);

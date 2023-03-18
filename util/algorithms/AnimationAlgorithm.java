@@ -1,60 +1,34 @@
 package util.algorithms;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.dnd.DragGestureEvent;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
-import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import gui.Gui;
-import gui.draw.Draw;
-import gui.draw.PanelPaint;
-import util.*;
+import util.Edge;
+import util.Graph;
+import util.Vertex;
 
 public class AnimationAlgorithm {
 
     private Graph graph;
-    private Vertex start = null;
+
     private Color defaultColorVertex, defaultColorEdge;
-    private ArrayList<String> textSteps;
-    private ArrayList<PanelPaint> graphicSteps;
-    private Gui gui;
-    private Draw draw;
     private Boolean isAnimated;
 
     private Color red = new Color(255, 0, 0),
-        darkOrange = new Color(255, 107, 51), 
         orange = new Color(255, 181, 102),
         lightred = new Color(255,139,139);
 
-    public AnimationAlgorithm(Graph graph, Color defaultColorVertex, Color defaultColorEdge,Boolean isAnimated, Gui gui, Draw draw){
+    public AnimationAlgorithm(Graph graph, Color defaultColorVertex, Color defaultColorEdge,Boolean isAnimated){
         this.graph = graph;
         this.defaultColorVertex = defaultColorVertex;
         this.defaultColorEdge = defaultColorEdge;
-        this.textSteps = new ArrayList<String>();
-        this.graphicSteps = new ArrayList<PanelPaint>();
-        this.gui = gui;
-        this.draw = draw;
         this.isAnimated = isAnimated;
     }
-    public AnimationAlgorithm(Graph graph, Color defaultColor, Color defaultColorEdge, Vertex start,Boolean isAnimated, Gui gui, Draw draw){
-        this.graph = graph;
-        this.defaultColorVertex = defaultColor;
-        this.start = start;
-        this.defaultColorEdge = defaultColorEdge;
-        this.textSteps = new ArrayList<String>();
-        this.graphicSteps = new ArrayList<PanelPaint>();
-        this.gui = gui;
-        this.draw = draw;
-        this.isAnimated = isAnimated;
-    }
-    
+
+    //reset the graphical aspect of the graph after animation
     public void reset(){
         if (isAnimated) {
             try {
@@ -72,6 +46,7 @@ public class AnimationAlgorithm {
         }
     }
 
+    // change the color of the graph in order to make an animation
     public void changeColor(ArrayList<Vertex> visited, ArrayList<Vertex> toVisite, ArrayList<Edge> edgeBrowsed){
         if (isAnimated) {
             SwingUtilities.invokeLater(new Runnable() {
@@ -105,6 +80,7 @@ public class AnimationAlgorithm {
         }
     }
 
+    // method used to refresh the graph (graphical aspect)
     public void refresh(){
         if (isAnimated) {
             graph.getPanelPaint().repaint();
@@ -118,30 +94,8 @@ public class AnimationAlgorithm {
 
     private JDialog jd;
         private JScrollPane global;
-        private JLabel content;
 
-    // public void displayLog(){
-    //     jd = new JDialog();
-    //     jd.setSize(850,600);
-    //     jd.setLocationRelativeTo(null); //Centering the frame
-    //     jd.setResizable(false);
-    //     jd.setAlwaysOnTop(true);
-    //     jd.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-    //     global = new JScrollPane();
-    //     JPanel jp = new JPanel();
-    //     jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
-    //     for (int i = 0; i < textSteps.size(); i++) {
-    //         jp.add(new JLabel(textSteps.get(i)));
-    //         //System.out.println("test 1");
-    //         //jp.add(graphicSteps.get(i));
-    //     }
-    //     global.setViewportView(jp);
-           
-    //     jd.add(global);
-    //     jd.setVisible(true);
-    // }
-
+    //method which display steps after animation
     public void displayLog(String log){
         jd = new JDialog();
         jd.setSize(850,600);
@@ -157,17 +111,7 @@ public class AnimationAlgorithm {
         jd.setVisible(true);
     }
 
-
-    // public void addStep(String textStep, Graph FigureStep){
-    //     textSteps.add(textStep);
-    //     PanelPaint pp = new PanelPaint(gui, draw);
-    //     pp.setSize(new Dimension(850,600));
-    //     //pp.getExtend().setVisible(false);
-    //     FigureStep.setPanelPaint(pp);
-    //     graphicSteps.add(pp);
-
-    // }
-
+    //method which transform the graph in a matrix string 
     public String matrixString(){
 
         ArrayList<Vertex> vertices = graph.getVertices();

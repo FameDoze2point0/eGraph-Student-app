@@ -1,25 +1,19 @@
 package gui;
+import java.awt.BorderLayout;
+import java.awt.Toolkit;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.util.HashMap;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 import gui.draw.Draw;
 import gui.draw.PanelPaint;
 import gui.menu.Menu;
 import gui.tools.Tools;
 import settings.Settings;
 import settings.SettingsDialog;
-import util.Edge;
 import util.Graph;
-
-import java.awt.BorderLayout;
-import java.awt.Toolkit;
-import java.util.HashMap;
-import java.util.Stack;
-import java.awt.geom.*;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 
 public class Gui extends JFrame
 {
@@ -95,22 +89,6 @@ public class Gui extends JFrame
 
         //Initiating the list of tabulations
         tabulations = new HashMap<PanelPaint,Graph>();
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 
     public HashMap<PanelPaint, Graph> getTabulations() {

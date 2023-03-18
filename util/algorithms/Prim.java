@@ -1,10 +1,16 @@
 package util.algorithms;
-import util.*;
-import java.util.*;
-import java.awt.*;
+import java.awt.Color;
+import java.util.ArrayList;
+
 import gui.Gui;
 import gui.draw.Draw;
-public class Prim extends Thread{
+import util.Edge;
+import util.Graph;
+import util.Triplet;
+import util.Vertex;
+
+public class Prim extends Thread
+{
     private Graph graph;
     private Vertex start;
     private Color vertexDefaultColor, edgeDefaultColor;
@@ -15,9 +21,11 @@ public class Prim extends Thread{
         this.start = start;
         this.vertexDefaultColor = g.getVertices().get(0).getBorderColor();
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
-        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start,isAnimated, gui, draw);
+        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor,isAnimated);
     }
 
+
+    //method which get the neighbours of a vertex
     public ArrayList<Edge> getNeighbours(Vertex vertex, ArrayList<Edge> edges){
 
         ArrayList<Edge> neighbours = new ArrayList<Edge>();
@@ -37,7 +45,6 @@ public class Prim extends Thread{
         ArrayList<Triplet> inter = new ArrayList<Triplet>();
         int id = 0, max;
 
-        ArrayList<Vertex> vertices = graph.getVertices();
         ArrayList<Edge> edges = graph.getEdges();
         
         visited.add(start);

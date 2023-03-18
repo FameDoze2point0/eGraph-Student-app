@@ -1,13 +1,12 @@
 package settings;
 import java.awt.Color;
 import java.io.Serializable;
-import javax.swing.JDialog;
 
 public class Settings implements Serializable
 {
     // ===== SETTINGS =====
         // === Vertexs settings ===
-        Color vertexInsideColor     = Color.white;
+        private Color vertexInsideColor     = Color.white;
         private Color vertexOutsideColor    = Color.black;
         private Color vertexNameColor       = Color.black;
         private int   vertexDiameter        = 50,

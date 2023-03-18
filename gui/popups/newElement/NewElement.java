@@ -1,23 +1,37 @@
 package gui.popups.newElement;
+import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import gui.Gui;
 import gui.draw.Draw;
+import gui.draw.PanelPaint;
+import gui.tools.Tools;
 import util.Edge;
 import util.Graph;
 import util.Vertex;
-import gui.draw.PanelPaint;
-import gui.draw.rightclickmenu.RightClick;
-import gui.tools.Tools;
 
 public class NewElement extends JDialog
 {
@@ -340,7 +354,7 @@ public class NewElement extends JDialog
                     centerY = (int)drawArea.getSize().getHeight()/2,
                     radiusFigure = (int)(2*centerY/3),x,y;
                 
-                System.out.println("center x = "+centerX+" center Y = "+centerY);
+ 
                 for (int i = 0; i < nbVertex; i++) {
                     int cpt = graph.getCpt();
                     x = (int)(centerX + radiusFigure*Math.cos(Math.PI*2*i/nbVertex));
@@ -422,15 +436,19 @@ public class NewElement extends JDialog
         Tools tools = gui.getTools();
         tools.getCursorButton().setEnabled(true);
         tools.getCursorButton().setBackground(Color.LIGHT_GRAY);
+        tools.getNewVertex().setBackground(null);
+        tools.getNewEdge().setBackground(null);
         tools.getNewVertex().setEnabled(true);
         tools.getNewEdge().setEnabled(true);
         tools.getLaunchAlgo().setEnabled(true);
         tools.getClear().setEnabled(true);
+        gui.setState(0);
 
         //If More than 1 tab, can close a tabulation
         if(drawArea.getTabCount() > 1)
         {
             gui.getTools().getClose().setEnabled(true);
+            gui.getMenu().getFile().getCloseTabulation().setEnabled(true);
             for(PanelPaint pp : gui.getTabulations().keySet())
             {
                 pp.getRightClickMenu().getClose().setEnabled(true);

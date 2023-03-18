@@ -1,13 +1,15 @@
 package util.algorithms;
-import util.*;
-import java.util.*;
+import java.awt.Color;
+import java.util.ArrayList;
 
 import gui.Gui;
 import gui.draw.Draw;
+import util.Edge;
+import util.Graph;
+import util.Vertex;
 
-import java.awt.*;
-
-public class BFS extends Thread{
+public class BFS extends Thread
+{
     private Graph graph;
     private Vertex start;
     private Color vertexDefaultColor, edgeDefaultColor;
@@ -18,7 +20,7 @@ public class BFS extends Thread{
         this.start = start;
         this.vertexDefaultColor = g.getVertices().get(0).getBorderColor();
         this.edgeDefaultColor = g.getEdges().get(0).getStrokeColor();
-        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor, start,isAnimated, gui, draw);
+        this.animAlgo = new AnimationAlgorithm(g, vertexDefaultColor,edgeDefaultColor,isAnimated);
     }
 
     @Override
@@ -59,7 +61,6 @@ public class BFS extends Thread{
         }
 
         text += "<h2>Step "+i+"</h2><br>visited (vertex) : "+visited.toString()+"<br>list (vertex): "+list.toString()+"<br>edgeBrowsed (start,end[,weight]): "+edgeBrowsed.toString()+"<br><br></p></body></blockquote></html>";
-        System.out.println(rep);
         animAlgo.displayLog(text);
         animAlgo.reset();  
     }
