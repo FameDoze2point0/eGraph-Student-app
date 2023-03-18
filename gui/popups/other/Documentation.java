@@ -135,24 +135,104 @@ public class Documentation extends JDialog
 
         //Right Click
         rightClick = new JScrollPane();
+        rightClick.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        rightClick.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        try
+        {
+            //Part 0 contains the images
+            JPanel part0 = new JPanel();
+            part0.setLayout(new BoxLayout(part0, BoxLayout.Y_AXIS));
+            JLabel part1 = new JLabel(new ImageIcon(ImageIO.read(new File(System.getProperty("user.dir")+"/gui/popups/other/ressources/rightClick1.png"))));
+            part0.add(part1);
+
+            //Settings up the viewport to display the images
+            rightClickView = new JViewport();
+            rightClickView.setView(part0);
+            rightClick.setViewport(rightClickView);
+        }
+        catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         tabs.add("Edit a graph", rightClick);
 
 
 
         //Launch algorithms
         launchAlgorithms = new JScrollPane();
+        launchAlgorithms.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        launchAlgorithms.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        try
+        {
+            //Part 0 contains the images
+            JPanel part0 = new JPanel();
+            part0.setLayout(new BoxLayout(part0, BoxLayout.Y_AXIS));
+            JLabel part1 = new JLabel(new ImageIcon(ImageIO.read(new File(System.getProperty("user.dir")+"/gui/popups/other/ressources/launchAlgorithms1.png"))));
+            part0.add(part1);
+
+            //Settings up the viewport to display the images
+            launchAlgorithmsView = new JViewport();
+            launchAlgorithmsView.setView(part0);
+            launchAlgorithms.setViewport(launchAlgorithmsView);
+        }
+        catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         tabs.add("Launch algorithms", launchAlgorithms);
 
 
 
         //Settings
         settings = new JScrollPane();
+        settings.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        settings.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        try
+        {
+            //Part 0 contains the images
+            JPanel part0 = new JPanel();
+            part0.setLayout(new BoxLayout(part0, BoxLayout.Y_AXIS));
+            JLabel part1 = new JLabel(new ImageIcon(ImageIO.read(new File(System.getProperty("user.dir")+"/gui/popups/other/ressources/settings1.png"))));
+            part0.add(part1);
+
+            //Settings up the viewport to display the images
+            settingsView = new JViewport();
+            settingsView.setView(part0);
+            settings.setViewport(settingsView);
+        }
+        catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         tabs.add("Settings", settings);
 
 
 
         //Shortcuts
         shortcuts = new JScrollPane();
+        shortcuts.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        shortcuts.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        try
+        {
+            //Part 0 contains the images
+            JPanel part0 = new JPanel();
+            part0.setLayout(new BoxLayout(part0, BoxLayout.Y_AXIS));
+            JLabel part1 = new JLabel(new ImageIcon(ImageIO.read(new File(System.getProperty("user.dir")+"/gui/popups/other/ressources/shortcuts1.png"))));
+            part0.add(part1);
+
+            //Settings up the viewport to display the images
+            shortcutsView = new JViewport();
+            shortcutsView.setView(part0);
+            shortcuts.setViewport(shortcutsView);
+        }
+        catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         tabs.add("Shortcuts", shortcuts);
 
         add(tabs);

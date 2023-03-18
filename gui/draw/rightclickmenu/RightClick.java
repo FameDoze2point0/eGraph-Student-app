@@ -125,7 +125,7 @@ public class RightClick extends JPopupMenu
         this.add(new Separator()); // === NEW CATEGORY ===
 
         //We then add elements that are always there
-        undo = new JMenuItem("Undo", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_redo.png"));
+        undo = new JMenuItem("Undo", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_undo.png"));
         undo.addActionListener(new ActionListener()
         {
             @Override
@@ -137,7 +137,7 @@ public class RightClick extends JPopupMenu
         undo.setEnabled(false);
         this.add(undo);
 
-        redo = new JMenuItem("Redo", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_undo.png"));
+        redo = new JMenuItem("Redo", new ImageIcon(System.getProperty("user.dir")+"/ressources/sc_redo.png"));
         redo.addActionListener(new ActionListener()
         {
             @Override
