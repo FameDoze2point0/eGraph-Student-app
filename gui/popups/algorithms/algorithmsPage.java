@@ -76,6 +76,7 @@ public class AlgorithmsPage extends JDialog
                 panel_listeAlgo.setLayout(new GridLayout(0,1));
                 //BFS
                 BFS = new JButton("Breadth First Search");
+                BFS.setBackground(Color.LIGHT_GRAY);
                 BFS.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -95,8 +96,15 @@ public class AlgorithmsPage extends JDialog
                         
                         informations.setText("<html><body><h1>Breadth-First Search</h1><br><br><h2>Principle</h2><p>This algorithm start from a vertex, then it takes all his neighbours that we will <br>visit. Again, it takes all neighbours of the neighbours and so on. This <br>algorithm uses a queue where we put the neighbours not visited at the end.</p><br><br><h2>Usage</h2><p>This algorithm is used to get connected components from a not oriented <br>graph with a linear complexity. Moreover, the principle of algorithm is also <br>used in different field as AI or Maze-solving algorithms.</p><br><br><h2>Complexity</h2><p>The time can be expressed as O(|V|+|E|) where every V means number of <br>vertices and E the number of edges. Note that O(|E|) may vary between O(1) <br>and O(|V*V|), depending on how much are there connections between <br>vertices. There are at most n*(n-1)/2 edges in a (complete) graph with n <br>vertices.</p></body></html>");
 
-
-                        
+                        //Button highlight
+                        BFS.setBackground(Color.LIGHT_GRAY);
+                        DFS.setBackground(null);
+                        RS.setBackground(null);
+                        DIJKSTRA.setBackground(null);
+                        BELLMAN.setBackground(null);
+                        FLOYD.setBackground(null);
+                        PRIM.setBackground(null);
+                        KRUSKAL.setBackground(null);
                     }
                 });
                 panel_listeAlgo.add(BFS);
@@ -121,6 +129,16 @@ public class AlgorithmsPage extends JDialog
                         }
 
                         informations.setText("<html><body><h1>Depth-First Search</h1><br><br><h2>Principle</h2><p>This algorithm start from a vertex, then it takes one of his neighbours that we <br>will visit. Again, it takes one of the neighbours of the neighbours and so on. <br>This algorithm uses a queue where we put the neighbours not visited at the <br>begining.</p><br><br><h2>Usage</h2><p>This algorithm is used to find strongly connected components from an <br>oriented graph. Moreover, the principle of algorithm is also used in solving <br>puzzles, AI, maze generation, finding biconnectivity in graphs and even <br>more.</p><br><br><h2>Complexity</h2><p>The time complexity can be expressed as O(|V|+|E|)for explicit graph without <br>repetition where every V means number of vertices and E the number of <br>edges. The space complexity can be expressed as O(|V|) if entire graph is <br>visited </p></body></html>");
+
+                        //Button highlight
+                        BFS.setBackground(null);
+                        DFS.setBackground(Color.LIGHT_GRAY);
+                        RS.setBackground(null);
+                        DIJKSTRA.setBackground(null);
+                        BELLMAN.setBackground(null);
+                        FLOYD.setBackground(null);
+                        PRIM.setBackground(null);
+                        KRUSKAL.setBackground(null);
                     }
                 });
                 panel_listeAlgo.add(DFS);
@@ -145,6 +163,16 @@ public class AlgorithmsPage extends JDialog
                         }
 
                         informations.setText("<html><body><h1>Random Search</h1><h2>Principle</h2><p>This algorithm start from a vertex like BFS or DFS, however the selection <br>condition of the vertex is different. Indeed, the algorithm takes randomly a <br>vertex which is accessible and not already visited in the neighbours list.</p></body></html>");
+
+                        //Button highlight
+                        BFS.setBackground(null);
+                        DFS.setBackground(null);
+                        RS.setBackground(Color.LIGHT_GRAY);
+                        DIJKSTRA.setBackground(null);
+                        BELLMAN.setBackground(null);
+                        FLOYD.setBackground(null);
+                        PRIM.setBackground(null);
+                        KRUSKAL.setBackground(null);
                     }
                 });
                 panel_listeAlgo.add(RS);
@@ -171,6 +199,15 @@ public class AlgorithmsPage extends JDialog
 
                         informations.setText("<html><body><h1>Dijkstra's Algorithm</h1><br><br><h2>Principle</h2><p>The principle of this algorithm is to find the shortest path from a starting <br>vertex and the others (or a specific one). Firstly, we analyze all the neighbours <br>that we can access, then we picks the closest. Now, we only need to do again <br>the same thing while all vertices are not visited. Note that the graph has to be <br>oriented and weighted with positiv values.</p><br><br><h2>Usage</h2><p>This algorithm can have a lot of useful usages in our daily life, this most <br>famous example is, if we need to find the shortest way between two cities or <br>regions as GPS. We can also use different units for the edges.</p><br><br><h2>Complexity</h2><p>The time complexity can be expressed as O(|V|*log(|V|)+|E|) where log <br>denotes the binary log (log_2). For connected graphs the complexity can be <br>simplified to O(log(|V|)*|E|), the fibonacci heap can improve this one to <br>O(|V|*log(|V|)+|E|).</p></body></html>");
 
+                        //Button highlight
+                        BFS.setBackground(null);
+                        DFS.setBackground(null);
+                        RS.setBackground(null);
+                        DIJKSTRA.setBackground(Color.LIGHT_GRAY);
+                        BELLMAN.setBackground(null);
+                        FLOYD.setBackground(null);
+                        PRIM.setBackground(null);
+                        KRUSKAL.setBackground(null);
                     }
                 });
                 panel_listeAlgo.add(DIJKSTRA);
@@ -195,6 +232,16 @@ public class AlgorithmsPage extends JDialog
                         }
 
                         informations.setText("<html><body><h1>Bellman-Ford-Moore's Algorithm</h1><br><br><h2>Principle</h2><p>The Bellman-Ford algorithm is an algorithm which find the shotest path from <br>a starting vertex to others in a oriented and weighted graph. This algorithm <br>allow to have a graph with negative cycle (a cycle whoses edges sum to a <br>negative value</p><br><br><h2>Usage</h2><p>In the computer network, the algorithm is used to determine the messages <br>path through the RIP protocol. We can also use this algorithm to solve a <br>programming linear problem where the constraints are differences (x - y &le; 5 ; <br>y - t &le; 10 for example) </p><br><br><h2>Complexity</h2><p>The time complexity can be expressed as O(|V|*|E|) where V is the number of <br>vertices and E the number of edges.</p></body></html>");
+                    
+                        //Button highlight
+                        BFS.setBackground(null);
+                        DFS.setBackground(null);
+                        RS.setBackground(null);
+                        DIJKSTRA.setBackground(null);
+                        BELLMAN.setBackground(Color.LIGHT_GRAY);
+                        FLOYD.setBackground(null);
+                        PRIM.setBackground(null);
+                        KRUSKAL.setBackground(null);
                     }
                 });
                 panel_listeAlgo.add(BELLMAN);
@@ -219,6 +266,16 @@ public class AlgorithmsPage extends JDialog
                         }
 
                         informations.setText("<html><body><h1>Roy-Floyd-Warshall's Algorithm</h1><br><br><h2>Principle</h2><p>the Floyd-Warshall algorithm takes in input an oriented and weighted graph <br>where we try to find the shortest way between all vertices in the graph.</p><br><br><h2>Usage</h2><p>The Floyd-Warshall algorithm can be used in those situations : <br><ul><li>Shortest path in oriented and not weighted graph (we have to put <br>weights equal to 1)</li><li>Find a regular expression denoting the regular language defined by <br>a finite-state machine</li><li>Transitive closure of an oriented graph</li></ul></p><br><br><h2>Complexity</h2><p>The time complexity can be expressed as O(|V|*|V|*|V|) where V is the <br>number of vertices. Moreover the the space complexity is O(|V|*|V|).</p></body></html>");
+
+                        //Button highlight
+                        BFS.setBackground(null);
+                        DFS.setBackground(null);
+                        RS.setBackground(null);
+                        DIJKSTRA.setBackground(null);
+                        BELLMAN.setBackground(null);
+                        FLOYD.setBackground(Color.LIGHT_GRAY);
+                        PRIM.setBackground(null);
+                        KRUSKAL.setBackground(null);
                     }
                 });
                 panel_listeAlgo.add(FLOYD);
@@ -243,6 +300,16 @@ public class AlgorithmsPage extends JDialog
                         }
 
                         informations.setText("<html><body><h1>Prim's Algorithm</h1><br><br><h2>Principle</h2><p>This algorithm is used to determine a minimum spanning tree in a graph from <br>a starting vertex in a connected, weighted and not oriented graph. The <br>Roy-Floyd-Warshall algorithm takes for each step the minimum weighted edge of <br>the available edges to the neighbours vertices. Note that we don't take an <br>edge if the starting and the ending vertices of the edge are already visited, because <br>it would create a cycle</p><br><br><h2>Complexity</h2><p>The time complexity can be expressed as O(|V|*|V|) where V is the number <br>of vertices.</p></body></html>");
+
+                        //Button highlight
+                        BFS.setBackground(null);
+                        DFS.setBackground(null);
+                        RS.setBackground(null);
+                        DIJKSTRA.setBackground(null);
+                        BELLMAN.setBackground(null);
+                        FLOYD.setBackground(null);
+                        PRIM.setBackground(Color.LIGHT_GRAY);
+                        KRUSKAL.setBackground(null);
                     }
                 });
                 panel_listeAlgo.add(PRIM);
@@ -267,6 +334,16 @@ public class AlgorithmsPage extends JDialog
                         }
 
                         informations.setText("<html><body><h1>Kruskal's Algorithm</h1><br><br><h2>Principle</h2><p>This algorithm is used to determine a minimum spanning tree in a graph from <br>a connected, weighted and not oriented graph. The Kruskal algorithm takes <br>for each step the minimum weighted edge in the graph in the case where a <br>cycle isn't create. The algorithm finish when all vertices are visited and in the <br>same connected component.</p><br><br><h2>Complexity</h2><p>The time complexity can be expressed as O(|E|*|V|) where V is the number of <br>vertices and E the number of edges. This complexity can be improved to <br>O(|E|*log(|V|)).</p></body></html>");
+
+                        //Button highlight
+                        BFS.setBackground(null);
+                        DFS.setBackground(null);
+                        RS.setBackground(null);
+                        DIJKSTRA.setBackground(null);
+                        BELLMAN.setBackground(null);
+                        FLOYD.setBackground(null);
+                        PRIM.setBackground(null);
+                        KRUSKAL.setBackground(Color.LIGHT_GRAY);
                     }
                 });
                 panel_listeAlgo.add(KRUSKAL);

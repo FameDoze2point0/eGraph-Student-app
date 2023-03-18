@@ -8,6 +8,7 @@ import javax.swing.KeyStroke;
 import gui.Gui;
 import gui.popups.other.About;
 import gui.popups.other.Contacts;
+import gui.popups.other.Documentation;
 import gui.popups.other.License;
 
 import java.awt.event.KeyEvent;
@@ -31,7 +32,7 @@ public class Other extends JMenu
         {
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("open doc");
+                new Documentation(gui);
             }
         });
         documentation.setMnemonic(KeyEvent.VK_D);

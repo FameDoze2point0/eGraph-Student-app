@@ -1,5 +1,4 @@
 package gui.tools;
-import java.awt.Color;
 import java.awt.Desktop.Action;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JToolBar;
-
+import javax.swing.border.BevelBorder;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -64,17 +63,19 @@ public class Tools extends JToolBar
         this.add(new JToolBar.Separator());
 
 
-        AbstractAction setCursor = new AbstractAction() {
-
+        AbstractAction setCursor = new AbstractAction()
+        {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gui.setState(0);
+                cursor.setBackground(Color.LIGHT_GRAY);
+                newVertex.setBackground(null);
+                newEdge.setBackground(null);
             }
-            
         };
         setCursor.putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
         cursor = new JButton(setCursor);
-        cursor.setText("Cursor ");
+        cursor.setText("Cursor");
         cursor.setIcon(new ImageIcon(System.getProperty("user.dir")+"/ressources/lc_drawselect.png"));
         cursor.getActionMap().put("setCursor", setCursor);
         cursor.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put((KeyStroke)setCursor.getValue(AbstractAction.ACCELERATOR_KEY), "setCursor");
@@ -90,6 +91,9 @@ public class Tools extends JToolBar
             public void actionPerformed(ActionEvent e) {
                 //Programme enter state 1
                 gui.setState(1);
+                cursor.setBackground(null);
+                newVertex.setBackground(Color.LIGHT_GRAY);
+                newEdge.setBackground(null);
             }
         });
         newVertex.setEnabled(false);
@@ -103,6 +107,9 @@ public class Tools extends JToolBar
             public void actionPerformed(ActionEvent e) {
                 //Programme enter state 2
                 gui.setState(2);
+                cursor.setBackground(null);
+                newVertex.setBackground(null);
+                newEdge.setBackground(Color.LIGHT_GRAY);
             }
         });
         newEdge.setEnabled(false);

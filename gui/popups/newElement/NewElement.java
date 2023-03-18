@@ -421,6 +421,7 @@ public class NewElement extends JDialog
         //Toolbar
         Tools tools = gui.getTools();
         tools.getCursorButton().setEnabled(true);
+        tools.getCursorButton().setBackground(Color.LIGHT_GRAY);
         tools.getNewVertex().setEnabled(true);
         tools.getNewEdge().setEnabled(true);
         tools.getLaunchAlgo().setEnabled(true);
